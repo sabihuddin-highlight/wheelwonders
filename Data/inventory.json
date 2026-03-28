@@ -171,7 +171,7 @@
         "tier": "pinnacle"
     },
     { 
-        "id": "nissan skyline 2000GT-R ", 
+        "id": "nissan skyline 2000GT-R", 
         "name": "Nissan Skyline 2000GT-R ", 
         "subtitle": "2000GT-R / Nissan",
         "price": 949, 
@@ -189,7 +189,7 @@
         "tier": "pinnacle"
     },
     { 
-        "id": "Nissan skyline RS KDR30 ", 
+        "id": "Nissan skyline RS KDR30", 
         "name": "Nissan Skyline RS KDR30 ", 
         "subtitle": "RS KDR30 / Nissan",
         "price": 949, 
@@ -207,7 +207,7 @@
         "tier": "pinnacle"
     },
     { 
-        "id": " Tesla Model Y", 
+        "id": "Tesla Model Y", 
         "name": "Tesla Model Y", 
         "subtitle": "Model Y / Tesla",
         "price": 1199, 
@@ -396,7 +396,7 @@
         "tier": "pinnacle"
     },
     { 
-        "id": " Corvette '56", 
+        "id": "Corvette '56", 
         "name": " Corvette '56", 
         "subtitle": "Corvette '56 / Chevy",
         "price": 1099, 
@@ -408,8 +408,8 @@
         "id": "Lamborghini Diablo SV", 
         "name": "Lamborghini Diablo SV", 
         "subtitle": "Diablo SV / Lamborghini",
-        "price": null, 
-        "stock": 1899,
+        "price": 1899, 
+        "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
@@ -426,7 +426,7 @@
         "id": "2023_NISSAN_Z_BLUE",
         "name": "2023 Nissan Z (Blue)",
         "subtitle": "2023 Z / Nissan",
-        "price": 15.99,
+        "price": 1599,
         "stock": 1,
         "image": "https://placehold.co/400x300/321/edc?text=NISSAN+Z",
         "tier": "collectors"
@@ -561,7 +561,7 @@
         "id": "HONDA_S2000_RED",
         "name": "Honda S2000 (Red)",
         "subtitle": "S2000 / Honda",
-        "price": 15.99,
+        "price": 1599,
         "stock": 4,
         "image": "https://placehold.co/400x300/321/edc?text=S2000",
         "tier": "collectors"
@@ -750,7 +750,7 @@
         "id": "SUPRA_THEN_NOW_RED",
         "name": "Toyota Supra Then and Now (Red)",
         "subtitle": "Supra / Toyota",
-        "price": 2,
+        "price": 1299,
         "stock": 2,
         "image": "https://placehold.co/400x300/321/edc?text=SUPRA",
         "tier": "collectors"
@@ -1745,7 +1745,6 @@
         "image": "https://placehold.co/400x300/321/edc?text=CIVIC+EF+BLUE",
         "tier": "collectors"
     },
-   
     {
         "id": "CARRERA_96_WHITE",
         "name": "'96 Porsche Carrera (White/Blue)",
