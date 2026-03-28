@@ -48,15 +48,43 @@
             letter-spacing: 2px; 
             border-bottom: 1px solid #333;
             padding-bottom: 20px;
+            color: #fff;
         }
 
-        /* Order Summary Box */
         .order-summary {
             background: #0a0a0a;
             padding: 20px;
             border: 1px solid #333;
             margin-bottom: 30px;
         }
+
+        .payment-vault {
+            background: rgba(199, 168, 123, 0.05);
+            border: 1px solid var(--bronze);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .vault-title {
+            color: var(--bronze);
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .vault-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .vault-label { color: #888; text-transform: uppercase; font-size: 0.8rem; }
+        .vault-value { color: #fff; font-weight: bold; letter-spacing: 1px; }
 
         .back-btn { 
             display: inline-block; 
@@ -69,11 +97,38 @@
         }
         .back-btn:hover { color: #fff; }
 
-        /* Input Styles */
+        input, textarea, select {
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 15px; 
+            background: #000; 
+            border: 1px solid #444; 
+            color: #fff; 
+            box-sizing: border-box;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+        }
+
         input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--sakura) !important;
         }
+
+        .confirm-btn {
+            width: 100%; 
+            padding: 18px; 
+            background: var(--bronze); 
+            color: #000; 
+            font-family: 'Chakra Petch', sans-serif; 
+            font-size: 1.2rem; 
+            font-weight: bold; 
+            border: none; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+        }
+
+        .confirm-btn:hover { background: #fff; }
     </style>
 </head>
 <body>
@@ -81,31 +136,53 @@
         <h1>SECURE CHECKOUT</h1>
         
         <div class="order-summary">
-            <h3 style="margin-top: 0; color: #aaa; font-family: 'Chakra Petch', sans-serif;">ORDER INVOICE</h3>
+            <h3 style="margin-top: 0; color: #aaa; font-family: 'Chakra Petch', sans-serif;">ORDER MANIFEST</h3>
             <ul id="billing-items" style="list-style: none; padding: 0; margin: 0 0 20px 0; font-size: 1.1rem;"></ul>
             <div style="text-align: right; font-size: 1.5rem; border-top: 1px dashed #555; padding-top: 15px; font-weight: bold;">
-                AMOUNT DUE: <span style="color: var(--sakura); margin-left: 15px;">$<span id="display-total">0.00</span></span>
+                TOTAL DUE: <span style="color: var(--sakura); margin-left: 15px;">RS <span id="display-total">0</span></span>
             </div>
         </div>
 
-        <div style="background: rgba(0,0,0,0.5); padding: 20px; border: 1px solid #333; margin-bottom: 20px;">
-            <h3 style="color: var(--bronze); font-family: 'Chakra Petch', sans-serif; margin-top: 0;">DELIVERY LOGISTICS</h3>
+        <!-- BANK DETAILS SECTION -->
+        <div class="payment-vault">
+            <div class="vault-title"><i class="fas fa-university"></i> PAYMENT DESTINATION</div>
+            <div class="vault-row">
+                <span class="vault-label">Account Name</span>
+                <span class="vault-value">FURQAN QURESHI</span>
+            </div>
+            <div class="vault-row">
+                <span class="vault-label">Bank</span>
+                <span class="vault-value">Meezan Bank</span>
+            </div>
+            <div class="vault-row">
+                <span class="vault-label">Account #</span>
+                <span class="vault-value">99740112623550</span>
+            </div>
+            <div class="vault-row">
+                <span class="vault-label">IBAN</span>
+                <span class="vault-value" style="font-size: 0.8rem;">PK18MEZN0099740112623550</span>
+            </div>
+            <div class="vault-row">
+                <span class="vault-label">Branch</span>
+                <span class="vault-value">Nishat Commercial</span>
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.5); padding: 25px; border: 1px solid #333; margin-bottom: 20px;">
+            <h3 style="color: var(--bronze); font-family: 'Chakra Petch', sans-serif; margin-top: 0;">LOGISTICS & DELIVERY</h3>
             
-            <input type="text" id="cust-name" placeholder="Full Name" required style="width: 100%; padding: 10px; margin-bottom: 10px; background: #000; border: 1px solid #444; color: #fff; box-sizing: border-box;">
+            <input type="text" id="cust-name" placeholder="Full Name" required>
+            <input type="tel" id="cust-phone" placeholder="WhatsApp Number (03XX-XXXXXXX)" required>
+            <textarea id="cust-address" placeholder="Full Shipping Address (City, Area, Street, House #)" required></textarea>
             
-            <input type="tel" id="cust-phone" placeholder="Phone Number" required style="width: 100%; padding: 10px; margin-bottom: 10px; background: #000; border: 1px solid #444; color: #fff; box-sizing: border-box;">
-            
-            <textarea id="cust-address" placeholder="Full Shipping Address" required style="width: 100%; padding: 10px; height: 80px; background: #000; border: 1px solid #444; color: #fff; font-family: 'Rajdhani', sans-serif; box-sizing: border-box;"></textarea>
-            
-            <select id="payment-method" style="width: 100%; padding: 10px; margin-top: 10px; background: #000; border: 1px solid #444; color: var(--bronze); font-weight: bold;">
-                <option value="Cash on Delivery">Cash on Delivery (COD)</option>
-                <option value="Bank Transfer">Bank Transfer (Send Screenshot via WhatsApp)</option>
+            <label style="color: #666; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; display: block;">PAYMENT METHOD</label>
+            <select id="payment-method">
+                <option value="Bank Transfer">Direct Bank Transfer (Upload Screenshot)</option>
+                <option value="Cash on Delivery">Cash on Delivery (Standard)</option>
             </select>
         </div>
 
-        <button id="submit-order-btn" style="width: 100%; padding: 15px; background: var(--bronze); color: #000; font-family: 'Chakra Petch', sans-serif; font-size: 1.2rem; font-weight: bold; border: none; cursor: pointer; text-transform: uppercase; transition: 0.3s;">
-            CONFIRM & PLACE ORDER
-        </button>
+        <button id="submit-order-btn" class="confirm-btn">CONFIRM ORDER</button>
 
         <a href="index.html" class="back-btn" style="display: block; text-align: center;"><i class="fas fa-arrow-left"></i> RETURN TO GARAGE</a>
     </div>
@@ -115,53 +192,44 @@
         const billingItems = document.getElementById('billing-items');
         let finalTotal = 0;
         
-        // Display Cart Items
+        // Render Summary
         if (cart.length === 0) {
-            billingItems.innerHTML = "<li style='color: red;'>Your garage is empty.</li>";
+            billingItems.innerHTML = "<li style='color: #ff4444;'>Garage is empty. Load units first.</li>";
             document.getElementById('submit-order-btn').disabled = true;
-            document.getElementById('submit-order-btn').style.opacity = "0.5";
+            document.getElementById('submit-order-btn').style.opacity = "0.3";
         } else {
             cart.forEach(item => {
                 const itemTotal = item.price * item.quantity;
                 finalTotal += itemTotal;
                 billingItems.innerHTML += `
                     <li style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span style="color: var(--bronze);">${item.name} (x${item.quantity})</span>
-                        <span>$${itemTotal.toFixed(2)}</span>
+                        <span style="color: var(--bronze);">${item.name} <small style="color: #666;">(x${item.quantity})</small></span>
+                        <span style="font-weight: bold; color: #fff;">RS ${itemTotal.toLocaleString()}</span>
                     </li>`;
             });
-            document.getElementById('display-total').innerText = finalTotal.toFixed(2);
+            document.getElementById('display-total').innerText = finalTotal.toLocaleString();
         }
 
-        // Add hover effect to button
-        const submitBtn = document.getElementById('submit-order-btn');
-        submitBtn.addEventListener('mouseover', () => { if(!submitBtn.disabled) submitBtn.style.background = "#fff"; });
-        submitBtn.addEventListener('mouseout', () => { if(!submitBtn.disabled) submitBtn.style.background = "var(--bronze)"; });
-
-        // Handle Order Submission
-        submitBtn.addEventListener('click', async () => {
+        // Handle Submission
+        document.getElementById('submit-order-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('submit-order-btn');
             const name = document.getElementById('cust-name').value;
             const phone = document.getElementById('cust-phone').value;
             const address = document.getElementById('cust-address').value;
-            const paymentMethod = document.getElementById('payment-method').value;
+            const method = document.getElementById('payment-method').value;
 
-            if(!name || !phone || !address) {
-                return alert("Please fill out all delivery logistics!");
-            }
+            if(!name || !phone || !address) return alert("All logistics fields are required!");
 
-            // Package the order data
             const orderData = {
                 customer: { name, phone, address },
-                payment: paymentMethod,
+                payment: method,
                 total: finalTotal,
                 cart: cart
             };
 
-            // Send to our Node.js Server
             try {
-                // Change button state to show it's working
-                submitBtn.innerText = "PROCESSING...";
-                submitBtn.disabled = true;
+                btn.innerText = "UPLOADING TO VAULT...";
+                btn.disabled = true;
 
                 const response = await fetch('/api/checkout', {
                     method: 'POST',
@@ -172,28 +240,38 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // Empty the cart
                     localStorage.removeItem('jdm_cart');
                     
-                    // Generate WhatsApp message for Admin alert
-                    // IMPORTANT: Replace the '12345678900' below with your actual business number!
-                    let waText = `🏎️ *NEW ORDER: ${result.orderId}* 🏎️%0A%0A`;
-                    waText += `*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${address}%0A*Method:* ${paymentMethod}%0A%0A*Total:* $${finalTotal.toFixed(2)}`;
+                    // WhatsApp Logic
+                    const businessPhone = "923052254400";
+                    let waText = `*WHEEL WONDERS - NEW ORDER*%0A`;
+                    waText += `*ID:* ${result.orderId}%0A`;
+                    waText += `----------------------------%0A`;
+                    waText += `*Customer:* ${name}%0A`;
+                    waText += `*Total:* RS ${finalTotal.toLocaleString()}%0A`;
+                    waText += `*Address:* ${address}%0A`;
+                    waText += `*Method:* ${method}%0A%0A`;
+                    waText += `*Units:*%0A`;
+                    cart.forEach(i => waText += `- ${i.name} (x${i.quantity})%0A`);
                     
-                    alert(`Success! Your order ID is ${result.orderId}. Taking you to WhatsApp to confirm.`);
-                    
-                    // Open WhatsApp to send receipt
-                    window.location.href = `https://wa.me/12345678900?text=${waText}`; 
+                    if(method === "Bank Transfer") {
+                        waText += `%0A*I have transferred the payment to Meezan Bank. Attaching screenshot below:*`;
+                    } else {
+                        waText += `%0A*Please confirm this COD order.*`;
+                    }
+
+                    alert(`ORDER PLACED! ID: ${result.orderId}. Opening WhatsApp for confirmation.`);
+                    window.location.href = `https://wa.me/${businessPhone}?text=${waText}`; 
                 } else {
-                    alert("Error: " + result.error); // Alerts if item is out of stock
-                    submitBtn.innerText = "CONFIRM & PLACE ORDER";
-                    submitBtn.disabled = false;
+                    alert("Stock Error: " + result.error);
+                    btn.innerText = "CONFIRM ORDER";
+                    btn.disabled = false;
                 }
             } catch (err) {
                 console.error(err);
-                alert("Server error processing order. Please ensure the server is running.");
-                submitBtn.innerText = "CONFIRM & PLACE ORDER";
-                submitBtn.disabled = false;
+                alert("Vault sync failed. Check server connection.");
+                btn.innerText = "CONFIRM ORDER";
+                btn.disabled = false;
             }
         });
     </script>
