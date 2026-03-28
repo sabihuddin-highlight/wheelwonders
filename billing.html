@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BILLING // WHEEL WONDERS</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root { 
+            --bronze: #c7a87b; 
+            --sakura: #ffb7c5; 
+            --dark: #0f0f0f; 
+            --panel: #161616; 
+        }
+        
+        body { 
+            background-color: var(--dark); 
+            color: #e0e0e0; 
+            font-family: 'Rajdhani', sans-serif; 
+            margin: 0; 
+            padding: 40px 20px; 
+            display: flex; 
+            justify-content: center; 
+            background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+        }
+
+        .checkout-container { 
+            background: var(--panel); 
+            padding: 40px; 
+            border-top: 3px solid var(--sakura); 
+            max-width: 700px; 
+            width: 100%; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            border-left: 1px solid rgba(255,255,255,0.05);
+            border-right: 1px solid rgba(255,255,255,0.05);
+        }
+
+        h1 { 
+            font-family: 'Chakra Petch', sans-serif; 
+            margin-top: 0; 
+            text-align: center; 
+            font-size: 2.5rem; 
+            letter-spacing: 2px; 
+            border-bottom: 1px solid #333;
+            padding-bottom: 20px;
+            color: #fff;
+        }
+
+        .order-summary {
+            background: #0a0a0a;
+            padding: 20px;
+            border: 1px solid #333;
+            margin-bottom: 30px;
+        }
+
+        .payment-vault {
+            background: rgba(199, 168, 123, 0.05);
+            border: 1px solid var(--bronze);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .vault-title {
+            color: var(--bronze);
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .vault-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .vault-label { color: #888; text-transform: uppercase; font-size: 0.8rem; }
+        .vault-value { color: #fff; font-weight: bold; letter-spacing: 1px; }
+
+        .back-btn { 
+            display: inline-block; 
+            margin-top: 20px; 
+            color: #888; 
+            text-decoration: none; 
+            transition: 0.3s; 
+            font-family: 'Chakra Petch', sans-serif;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { color: #fff; }
+
+        input, textarea, select {
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 15px; 
+            background: #000; 
+            border: 1px solid #444; 
+            color: #fff; 
+            box-sizing: border-box;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--sakura) !important;
+        }
+
+        .confirm-btn {
+            width: 100%; 
+            padding: 18px; 
+            background: var(--bronze); 
+            color: #000; 
+            font-family: 'Chakra Petch', sans-serif; 
+            font-size: 1.2rem; 
+            font-weight: bold; 
+            border: none; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+        }
+
+        .confirm-btn:hover { background: #fff; }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <h1>SECURE CHECKOUT</h1>
+        
+        <div class="order-summary">
+            <h3 style="margin-top: 0; color: #aaa; font-family: 'Chakra Petch', sans-serif;">ORDER MANIFEST</h3>
+            <ul id="billing-items" style="list-style: none; padding: 0; margin: 0 0 20px 0; font-size: 1.1rem;"></ul>
+            <div style="text-align: right; font-size: 1.5rem; border-top: 1px dashed #555; padding-top: 15px; font-weight: bold;">
+                TOTAL DUE: <span style="color: var(--sakura); margin-left: 15px;">RS <span id="display-total">0</span></span>
+            </div>
+        </div>
+
+        <!-- BANK DETAILS SECTION -->
+        <div class="payment-vault">
+            <div class="vault-title"><i class="fas fa-university"></i> PAYMENT DESTINATION</div>
+            <div class="vault-row">
+                <span class="vault-label">Account Name</span>
+                <span class="vault-value">FURQAN QURESHI</span>
+            </div>
+            <div class="vault-row">
+                <span class="vault-label">Bank</span>
+                <span class="vault-value">Meezan Bank</span>
+            </div>
+            <div class="vault-row">
+                <span class="vault-label">Account #</span>
+                <span class="vault-value">99740112623550</span>
+            </div>
+            <div class="vault-row">
+                <span class="vault-label">IBAN</span>
+                <span class="vault-value" style="font-size: 0.8rem;">PK18MEZN0099740112623550</span>
+            </div>
+            <div class="vault-row">
+                <span class="vault-label">Branch</span>
+                <span class="vault-value">Nishat Commercial</span>
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.5); padding: 25px; border: 1px solid #333; margin-bottom: 20px;">
+            <h3 style="color: var(--bronze); font-family: 'Chakra Petch', sans-serif; margin-top: 0;">LOGISTICS & DELIVERY</h3>
+            
+            <input type="text" id="cust-name" placeholder="Full Name" required>
+            <input type="tel" id="cust-phone" placeholder="WhatsApp Number (03XX-XXXXXXX)" required>
+            <textarea id="cust-address" placeholder="Full Shipping Address (City, Area, Street, House #)" required></textarea>
+            
+            <label style="color: #666; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; display: block;">PAYMENT METHOD</label>
+            <select id="payment-method">
+                <option value="Bank Transfer">Direct Bank Transfer (Upload Screenshot)</option>
+                <option value="Cash on Delivery">Cash on Delivery (Standard)</option>
+            </select>
+        </div>
+
+        <button id="submit-order-btn" class="confirm-btn">CONFIRM ORDER</button>
+
+        <a href="index.html" class="back-btn" style="display: block; text-align: center;"><i class="fas fa-arrow-left"></i> RETURN TO GARAGE</a>
+    </div>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem('jdm_cart')) || [];
+        const billingItems = document.getElementById('billing-items');
+        let finalTotal = 0;
+        
+        // Render Summary
+        if (cart.length === 0) {
+            billingItems.innerHTML = "<li style='color: #ff4444;'>Garage is empty. Load units first.</li>";
+            document.getElementById('submit-order-btn').disabled = true;
+            document.getElementById('submit-order-btn').style.opacity = "0.3";
+        } else {
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                finalTotal += itemTotal;
+                billingItems.innerHTML += `
+                    <li style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="color: var(--bronze);">${item.name} <small style="color: #666;">(x${item.quantity})</small></span>
+                        <span style="font-weight: bold; color: #fff;">RS ${itemTotal.toLocaleString()}</span>
+                    </li>`;
+            });
+            document.getElementById('display-total').innerText = finalTotal.toLocaleString();
+        }
+
+        // Handle Submission
+        document.getElementById('submit-order-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('submit-order-btn');
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const address = document.getElementById('cust-address').value;
+            const method = document.getElementById('payment-method').value;
+
+            if(!name || !phone || !address) return alert("All logistics fields are required!");
+
+            const orderData = {
+                customer: { name, phone, address },
+                payment: method,
+                total: finalTotal,
+                cart: cart
+            };
+
+            try {
+                btn.innerText = "UPLOADING TO VAULT...";
+                btn.disabled = true;
+
+                const response = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+                
+                const result = await response.json();
+
+                if (result.success) {
+                    localStorage.removeItem('jdm_cart');
+                    
+                    // WhatsApp Logic
+                    const businessPhone = "923052254400";
+                    let waText = `*WHEEL WONDERS - NEW ORDER*%0A`;
+                    waText += `*ID:* ${result.orderId}%0A`;
+                    waText += `----------------------------%0A`;
+                    waText += `*Customer:* ${name}%0A`;
+                    waText += `*Total:* RS ${finalTotal.toLocaleString()}%0A`;
+                    waText += `*Address:* ${address}%0A`;
+                    waText += `*Method:* ${method}%0A%0A`;
+                    waText += `*Units:*%0A`;
+                    cart.forEach(i => waText += `- ${i.name} (x${i.quantity})%0A`);
+                    
+                    if(method === "Bank Transfer") {
+                        waText += `%0A*I have transferred the payment to Meezan Bank. Attaching screenshot below:*`;
+                    } else {
+                        waText += `%0A*Please confirm this COD order.*`;
+                    }
+
+                    alert(`ORDER PLACED! ID: ${result.orderId}. Opening WhatsApp for confirmation.`);
+                    window.location.href = `https://wa.me/${businessPhone}?text=${waText}`; 
+                } else {
+                    alert("Stock Error: " + result.error);
+                    btn.innerText = "CONFIRM ORDER";
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Vault sync failed. Check server connection.");
+                btn.innerText = "CONFIRM ORDER";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
