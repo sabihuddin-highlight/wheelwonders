@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
@@ -41,7 +41,6 @@
             mix-blend-mode: overlay;
         }
 
-        /* BACKGROUND LAYERS */
         .bg-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -51,7 +50,6 @@
             opacity: 0.6;
         }
 
-        /* SAKURA ENGINE */
         #sakura-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -107,12 +105,6 @@
             border-bottom: 2px solid var(--bronze);
         }
 
-        .hero-content {
-            z-index: 2;
-            position: relative;
-        }
-
-        /* --- CRT GLITCH TITLE EFFECT --- */
         .hero h1 {
             font-family: 'Chakra Petch', sans-serif;
             font-size: clamp(4rem, 10vw, 9rem);
@@ -148,32 +140,17 @@
 
         @keyframes glitch-anim {
             0% { clip: rect(14px, 9999px, 121px, 0); }
-            20% { clip: rect(66px, 9999px, 96px, 0); }
-            40% { clip: rect(22px, 9999px, 14px, 0); }
-            60% { clip: rect(83px, 9999px, 2px, 0); }
-            80% { clip: rect(29px, 9999px, 86px, 0); }
             100% { clip: rect(56px, 9999px, 49px, 0); }
         }
         
         @keyframes glitch-anim-2 {
             0% { clip: rect(65px, 9999px, 109px, 0); }
-            20% { clip: rect(9px, 9999px, 66px, 0); }
-            40% { clip: rect(35px, 9999px, 2px, 0); }
-            60% { clip: rect(86px, 9999px, 15px, 0); }
-            80% { clip: rect(12px, 9999px, 48px, 0); }
             100% { clip: rect(100px, 9999px, 89px, 0); }
         }
 
         .hero h1 .highlight {
             color: transparent;
             -webkit-text-stroke: 1px var(--bronze);
-        }
-
-        .hero-badges {
-            margin-top: 30px;
-            display: flex;
-            gap: 20px;
-            align-items: center;
         }
 
         .subtitle {
@@ -184,36 +161,235 @@
             text-transform: uppercase;
         }
 
-        /* --- CATALOG --- */
+        /* --- CONTROL PANEL FIX --- */
         .catalog {
-            padding: 100px 5%;
+            padding: 50px 5%;
             background: #0a0a0a;
             position: relative;
         }
 
-        .section-header {
+        .controls-panel {
             display: flex;
-            align-items: center;
-            margin-bottom: 60px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
-        }
-        
-        .section-title {
-            font-family: 'Chakra Petch', sans-serif;
-            font-size: 2.5rem;
-            margin-right: 20px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-weight: 700;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 50px;
+            background: var(--panel);
+            padding: 35px;
+            border: 1px solid rgba(199, 168, 123, 0.15);
+            clip-path: polygon(0 0, 98% 0, 100% 15%, 100% 100%, 2% 100%, 0 85%);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
-        /* --- CARDS --- */
+        .inputs-row {
+            display: flex;
+            gap: 30px; /* Increased gap for breathing room */
+            width: 100%;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        /* Dash Inputs Styling */
+        .search-wrap { flex: 2; min-width: 300px; position: relative; }
+        .sort-wrap { flex: 1; min-width: 200px; position: relative; }
+        .brand-wrap { flex: 1.2; min-width: 220px; position: relative; }
+
+        #search-bar, #sort-price, #brand-filter {
+            width: 90%;
+            background: #0a0a0a !important;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px 15px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            outline: none;
+            transition: 0.3s ease;
+            appearance: none;
+        }
+
+        #search-bar { padding-left: 45px; }
+
+        .search-wrap i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--bronze);
+            z-index: 5;
+        }
+
+        /* Custom Bronze Arrows */
+        .sort-wrap::after, .brand-wrap::after {
+            content: '\f107'; 
+            font-family: 'Font Awesome 6 Free'; 
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--bronze);
+            pointer-events: none;
+        }
+
+        #search-bar:focus, #sort-price:focus, #brand-filter:focus {
+            border-color: var(--bronze);
+            box-shadow: 0 0 15px rgba(199, 168, 123, 0.1);
+        }
+
+        /* Suggestion Box */
+        #suggestions-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #0f0f0f;
+            border: 1px solid var(--bronze);
+            border-top: none;
+            z-index: 500;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #1a1a1a;
+            color: #aaa;
+            transition: 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(199, 168, 123, 0.1);
+            color: #fff;
+        }
+
+        /* Slider Fix: Increased min-width and added container padding */
+        .price-range-wrap {
+            flex: 2;
+            min-width: 300px; /* Wider min-width prevents it from being squashed */
+            padding-right: 15px; /* Creates a safe-zone for the slider thumb */
+            box-sizing: border-box;
+        }
+
+        .price-range-wrap label {
+            display: block;
+            color: var(--bronze);
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #price-slider {
+            width: 100%;
+            height: 4px;
+            background: #222;
+            appearance: none;
+            outline: none;
+            border-radius: 2px;
+        }
+
+        #price-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--bronze);
+            border: 3px solid #000;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(199, 168, 123, 0.5);
+            transition: 0.2s;
+        }
+
+        #price-slider::-webkit-slider-thumb:hover { transform: scale(1.2); background: #fff; }
+
+        /* Toggle Switch */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 0.8;
+            min-width: 160px;
+        }
+
+        .toggle-label {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider-toggle {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider-toggle:before {
+            position: absolute;
+            content: "";
+            height: 16px; width: 16px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider-toggle { background-color: var(--bronze); }
+        input:checked + .slider-toggle:before { transform: translateX(22px); }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-top: 1px solid #222;
+            padding-top: 25px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+            padding: 10px 20px;
+            font-family: 'Chakra Petch', sans-serif;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--bronze);
+            color: #000;
+            border-color: var(--bronze);
+        }
+
+        /* --- GRID & CARDS --- */
         .tier-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 40px;
-            margin-bottom: 100px;
+            margin-bottom: 60px;
         }
 
         .card {
@@ -223,12 +399,10 @@
             transform: perspective(1000px);
             border-left: 2px solid rgba(255,255,255,0.05);
             clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+            cursor: pointer;
         }
 
-        .card-inner {
-            padding: 20px;
-            transform: translateZ(20px);
-        }
+        .card-inner { padding: 20px; transform: translateZ(20px); }
 
         .card-img-container {
             width: 100%;
@@ -240,84 +414,78 @@
         }
         
         .card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.5s;
-            filter: grayscale(100%);
+            width: 100%; height: 100%; object-fit: cover;
+            transition: 0.5s; filter: grayscale(100%);
         }
         .card:hover .card-img { filter: grayscale(0%); transform: scale(1.1); }
 
-        .card h3 {
-            font-family: 'Chakra Petch', sans-serif;
-            font-size: 1.6rem;
-            margin: 0;
-            line-height: 1;
-            letter-spacing: 0.5px;
+        /* --- QUICK VIEW MODAL --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(8px);
         }
 
-        .card p {
-            color: var(--bronze);
-            font-size: 0.9rem;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-            font-weight: 600;
+        .modal-content {
+            background: var(--panel);
+            margin: 5% auto;
+            padding: 40px;
+            width: 85%;
+            max-width: 900px;
+            border: 1px solid var(--bronze);
+            position: relative;
+            display: flex;
+            gap: 40px;
+            clip-path: polygon(0 0, 95% 0, 100% 10%, 100% 100%, 5% 100%, 0 90%);
         }
+
+        .close-modal {
+            position: absolute;
+            right: 25px; top: 15px;
+            font-size: 2.2rem;
+            cursor: pointer;
+            color: var(--bronze);
+        }
+
+        .modal-left { flex: 1.2; }
+        .modal-right { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .modal-img { width: 100%; border: 1px solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+
+        /* --- LOAD MORE --- */
+        .load-more-wrap { text-align: center; padding: 40px 0 100px; }
+        .load-more-btn {
+            background: transparent;
+            border: 1px solid var(--bronze);
+            color: var(--bronze);
+            padding: 15px 45px;
+            font-family: 'Chakra Petch', sans-serif;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .load-more-btn:hover { background: var(--bronze); color: #000; }
 
         .buy-btn {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            border: 1px solid #333;
-            color: #fff;
-            font-family: 'Chakra Petch', sans-serif;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex; 
-            justify-content: space-between;
-            font-weight: 700;
+            width: 100%; padding: 12px;
+            background: transparent; border: 1px solid #333;
+            color: #fff; font-family: 'Chakra Petch', sans-serif;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase;
+            display: flex; justify-content: space-between; font-weight: 700;
         }
 
-        .buy-btn:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
-        }
+        .buy-btn:hover { background: #fff; color: #000; border-color: #fff; }
 
-        /* --- NEW TIER COLORS --- */
-        .budget-tier .section-title { color: #a0a0a0; }
-        .collectors-tier .section-title { color: var(--bronze); }
-        .pinnacle-tier .section-title { color: #ffd700; }
-        .premium-tier .section-title { color: var(--neon-glitch); text-shadow: 0 0 10px var(--neon-glitch); }
-        
-        /* The Pinnacle Custom Styling */
-        .pinnacle-tier .card {
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            background: linear-gradient(135deg, rgba(20,20,20,1), rgba(40,35,10,1));
-        }
+        .section-header { display: flex; align-items: center; margin-bottom: 60px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .section-title { font-family: 'Chakra Petch', sans-serif; font-size: 2.5rem; margin-right: 20px; text-transform: uppercase; font-weight: 700; }
+        .section-divider { text-align: center; color: #fff; font-family: 'Chakra Petch', sans-serif; letter-spacing: 8px; font-size: 2rem; margin-bottom: 60px; opacity: 0.8; }
 
-        /* Hot Wheels Premium Custom Styling */
-        .premium-tier .card {
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            background: linear-gradient(135deg, rgba(10,10,15,1), rgba(0,30,30,1));
-            box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.05);
-        }
-
-        .section-divider {
-            text-align: center;
-            color: #fff;
-            font-family: 'Chakra Petch', sans-serif;
-            letter-spacing: 8px;
-            font-size: 2rem;
-            margin-bottom: 60px;
-            opacity: 0.8;
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 850px) {
+            .modal-content { flex-direction: column; margin: 2% auto; padding: 25px; width: 90%; }
             .hero h1 { font-size: 3.5rem; }
         }
     </style>
@@ -341,11 +509,11 @@
     </nav>
 
     <div id="cart-panel" style="position: fixed; top: 80px; right: 50px; background: var(--panel); border: 1px solid var(--bronze); padding: 25px; z-index: 200; display: none; min-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
-        <h3 style="margin-top:0; color: #fff; font-family: 'Chakra Petch', sans-serif; border-bottom: 1px solid #333; padding-bottom: 10px;">YOUR GARAGE</h3>
+        <h3 style="margin-top:0; color: #fff; font-family: 'Chakra Petch'; border-bottom: 1px solid #333; padding-bottom: 10px;">YOUR GARAGE</h3>
         <ul id="cart-items" style="list-style: none; padding: 0; font-size: 0.9rem;"></ul>
         <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-top: 20px;">
             <span>TOTAL:</span>
-            <span style="color: var(--sakura);">$<span id="cart-total">0.00</span></span>
+            <span style="color: var(--sakura);">RS <span id="cart-total">0</span></span>
         </div>
         <button id="checkout-btn" onclick="window.location.href='billing.html'" class="buy-btn" style="margin-top: 20px; background: var(--bronze); color: #000; border: none;">PROCEED TO BILLING</button>
     </div>
@@ -356,7 +524,6 @@
                 <span class="highlight">WHEEL</span><br>
                 WONDERS
             </h1>
-            
             <div class="hero-badges">
                 <div class="subtitle">// EST. 2024 // JDM COLLECTION</div>
             </div>
@@ -365,74 +532,116 @@
 
     <div class="catalog">
 
-        <div class="section-divider">// HOTWHEELS MAINLINES //</div>
-
-        <div class="budget-tier">
-            <div class="section-header">
-                <h2 class="section-title">01 // BUDGET SLEEPER</h2>
-                <div style="flex-grow:1; height:1px; background: #333;"></div>
+        <div class="controls-panel">
+            <!-- ROW 1 -->
+            <div class="inputs-row">
+                <div class="search-wrap">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-bar" placeholder="SEARCH JDM DATABASE..." autocomplete="off">
+                    <div id="suggestions-box"></div>
+                </div>
+                <div class="sort-wrap">
+                    <select id="sort-price">
+                        <option value="default">SORT: DEFAULT</option>
+                        <option value="low">PRICE: LOW TO HIGH</option>
+                        <option value="high">PRICE: HIGH TO LOW</option>
+                    </select>
+                </div>
             </div>
-            <div class="tier-grid" id="grid-budget"></div>
+
+            <!-- ROW 2 -->
+            <div class="inputs-row">
+                <div class="price-range-wrap">
+                    <label>MAX PRICE: RS <span id="price-val">15,000</span></label>
+                    <input type="range" id="price-slider" min="0" max="15000" step="100" value="15000">
+                </div>
+                <div class="brand-wrap">
+                    <select id="brand-filter">
+                        <option value="all">ALL BRANDS</option>
+                    </select>
+                </div>
+                <div class="toggle-wrap">
+                    <span class="toggle-label">IN STOCK ONLY</span>
+                    <label class="switch">
+                        <input type="checkbox" id="stock-toggle">
+                        <span class="slider-toggle"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-filter="all">ALL UNITS</button>
+                <button class="filter-btn" data-filter="budget">BUDGET</button>
+                <button class="filter-btn" data-filter="collectors">COLLECTORS</button>
+                <button class="filter-btn" data-filter="pinnacle">PINNACLE</button>
+                <button class="filter-btn" data-filter="premium">PREMIUM</button>
+            </div>
         </div>
 
-        <div class="collectors-tier">
-            <div class="section-header">
-                <h2 class="section-title">02 // THE COLLECTORS CUT</h2>
-                <div style="flex-grow:1; height:1px; background: #333;"></div>
+        <div id="showroom">
+            <div class="section-divider">// HOTWHEELS MAINLINES //</div>
+            <div class="budget-tier">
+                <div class="section-header"><h2 class="section-title">01 // BUDGET SLEEPER</h2><div style="flex-grow:1; height:1px; background: #333;"></div></div>
+                <div class="tier-grid" id="grid-budget"></div>
             </div>
-            <div class="tier-grid" id="grid-collectors"></div>
+            <div class="collectors-tier">
+                <div class="section-header"><h2 class="section-title">02 // THE COLLECTORS CUT</h2><div style="flex-grow:1; height:1px; background: #333;"></div></div>
+                <div class="tier-grid" id="grid-collectors"></div>
+            </div>
+            <div class="pinnacle-tier">
+                <div class="section-header"><h2 class="section-title">03 // THE PINNACLE</h2><div style="flex-grow:1; height:1px; background: #333;"></div></div>
+                <div class="tier-grid" id="grid-pinnacle"></div>
+            </div>
+            <div class="section-divider" style="color: var(--neon-glitch); text-shadow: 0 0 10px rgba(0,255,255,0.4); margin-top: 40px;">// EXCLUSIVES //</div>
+            <div class="premium-tier">
+                <div class="section-header"><h2 class="section-title">04 // HOT WHEELS PREMIUM</h2><div style="flex-grow:1; height:1px; background: #333;"></div></div>
+                <div class="tier-grid" id="grid-premium"></div>
+            </div>
         </div>
 
-        <div class="pinnacle-tier">
-            <div class="section-header">
-                <h2 class="section-title">03 // THE PINNACLE</h2>
-                <div style="flex-grow:1; height:1px; background: #333;"></div>
+        <div class="load-more-wrap"><button id="load-more-btn" class="load-more-btn">LOAD MORE UNITS</button></div>
+    </div>
+
+    <!-- QUICK VIEW MODAL -->
+    <div id="quick-view" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-left">
+                <img id="modal-img" class="modal-img" src="">
             </div>
-            <div class="tier-grid" id="grid-pinnacle"></div>
-        </div>
-
-        <div class="section-divider" style="color: var(--neon-glitch); text-shadow: 0 0 10px rgba(0,255,255,0.4); margin-top: 100px;">// EXCLUSIVES //</div>
-
-        <div class="premium-tier">
-            <div class="section-header">
-                <h2 class="section-title">04 // HOT WHEELS PREMIUM</h2>
-                <div style="flex-grow:1; height:1px; background: #333;"></div>
+            <div class="modal-right">
+                <h2 id="modal-name" style="color:#fff; font-size:2.8rem; margin:0 0 10px 0; text-transform: uppercase; font-family: 'Chakra Petch';"></h2>
+                <p id="modal-subtitle" style="color:var(--bronze); letter-spacing:3px; font-weight: bold; margin-bottom: 20px;"></p>
+                <div style="border-top: 1px solid #333; padding-top: 20px; margin-bottom: 25px;">
+                    <p style="color: #aaa; line-height: 1.6;">Authentic JDM scale model. Detailed interior, precision paint job, and premium wheels. A must-have for every serious collector's vault.</p>
+                </div>
+                <h3 id="modal-price" style="font-size:2.2rem; color:var(--sakura); margin: 0 0 10px 0;"></h3>
+                <p id="modal-stock" style="font-family: 'Chakra Petch'; font-size: 0.9rem; margin-bottom: 30px;"></p>
+                <button id="modal-buy-btn" class="buy-btn" style="background: var(--bronze); color: #000; border: none; padding: 18px; font-size: 1.2rem;">ADD TO GARAGE</button>
             </div>
-            <div class="tier-grid" id="grid-premium"></div>
         </div>
-
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
     <script>
-        /* --- MOUSE TRACKING SPOTLIGHT --- */
         const spotlight = document.querySelector('.spotlight');
-
         document.addEventListener('mousemove', (e) => {
             spotlight.style.setProperty('--x', e.clientX + 'px');
             spotlight.style.setProperty('--y', e.clientY + 'px');
         });
 
-        /* --- SAKURA ENGINE --- */
         const container = document.getElementById('sakura-container');
-        
         function spawnPetal() {
             const petal = document.createElement('div');
             petal.classList.add('sakura-petal');
-            
             const size = Math.random() * 10 + 5 + 'px';
-            petal.style.width = size;
-            petal.style.height = size;
+            petal.style.width = size; petal.style.height = size;
             petal.style.left = Math.random() * 100 + 'vw';
             const fallTime = Math.random() * 10 + 10 + 's';
-            
             petal.style.animationDuration = `${fallTime}, 4s`;
-            
             container.appendChild(petal);
-            
             setTimeout(() => petal.remove(), parseFloat(fallTime) * 1000);
         }
-        
         setInterval(spawnPetal, 500);
     </script>
 
