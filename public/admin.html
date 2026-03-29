@@ -39,11 +39,14 @@
         .btn-stock:hover { background: var(--bronze); color: #000; }
         .stock-number { font-weight: bold; font-size: 1.2rem; min-width: 30px; text-align: center; font-family: 'Chakra Petch'; color: #fff; }
 
-        .order-card { background: #0a0a0a; border: 1px solid #333; padding: 20px; margin-bottom: 15px; border-left: 3px solid var(--bronze); }
+        /* Order Manifest Styling */
+        .order-card { background: #0a0a0a; border: 1px solid #333; padding: 20px; margin-bottom: 20px; border-left: 4px solid var(--bronze); }
         .order-header { display: flex; justify-content: space-between; border-bottom: 1px dashed #333; padding-bottom: 10px; margin-bottom: 15px; }
-        .order-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.95rem; }
-        .order-items { background: #000; padding: 10px; border: 1px solid #222; margin-top: 15px; }
-        .order-items ul { margin: 5px 0 0 0; padding-left: 20px; color: #ccc; }
+        .order-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; font-size: 0.95rem; }
+        .customer-info i { color: var(--bronze); width: 20px; margin-right: 5px; text-align: center; }
+        .order-items { background: #000; padding: 12px; border: 1px solid #222; margin-top: 15px; border-radius: 4px; }
+        .order-items ul { margin: 8px 0 0 0; padding-left: 20px; color: #ccc; }
+        .order-items li { margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -134,7 +137,7 @@
             e.preventDefault();
             const newCar = {
                 name: document.getElementById('car-name').value,
-                subtitle: document.getElementById('car-subtitle').value, // SYNCED
+                subtitle: document.getElementById('car-subtitle').value,
                 price: parseFloat(document.getElementById('car-price').value),
                 stock: parseInt(document.getElementById('car-stock').value),
                 category: document.getElementById('car-category').value,
@@ -151,9 +154,7 @@
                 if (res.ok) {
                     document.getElementById('add-car-form').reset();
                     loadInventory(); 
-                } else {
-                    alert("System Error: Could not add car.");
-                }
+                } else { alert("Error adding car."); }
             } catch (err) { console.error(err); }
         });
 
@@ -172,7 +173,7 @@
                     <div class="inventory-item">
                         <div>
                             <strong style="font-size: 1.1rem;">${car.name}</strong> <br>
-                            <span style="color: #888;">${car.subtitle || 'NO SUBTITLE'}</span> <br>
+                            <span style="color: #888;">${car.subtitle || ''}</span> <br>
                             <span style="color: var(--bronze);">RS ${safePrice} | ${safeTier}</span>
                         </div>
                         <div style="display: flex; align-items: center;">
@@ -190,12 +191,12 @@
 
         async function updateStock(id, changeAmount) {
             try {
-                const res = await fetch(`/api/admin/inventory/${id}/stock`, {
+                await fetch(`/api/admin/inventory/${id}/stock`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json', 'x-admin-pass': secretKey },
                     body: JSON.stringify({ change: changeAmount })
                 });
-                if(res.ok) { loadInventory(); } 
+                loadInventory(); 
             } catch(err) { console.error(err); }
         }
 
@@ -216,23 +217,35 @@
                 container.innerHTML = "";
                 
                 if (orders.length === 0) {
-                    container.innerHTML = "<p style='color: #888; text-align: center;'>No orders yet.</p>";
+                    container.innerHTML = "<p style='color: #888; text-align: center;'>No orders in database.</p>";
                     return;
                 }
                 
                 orders.forEach(order => {
-                    let itemsList = order.cart.map(item => `<li>${item.name} (x${item.quantity})</li>`).join('');
+                    let itemsList = order.cart.map(item => `<li>${item.name} <span style="color:var(--bronze)">(x${item.quantity})</span></li>`).join('');
+                    
                     container.innerHTML += `
                         <div class="order-card">
                             <div class="order-header">
-                                <strong style="color: var(--bronze);">${order.orderId}</strong>
-                                <span style="color: #888;">${order.date}</span>
+                                <strong style="color: var(--bronze); font-family: 'Chakra Petch';">${order.orderId}</strong>
+                                <span style="color: #666; font-size: 0.85rem;">${order.date}</span>
                             </div>
                             <div class="order-grid">
-                                <div><strong>${order.customer.name.toUpperCase()}</strong><br><span>${order.customer.phone}</span></div>
-                                <div style="text-align: right;"><strong style="color: var(--success);">RS ${order.total.toLocaleString()}</strong></div>
+                                <div class="customer-info">
+                                    <strong style="color: #fff; font-size: 1.1rem; display: block; margin-bottom: 5px;">${order.customer.name.toUpperCase()}</strong>
+                                    <div style="margin-bottom: 3px;"><i class="fas fa-phone"></i> ${order.customer.phone}</div>
+                                    <div style="line-height: 1.4;"><i class="fas fa-map-marker-alt"></i> ${order.customer.address}</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.8rem; color: #888; text-transform: uppercase;">Total Paid</div>
+                                    <strong style="color: var(--success); font-size: 1.4rem;">RS ${order.total.toLocaleString()}</strong>
+                                    <div style="font-size: 0.75rem; color: #666; margin-top: 5px;">Payment: ${order.payment}</div>
+                                </div>
                             </div>
-                            <div class="order-items"><ul>${itemsList}</ul></div>
+                            <div class="order-items">
+                                <span style="font-weight: bold; font-size: 0.8rem; color: #555; text-transform: uppercase; letter-spacing: 1px;">Items Manifest</span>
+                                <ul>${itemsList}</ul>
+                            </div>
                         </div>
                     `;
                 });
