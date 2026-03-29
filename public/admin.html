@@ -63,15 +63,19 @@
                 <button class="tab-btn" id="btn-orders" onclick="switchTab('orders')"><i class="fas fa-file-invoice-dollar"></i> ORDER MANIFEST</button>
             </div>
 
-            <!-- TAB 1: INVENTORY -->
             <div id="inventory" class="tab-content active">
                 <h3 style="color: var(--bronze); font-family: 'Chakra Petch'; margin-top: 0;">INJECT NEW UNIT</h3>
                 <form id="add-car-form">
-                    <input type="text" id="car-name" placeholder="Car Name (e.g., Nissan Skyline R34)" required>
+                    <div class="form-row">
+                        <input type="text" id="car-name" placeholder="Car Name (e.g., Nissan Skyline R34)" required>
+                        <input type="text" id="car-subtitle" placeholder="Subtitle (e.g., V12 speedster / Aston martin)" required>
+                    </div>
+                    
                     <div class="form-row">
                         <input type="number" id="car-price" placeholder="Price in RS" required>
                         <input type="number" id="car-stock" placeholder="Initial Stock QTY" required min="1">
                     </div>
+                    
                     <div class="form-row">
                         <select id="car-category" required>
                             <option value="" disabled selected>Select Category</option>
@@ -79,8 +83,6 @@
                             <option value="Euro">Euro</option>
                             <option value="Muscle">Muscle</option>
                         </select>
-                        
-                        <!-- FIXED: FOOLPROOF TIER DROPDOWN MATCHING YOUR INDEX.HTML -->
                         <select id="car-tier" required>
                             <option value="" disabled selected>Select Tier Level</option>
                             <option value="budget">01 // Budget Sleeper</option>
@@ -89,6 +91,7 @@
                             <option value="premium">04 // Hot Wheels Premium</option>
                         </select>
                     </div>
+                    
                     <input type="text" id="car-image" placeholder="Image URL (e.g., images/skyline.jpg)" required>
                     <button type="submit">INJECT TO DATABASE</button>
                 </form>
@@ -98,7 +101,6 @@
                 </div>
             </div>
 
-            <!-- TAB 2: ORDERS -->
             <div id="orders" class="tab-content">
                 <div id="live-orders"></div>
             </div>
@@ -132,10 +134,11 @@
             e.preventDefault();
             const newCar = {
                 name: document.getElementById('car-name').value,
+                subtitle: document.getElementById('car-subtitle').value, // SYNCED
                 price: parseFloat(document.getElementById('car-price').value),
                 stock: parseInt(document.getElementById('car-stock').value),
                 category: document.getElementById('car-category').value,
-                tier: document.getElementById('car-tier').value, // Grabs the exact matched tier
+                tier: document.getElementById('car-tier').value,
                 image: document.getElementById('car-image').value
             };
 
@@ -164,13 +167,13 @@
                 const currentStock = car.stock !== undefined ? car.stock : 0; 
                 const safePrice = car.price ? Number(car.price).toLocaleString() : '0';
                 const safeTier = car.tier ? car.tier.toUpperCase() : 'NO TIER'; 
-                const safeCategory = car.category ? car.category : 'Uncategorized';
 
                 container.innerHTML += `
                     <div class="inventory-item">
                         <div>
-                            <strong style="font-size: 1.1rem; letter-spacing: 1px;">${car.name}</strong> <br>
-                            <span style="color: #888;">RS ${safePrice} | ${safeCategory} | <span style="color: var(--danger);">${safeTier}</span></span>
+                            <strong style="font-size: 1.1rem;">${car.name}</strong> <br>
+                            <span style="color: #888;">${car.subtitle || 'NO SUBTITLE'}</span> <br>
+                            <span style="color: var(--bronze);">RS ${safePrice} | ${safeTier}</span>
                         </div>
                         <div style="display: flex; align-items: center;">
                             <div class="stock-controls">
@@ -218,7 +221,7 @@
                 }
                 
                 orders.forEach(order => {
-                    let itemsList = order.cart.map(item => `<li>${item.name} <span style="color: var(--bronze);">(x${item.quantity})</span></li>`).join('');
+                    let itemsList = order.cart.map(item => `<li>${item.name} (x${item.quantity})</li>`).join('');
                     container.innerHTML += `
                         <div class="order-card">
                             <div class="order-header">
@@ -226,7 +229,7 @@
                                 <span style="color: #888;">${order.date}</span>
                             </div>
                             <div class="order-grid">
-                                <div><strong>${order.customer.name.toUpperCase()}</strong><br><span style="color: #aaa;">${order.customer.phone}</span></div>
+                                <div><strong>${order.customer.name.toUpperCase()}</strong><br><span>${order.customer.phone}</span></div>
                                 <div style="text-align: right;"><strong style="color: var(--success);">RS ${order.total.toLocaleString()}</strong></div>
                             </div>
                             <div class="order-items"><ul>${itemsList}</ul></div>
