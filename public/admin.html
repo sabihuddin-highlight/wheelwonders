@@ -12,7 +12,6 @@
         .container { max-width: 900px; margin: auto; background: var(--panel); padding: 30px; border-top: 3px solid var(--bronze); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
         h1 { font-family: 'Chakra Petch'; text-align: center; color: var(--bronze); letter-spacing: 2px; }
         
-        /* Security Gate */
         #login-screen { text-align: center; margin-top: 50px; }
         input, select { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: #fff; box-sizing: border-box; font-family: 'Rajdhani'; font-size: 1rem; }
         input:focus, select:focus { outline: none; border-color: var(--bronze); }
@@ -23,7 +22,6 @@
         .btn-danger { background: var(--danger); color: #fff; padding: 10px; width: auto; font-size: 0.9rem; }
         .btn-danger:hover { background: #cc0000; color: #fff;}
 
-        /* Dashboard & Tabs */
         #dashboard { display: none; }
         .tab-nav { display: flex; margin-bottom: 30px; border-bottom: 1px solid #333; }
         .tab-btn { background: transparent; color: #888; border: none; padding: 15px; font-size: 1.1rem; flex: 1; border-bottom: 3px solid transparent; }
@@ -33,7 +31,6 @@
 
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
-        /* Lists */
         .inventory-list { margin-top: 20px; }
         .inventory-item { display: flex; justify-content: space-between; background: #0a0a0a; padding: 15px; margin-bottom: 10px; border: 1px solid #222; align-items: center;}
         
@@ -42,7 +39,6 @@
         .btn-stock:hover { background: var(--bronze); color: #000; }
         .stock-number { font-weight: bold; font-size: 1.2rem; min-width: 30px; text-align: center; font-family: 'Chakra Petch'; color: #fff; }
 
-        /* Order Card */
         .order-card { background: #0a0a0a; border: 1px solid #333; padding: 20px; margin-bottom: 15px; border-left: 3px solid var(--bronze); }
         .order-header { display: flex; justify-content: space-between; border-bottom: 1px dashed #333; padding-bottom: 10px; margin-bottom: 15px; }
         .order-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.95rem; }
@@ -55,16 +51,13 @@
     <div class="container">
         <h1>// SYSTEM OVERRIDE //</h1>
         
-        <!-- LOGIN SCREEN -->
         <div id="login-screen">
             <p style="color: #888;">Enter Master Passcode to access the inventory vault.</p>
             <input type="password" id="admin-pass" placeholder="Enter Passcode...">
             <button onclick="checkAccess()">UNLOCK VAULT</button>
         </div>
 
-        <!-- DASHBOARD SCREEN -->
         <div id="dashboard">
-            
             <div class="tab-nav">
                 <button class="tab-btn active" id="btn-inventory" onclick="switchTab('inventory')"><i class="fas fa-car"></i> GARAGE INVENTORY</button>
                 <button class="tab-btn" id="btn-orders" onclick="switchTab('orders')"><i class="fas fa-file-invoice-dollar"></i> ORDER MANIFEST</button>
@@ -80,13 +73,23 @@
                         <input type="number" id="car-stock" placeholder="Initial Stock QTY" required min="1">
                     </div>
                     <div class="form-row">
-                        <select id="car-category">
+                        <select id="car-category" required>
+                            <option value="" disabled selected>Select Category</option>
                             <option value="JDM">JDM</option>
                             <option value="Euro">Euro</option>
                             <option value="Muscle">Muscle</option>
                         </select>
-                        <input type="text" id="car-image" placeholder="Image URL (e.g., images/skyline.jpg)" required>
+                        
+                        <!-- FIXED: FOOLPROOF TIER DROPDOWN MATCHING YOUR INDEX.HTML -->
+                        <select id="car-tier" required>
+                            <option value="" disabled selected>Select Tier Level</option>
+                            <option value="budget">01 // Budget Sleeper</option>
+                            <option value="collectors">02 // The Collectors Cut</option>
+                            <option value="pinnacle">03 // The Pinnacle</option>
+                            <option value="premium">04 // Hot Wheels Premium</option>
+                        </select>
                     </div>
+                    <input type="text" id="car-image" placeholder="Image URL (e.g., images/skyline.jpg)" required>
                     <button type="submit">INJECT TO DATABASE</button>
                 </form>
 
@@ -99,14 +102,12 @@
             <div id="orders" class="tab-content">
                 <div id="live-orders"></div>
             </div>
-
         </div>
     </div>
 
     <script>
         let secretKey = "";
 
-        // UI Tab Switcher
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
@@ -114,7 +115,6 @@
             document.getElementById('btn-' + tabId).classList.add('active');
         }
 
-        // Security Check
         function checkAccess() {
             const pass = document.getElementById('admin-pass').value;
             if (pass === "FURQAN_ADMIN_2026") {
@@ -122,21 +122,21 @@
                 document.getElementById('login-screen').style.display = "none";
                 document.getElementById('dashboard').style.display = "block";
                 loadInventory();
-                loadOrders(); // Fetch orders immediately upon login
+                loadOrders(); 
             } else {
                 alert("ACCESS DENIED: Incorrect Passcode.");
             }
         }
 
-        // Add Car
         document.getElementById('add-car-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const newCar = {
                 name: document.getElementById('car-name').value,
                 price: parseFloat(document.getElementById('car-price').value),
                 stock: parseInt(document.getElementById('car-stock').value),
-                image: document.getElementById('car-image').value,
-                category: document.getElementById('car-category').value
+                category: document.getElementById('car-category').value,
+                tier: document.getElementById('car-tier').value, // Grabs the exact matched tier
+                image: document.getElementById('car-image').value
             };
 
             try {
@@ -154,7 +154,6 @@
             } catch (err) { console.error(err); }
         });
 
-        // Load Inventory
         async function loadInventory() {
             const res = await fetch('/api/inventory');
             const cars = await res.json();
@@ -163,17 +162,21 @@
 
             cars.forEach(car => {
                 const currentStock = car.stock !== undefined ? car.stock : 0; 
+                const safePrice = car.price ? Number(car.price).toLocaleString() : '0';
+                const safeTier = car.tier ? car.tier.toUpperCase() : 'NO TIER'; 
+                const safeCategory = car.category ? car.category : 'Uncategorized';
+
                 container.innerHTML += `
                     <div class="inventory-item">
                         <div>
                             <strong style="font-size: 1.1rem; letter-spacing: 1px;">${car.name}</strong> <br>
-                            <span style="color: #888;">RS ${car.price.toLocaleString()} | ${car.category}</span>
+                            <span style="color: #888;">RS ${safePrice} | ${safeCategory} | <span style="color: var(--danger);">${safeTier}</span></span>
                         </div>
                         <div style="display: flex; align-items: center;">
                             <div class="stock-controls">
-                                <button class="btn-stock" onclick="updateStock('${car._id}', -1)" title="Decrease Stock">-</button>
+                                <button class="btn-stock" onclick="updateStock('${car._id}', -1)">-</button>
                                 <span class="stock-number">${currentStock}</span>
-                                <button class="btn-stock" onclick="updateStock('${car._id}', 1)" title="Increase Stock">+</button>
+                                <button class="btn-stock" onclick="updateStock('${car._id}', 1)">+</button>
                             </div>
                             <button class="btn-danger" onclick="deleteCar('${car._id}')"><i class="fas fa-trash"></i></button>
                         </div>
@@ -182,7 +185,6 @@
             });
         }
 
-        // Quick-Tune Stock (+ / -)
         async function updateStock(id, changeAmount) {
             try {
                 const res = await fetch(`/api/admin/inventory/${id}/stock`, {
@@ -191,13 +193,11 @@
                     body: JSON.stringify({ change: changeAmount })
                 });
                 if(res.ok) { loadInventory(); } 
-                else { const data = await res.json(); alert("Error: " + data.error); }
-            } catch(err) { console.error("Stock update failed", err); }
+            } catch(err) { console.error(err); }
         }
 
-        // Delete Car
         async function deleteCar(id) {
-            if(!confirm("WARNING: Are you sure you want to permanently crush this unit?")) return;
+            if(!confirm("CRUSH UNIT?")) return;
             await fetch(`/api/admin/inventory/${id}`, {
                 method: 'DELETE',
                 headers: { 'x-admin-pass': secretKey }
@@ -205,52 +205,35 @@
             loadInventory();
         }
 
-        // Load Customer Orders
         async function loadOrders() {
             try {
-                const res = await fetch('/api/admin/orders', {
-                    headers: { 'x-admin-pass': secretKey }
-                });
+                const res = await fetch('/api/admin/orders', { headers: { 'x-admin-pass': secretKey } });
                 const orders = await res.json();
                 const container = document.getElementById('live-orders');
                 container.innerHTML = "";
-
+                
                 if (orders.length === 0) {
-                    container.innerHTML = "<p style='color: #888; text-align: center; padding: 20px;'>No orders in the vault yet.</p>";
+                    container.innerHTML = "<p style='color: #888; text-align: center;'>No orders yet.</p>";
                     return;
                 }
-
+                
                 orders.forEach(order => {
-                    // Create HTML for the ordered items
                     let itemsList = order.cart.map(item => `<li>${item.name} <span style="color: var(--bronze);">(x${item.quantity})</span></li>`).join('');
-                    
                     container.innerHTML += `
                         <div class="order-card">
                             <div class="order-header">
-                                <strong style="color: var(--bronze); font-family: 'Chakra Petch'; font-size: 1.2rem;">${order.orderId}</strong>
+                                <strong style="color: var(--bronze);">${order.orderId}</strong>
                                 <span style="color: #888;">${order.date}</span>
                             </div>
                             <div class="order-grid">
-                                <div>
-                                    <strong style="color: #fff;">${order.customer.name.toUpperCase()}</strong><br>
-                                    <span style="color: #aaa;"><i class="fas fa-phone" style="font-size: 0.8rem;"></i> ${order.customer.phone}</span><br>
-                                    <span style="color: #aaa;"><i class="fas fa-map-marker-alt" style="font-size: 0.8rem;"></i> ${order.customer.address}</span>
-                                </div>
-                                <div style="text-align: right;">
-                                    <strong style="font-size: 1.3rem; color: var(--success);">RS ${order.total.toLocaleString()}</strong><br>
-                                    <span style="color: #888; text-transform: uppercase; font-size: 0.85rem;">${order.payment}</span>
-                                </div>
+                                <div><strong>${order.customer.name.toUpperCase()}</strong><br><span style="color: #aaa;">${order.customer.phone}</span></div>
+                                <div style="text-align: right;"><strong style="color: var(--success);">RS ${order.total.toLocaleString()}</strong></div>
                             </div>
-                            <div class="order-items">
-                                <strong style="color: #888; font-size: 0.85rem; letter-spacing: 1px;">MANIFEST:</strong>
-                                <ul>${itemsList}</ul>
-                            </div>
+                            <div class="order-items"><ul>${itemsList}</ul></div>
                         </div>
                     `;
                 });
-            } catch (err) {
-                console.error("Failed to load orders", err);
-            }
+            } catch (err) { console.error(err); }
         }
     </script>
 </body>
