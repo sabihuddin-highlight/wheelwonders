@@ -45,7 +45,7 @@ connectDB();
 // --- ADMIN AUTH ---
 const verifyAdmin = (req, res, next) => {
     const pass = req.headers['x-admin-pass'];
-    if (pass && pass === process.env.ADMIN_PASSWORD) return next();
+    if (pass === process.env.ADMIN_PASSWORD) return next();
     res.status(403).json({ error: "Unauthorized vault access." });
 };
 
