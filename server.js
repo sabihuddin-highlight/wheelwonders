@@ -1,5 +1,6 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
+const compression = require('compression');
 require('dotenv').config();
 const { MongoClient, ObjectId } = require('mongodb');
 
@@ -9,9 +10,13 @@ const PORT = process.env.PORT || 3000;
 // Render runs behind a proxy — trust it so req.ip reflects the real client.
 app.set('trust proxy', 1);
 
+app.use(compression());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
-app.use(express.static('public'));
+// Product images: long cache + immutable (filenames are unique per car).
+app.use('/images', express.static('public/images', { maxAge: '30d', immutable: true }));
+// HTML/CSS/JS: shorter cache so content updates propagate within an hour.
+app.use(express.static('public', { maxAge: '1h' }));
 
 // 100 requests per hour per IP, API routes only (static files unaffected).
 const apiLimiter = rateLimit({
@@ -51,11 +56,21 @@ const verifyAdmin = (req, res, next) => {
 
 const isValidId = (id) => typeof id === 'string' && ObjectId.isValid(id);
 
+// In-memory inventory cache. TTL 60s; busted on admin writes.
+let inventoryCache = { data: null, expires: 0 };
+const INVENTORY_TTL_MS = 60 * 1000;
+const bustInventoryCache = () => { inventoryCache = { data: null, expires: 0 }; };
+
 // --- PUBLIC ROUTES ---
 
 app.get('/api/inventory', async (req, res) => {
     try {
+        const now = Date.now();
+        if (inventoryCache.data && inventoryCache.expires > now) {
+            return res.json(inventoryCache.data);
+        }
         const stock = await inventoryCollection.find({}).toArray();
+        inventoryCache = { data: stock, expires: now + INVENTORY_TTL_MS };
         res.json(stock);
     } catch (error) {
         console.error("Error fetching inventory:", error);
@@ -114,6 +129,7 @@ app.post('/api/checkout', async (req, res) => {
         };
 
         await ordersCollection.insertOne(orderDoc);
+        bustInventoryCache();
         res.json({ success: true, orderId: orderDoc.orderId });
 
     } catch (error) {
@@ -141,6 +157,7 @@ app.post('/api/admin/inventory', verifyAdmin, async (req, res) => {
         if (id) newCar.id = String(id);
 
         await inventoryCollection.insertOne(newCar);
+        bustInventoryCache();
         res.status(201).json({ success: true, message: "Unit injected." });
     } catch (error) {
         console.error("Error adding car:", error);
@@ -152,7 +169,10 @@ app.delete('/api/admin/inventory/:id', verifyAdmin, async (req, res) => {
     if (!isValidId(req.params.id)) return res.status(400).json({ error: "Invalid id." });
     try {
         const result = await inventoryCollection.deleteOne({ _id: new ObjectId(req.params.id) });
-        if (result.deletedCount === 1) return res.json({ success: true, message: "Unit crushed." });
+        if (result.deletedCount === 1) {
+            bustInventoryCache();
+            return res.json({ success: true, message: "Unit crushed." });
+        }
         res.status(404).json({ error: "Unit not found." });
     } catch (error) {
         console.error("Error crushing car:", error);
@@ -169,7 +189,10 @@ app.put('/api/admin/inventory/:id/stock', verifyAdmin, async (req, res) => {
             { _id: new ObjectId(req.params.id) },
             { $inc: { stock: change } }
         );
-        if (result.modifiedCount === 1) return res.json({ success: true });
+        if (result.modifiedCount === 1) {
+            bustInventoryCache();
+            return res.json({ success: true });
+        }
         res.status(404).json({ error: "Unit not found." });
     } catch (error) {
         console.error("Error adjusting stock:", error);
@@ -200,7 +223,10 @@ app.put('/api/admin/inventory/:id', verifyAdmin, async (req, res) => {
             { _id: new ObjectId(req.params.id) },
             { $set: updates }
         );
-        if (result.matchedCount === 1) return res.json({ success: true });
+        if (result.matchedCount === 1) {
+            bustInventoryCache();
+            return res.json({ success: true });
+        }
         res.status(404).json({ error: "Unit not found." });
     } catch (error) {
         console.error("Error updating unit:", error);
