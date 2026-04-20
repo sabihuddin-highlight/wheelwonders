@@ -129,6 +129,15 @@
         }
 
         .confirm-btn:hover { background: #fff; }
+
+        .checkout-container {
+            opacity: 0;
+            animation: billing-entrance 0.7s cubic-bezier(0.2, 0.8, 0.3, 1) 0.1s forwards;
+        }
+        @keyframes billing-entrance {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>

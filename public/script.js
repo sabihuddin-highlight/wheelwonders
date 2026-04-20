@@ -6,10 +6,25 @@
 let allCars = [];
 let cart = JSON.parse(localStorage.getItem('jdm_cart')) || [];
 let displayLimit = 12; // Controls the "Load More" pagination
+let hasInitialRendered = false;
 
 function debounce(fn, ms) {
     let t;
     return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// Scroll-reveal (cards + .reveal-on-scroll elements). Fires once per element.
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('revealed');
+            revealObserver.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.05, rootMargin: '100px 0px 100px 0px' });
+
+function watchRevealables() {
+    document.querySelectorAll('.reveal-on-scroll:not(.revealed)').forEach(el => revealObserver.observe(el));
 }
 
 // --- 1. DATA INITIALIZATION ---
@@ -81,12 +96,50 @@ function processAndRender() {
 
     // FEATURE 5: PAGINATION (Load More)
     const paginatedCars = filtered.slice(0, displayLimit);
-    
+
     // Toggle "Load More" button visibility
     const loadMoreBtn = document.getElementById('load-more-btn');
     loadMoreBtn.style.display = (filtered.length > displayLimit) ? 'inline-block' : 'none';
 
-    renderGrids(paginatedCars);
+    const showroom = document.getElementById('showroom');
+    if (!hasInitialRendered) {
+        renderGrids(paginatedCars);
+        stagedRevealCards();
+        hasInitialRendered = true;
+    } else {
+        // Filter / load-more: quick fade-swap for smoother UX
+        showroom.style.opacity = '0';
+        setTimeout(() => {
+            renderGrids(paginatedCars);
+            document.querySelectorAll('.card').forEach(c => c.classList.add('revealed'));
+            markLoadedImages();
+            showroom.style.opacity = '1';
+        }, 120);
+    }
+}
+
+// First-render path: stagger the cards currently in-viewport; others reveal
+// instantly when scrolled to (no stale delay).
+function stagedRevealCards() {
+    const cards = document.querySelectorAll('.card:not(.revealed)');
+    let staggerIndex = 0;
+    cards.forEach((card) => {
+        const inner = card.querySelector('.card-inner');
+        if (inner) {
+            const rect = card.getBoundingClientRect();
+            const inView = rect.top < window.innerHeight && rect.bottom > 0;
+            inner.style.transitionDelay = inView ? `${Math.min(staggerIndex++ * 22, 180)}ms` : '0ms';
+        }
+        revealObserver.observe(card);
+    });
+    markLoadedImages();
+}
+
+// Cached images sometimes don't fire onload — mark complete images as loaded here.
+function markLoadedImages() {
+    document.querySelectorAll('.card-img').forEach(img => {
+        if (img.complete && img.naturalHeight !== 0) img.classList.add('loaded');
+    });
 }
 
 // --- 3. RENDERING ENGINE (With Smart Visibility) ---
@@ -122,14 +175,14 @@ function renderGrids(carsToDisplay) {
             <div class="card" data-tilt ${tiltEffect} onclick="openQuickView('${safeName}')">
                 <div class="card-inner">
                     <div class="card-img-container" style="background: ${isOut ? '#111' : '#000'}">
-                        <img src="${car.image}" class="card-img" loading="lazy" style="${isOut ? 'opacity: 0.3;' : ''}">
+                        <img src="${car.image}" class="card-img ${isOut ? 'sold-out' : ''}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.classList.add('loaded')">
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <h3>${car.name}</h3>
                         ${isHighEnd ? '<i class="fas fa-crown" style="color:inherit"></i>' : ''}
                     </div>
                     <p>${car.subtitle} ${isOut ? '<span style="color:red">[SOLD OUT]</span>' : `[${car.stock} LEFT]`}</p>
-                    <button class="buy-btn" onclick="event.stopPropagation(); addToCart('${safeName}', ${car.price})" ${isOut ? 'disabled' : ''}>
+                    <button class="buy-btn" onclick="event.stopPropagation(); addToCart('${safeName}', ${car.price}, this)" ${isOut ? 'disabled' : ''}>
                         <span>ADD</span> <span>${displayPrice}</span>
                     </button>
                 </div>
@@ -205,31 +258,55 @@ function openQuickView(name) {
     document.getElementById('modal-subtitle').innerText = car.subtitle;
     document.getElementById('modal-price').innerText = `RS ${car.price.toLocaleString()}`;
     document.getElementById('modal-stock').innerText = car.stock > 0 ? `${car.stock} UNITS REMAINING` : "OUT OF STOCK";
-    
+
     const buyBtn = document.getElementById('modal-buy-btn');
-    buyBtn.onclick = () => addToCart(name.replace(/'/g, "\\'"), car.price);
+    buyBtn.onclick = (e) => addToCart(name.replace(/'/g, "\\'"), car.price, e.currentTarget);
     buyBtn.disabled = car.stock <= 0;
     buyBtn.innerText = car.stock > 0 ? "ADD TO GARAGE" : "SOLD OUT";
 
-    document.getElementById('quick-view').style.display = 'block';
+    const modal = document.getElementById('quick-view');
+    modal.style.display = 'block';
+    requestAnimationFrame(() => modal.classList.add('active'));
 }
 
-// Close Modal Logic
-document.querySelector('.close-modal').onclick = () => {
-    document.getElementById('quick-view').style.display = 'none';
-};
-window.onclick = (event) => {
-    if (event.target == document.getElementById('quick-view')) {
-        document.getElementById('quick-view').style.display = 'none';
-    }
-};
+function closeQuickView() {
+    const modal = document.getElementById('quick-view');
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 280);
+}
+
+document.querySelector('.close-modal').onclick = closeQuickView;
+window.addEventListener('click', (event) => {
+    if (event.target === document.getElementById('quick-view')) closeQuickView();
+});
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('quick-view').classList.contains('active')) closeQuickView();
+});
 
 // --- 4. CART SYSTEM ---
-function addToCart(name, price) {
+function addToCart(name, price, originEl) {
     const item = cart.find(i => i.name === name);
     item ? item.quantity++ : cart.push({ name, price, quantity: 1 });
     localStorage.setItem('jdm_cart', JSON.stringify(cart));
     updateCartUI();
+
+    // Micro-animations: pulse the cart count + floating "+1" from click origin
+    const count = document.getElementById('cart-count');
+    if (count) {
+        count.classList.remove('pulse');
+        void count.offsetWidth;
+        count.classList.add('pulse');
+    }
+    if (originEl) {
+        const rect = originEl.getBoundingClientRect();
+        const floater = document.createElement('div');
+        floater.className = 'cart-floater';
+        floater.textContent = '+1';
+        floater.style.left = (rect.left + rect.width / 2) + 'px';
+        floater.style.top = rect.top + 'px';
+        document.body.appendChild(floater);
+        setTimeout(() => floater.remove(), 900);
+    }
 }
 
 function removeFromCart(name) {
@@ -295,4 +372,7 @@ document.getElementById('cart-btn').onclick = () => {
 };
 
 // Startup Sequence
-document.addEventListener('DOMContentLoaded', loadInventory);
+document.addEventListener('DOMContentLoaded', () => {
+    loadInventory();
+    watchRevealables();
+});

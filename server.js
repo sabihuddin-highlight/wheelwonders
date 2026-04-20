@@ -41,11 +41,27 @@ async function connectDB() {
         db = client.db('WheelWonders');
         inventoryCollection = db.collection('inventory');
         ordersCollection = db.collection('orders');
+        warmInventoryCache();
     } catch (error) {
         console.error("🔴 [ERR] Database connection failed:", error);
     }
 }
 connectDB();
+
+async function warmInventoryCache() {
+    try {
+        const stock = await inventoryCollection.find({}).toArray();
+        for (const doc of stock) {
+            if (typeof doc.image === 'string' && doc.image.startsWith('data:')) {
+                doc.image = '';
+            }
+        }
+        inventoryCache = { data: stock, expires: Date.now() + INVENTORY_TTL_MS };
+        console.log(`🔥 [SYS] Inventory cache warmed with ${stock.length} cars.`);
+    } catch (e) {
+        console.error("🔴 [ERR] Cache warm failed:", e);
+    }
+}
 
 // --- ADMIN AUTH ---
 const verifyAdmin = (req, res, next) => {
@@ -63,15 +79,25 @@ const bustInventoryCache = () => { inventoryCache = { data: null, expires: 0 }; 
 
 // --- PUBLIC ROUTES ---
 
+let refreshingCache = false;
+
 app.get('/api/inventory', async (req, res) => {
-    try {
-        const now = Date.now();
-        if (inventoryCache.data && inventoryCache.expires > now) {
-            return res.json(inventoryCache.data);
+    const now = Date.now();
+    // Serve from cache if we have anything — stale or fresh
+    if (inventoryCache.data) {
+        res.json(inventoryCache.data);
+        // If expired, kick off a background refresh (stale-while-revalidate)
+        if (inventoryCache.expires <= now && !refreshingCache) {
+            refreshingCache = true;
+            warmInventoryCache().finally(() => { refreshingCache = false; });
         }
-        const stock = await inventoryCollection.find({}).toArray();
-        inventoryCache = { data: stock, expires: now + INVENTORY_TTL_MS };
-        res.json(stock);
+        return;
+    }
+    // No cache yet (server just started, DB still connecting) — wait for it
+    try {
+        await warmInventoryCache();
+        if (inventoryCache.data) return res.json(inventoryCache.data);
+        res.status(503).json({ error: "Inventory warming up — try again in a moment." });
     } catch (error) {
         console.error("Error fetching inventory:", error);
         res.status(500).json({ error: "Failed to load inventory." });
