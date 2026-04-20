@@ -7,46 +7,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --bronze: #c7a87b; --dark: #0f0f0f; --panel: #161616; --danger: #ff4444; --success: #00C851; }
+        :root { --bronze: #c7a87b; --dark: #0f0f0f; --panel: #161616; --danger: #ff4444; --success: #00C851; --info: #33b5e5; }
         body { background: var(--dark); color: #fff; font-family: 'Rajdhani', sans-serif; padding: 40px; margin: 0; }
-        .container { max-width: 900px; margin: auto; background: var(--panel); padding: 30px; border-top: 3px solid var(--bronze); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .container { max-width: 900px; margin: auto; background: var(--panel); padding: 30px; border-top: 3px solid var(--bronze); box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative; min-height: 500px; }
         h1 { font-family: 'Chakra Petch'; text-align: center; color: var(--bronze); letter-spacing: 2px; }
         
+        /* Login UI */
         #login-screen { text-align: center; margin-top: 50px; }
         input, select { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: #fff; box-sizing: border-box; font-family: 'Rajdhani'; font-size: 1rem; }
+        input[type="file"] { background: #222; cursor: pointer; padding: 9px; }
         input:focus, select:focus { outline: none; border-color: var(--bronze); }
         
         button { width: 100%; padding: 15px; background: var(--bronze); color: #000; font-weight: bold; border: none; cursor: pointer; text-transform: uppercase; font-family: 'Chakra Petch'; transition: 0.3s;}
         button:hover { background: #fff; }
         
-        .btn-danger { background: var(--danger); color: #fff; padding: 10px; width: auto; font-size: 0.9rem; }
-        .btn-danger:hover { background: #cc0000; color: #fff;}
-
+        /* Dashboard UI */
         #dashboard { display: none; }
         .tab-nav { display: flex; margin-bottom: 30px; border-bottom: 1px solid #333; }
-        .tab-btn { background: transparent; color: #888; border: none; padding: 15px; font-size: 1.1rem; flex: 1; border-bottom: 3px solid transparent; }
+        .tab-btn { background: transparent; color: #888; border: none; padding: 15px; font-size: 1.1rem; flex: 1; border-bottom: 3px solid transparent; cursor: pointer; }
         .tab-btn.active { color: var(--bronze); border-bottom: 3px solid var(--bronze); background: rgba(199, 168, 123, 0.05); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-        .inventory-list { margin-top: 20px; }
         .inventory-item { display: flex; justify-content: space-between; background: #0a0a0a; padding: 15px; margin-bottom: 10px; border: 1px solid #222; align-items: center;}
         
-        .stock-controls { display: flex; align-items: center; gap: 10px; background: #161616; padding: 5px 10px; border: 1px solid #333; border-radius: 4px; margin-right: 15px; }
-        .btn-stock { background: transparent; color: var(--bronze); border: 1px solid var(--bronze); width: 30px; height: 30px; padding: 0; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; border-radius: 3px; }
-        .btn-stock:hover { background: var(--bronze); color: #000; }
-        .stock-number { font-weight: bold; font-size: 1.2rem; min-width: 30px; text-align: center; font-family: 'Chakra Petch'; color: #fff; }
+        .action-btns { display: flex; gap: 5px; }
+        .btn-danger { background: var(--danger); color: #fff; padding: 10px; width: 40px; }
+        .btn-edit { background: var(--info); color: #fff; padding: 10px; width: 40px; }
 
-        /* Order Manifest Styling */
-        .order-card { background: #0a0a0a; border: 1px solid #333; padding: 20px; margin-bottom: 20px; border-left: 4px solid var(--bronze); }
-        .order-header { display: flex; justify-content: space-between; border-bottom: 1px dashed #333; padding-bottom: 10px; margin-bottom: 15px; }
-        .order-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; font-size: 0.95rem; }
-        .customer-info i { color: var(--bronze); width: 20px; margin-right: 5px; text-align: center; }
-        .order-items { background: #000; padding: 12px; border: 1px solid #222; margin-top: 15px; border-radius: 4px; }
-        .order-items ul { margin: 8px 0 0 0; padding-left: 20px; color: #ccc; }
-        .order-items li { margin-bottom: 5px; }
+        .stock-controls { display: flex; align-items: center; gap: 10px; background: #161616; padding: 5px 10px; border: 1px solid #333; margin-right: 15px; }
+        .btn-stock { background: transparent; color: var(--bronze); border: 1px solid var(--bronze); width: 30px; height: 30px; padding: 0; display: flex; justify-content: center; align-items: center; }
+        .stock-number { font-weight: bold; font-size: 1.2rem; min-width: 30px; text-align: center; }
+
+        .image-preview { width: 60px; height: 40px; object-fit: cover; border: 1px solid #444; margin-right: 15px; }
+        .car-info-wrapper { display: flex; align-items: center; }
+
+        /* Modal */
+        #edit-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 100; padding: 30px; box-sizing: border-box; }
+        .modal-content { background: var(--panel); padding: 30px; border: 1px solid var(--bronze); position: relative; }
     </style>
 </head>
 <body>
@@ -55,63 +54,108 @@
         <h1>// SYSTEM OVERRIDE //</h1>
         
         <div id="login-screen">
-            <p style="color: #888;">Enter Master Passcode to access the inventory vault.</p>
-            <input type="password" id="admin-pass" placeholder="Enter Passcode...">
-            <button onclick="checkAccess()">UNLOCK VAULT</button>
+            <p style="color: #888; text-transform: uppercase; letter-spacing: 1px;">Biometric or Passcode Required</p>
+            <input type="password" id="admin-pass" placeholder="ENTER MASTER PASSCODE...">
+            <button onclick="checkAccess()">AUTH & UNLOCK</button>
         </div>
 
         <div id="dashboard">
             <div class="tab-nav">
-                <button class="tab-btn active" id="btn-inventory" onclick="switchTab('inventory')"><i class="fas fa-car"></i> GARAGE INVENTORY</button>
-                <button class="tab-btn" id="btn-orders" onclick="switchTab('orders')"><i class="fas fa-file-invoice-dollar"></i> ORDER MANIFEST</button>
+                <button class="tab-btn active" id="btn-inventory" onclick="switchTab('inventory')"><i class="fas fa-car"></i> GARAGE</button>
+                <button class="tab-btn" id="btn-orders" onclick="switchTab('orders')"><i class="fas fa-list"></i> ORDERS</button>
             </div>
 
             <div id="inventory" class="tab-content active">
-                <h3 style="color: var(--bronze); font-family: 'Chakra Petch'; margin-top: 0;">INJECT NEW UNIT</h3>
+                <h3 style="color: var(--bronze); margin: 0 0 15px 0;">INJECT NEW UNIT</h3>
                 <form id="add-car-form">
                     <div class="form-row">
-                        <input type="text" id="car-name" placeholder="Car Name (e.g., Nissan Skyline R34)" required>
-                        <input type="text" id="car-subtitle" placeholder="Subtitle (e.g., V12 speedster / Aston martin)" required>
+                        <input type="text" id="car-name" placeholder="Name (e.g. R34 Skyline)" required>
+                        <input type="text" id="car-subtitle" placeholder="Subtitle (e.g. Nismo Z-Tune)" required>
                     </div>
-                    
                     <div class="form-row">
-                        <input type="number" id="car-price" placeholder="Price in RS" required>
-                        <input type="number" id="car-stock" placeholder="Initial Stock QTY" required min="1">
+                        <input type="number" id="car-price" placeholder="Price (RS)" required>
+                        <input type="number" id="car-stock" placeholder="Stock Qty" required min="1">
                     </div>
-                    
                     <div class="form-row">
-                        <select id="car-category" required>
-                            <option value="" disabled selected>Select Category</option>
-                            <option value="JDM">JDM</option>
-                            <option value="Euro">Euro</option>
-                            <option value="Muscle">Muscle</option>
-                        </select>
                         <select id="car-tier" required>
-                            <option value="" disabled selected>Select Tier Level</option>
-                            <option value="budget">01 // Budget Sleeper</option>
-                            <option value="collectors">02 // The Collectors Cut</option>
-                            <option value="pinnacle">03 // The Pinnacle</option>
-                            <option value="premium">04 // Hot Wheels Premium</option>
+                            <option value="" disabled selected>Select Tier</option>
+                            <option value="budget">Budget Sleeper</option>
+                            <option value="collectors">Collectors Cut</option>
+                            <option value="pinnacle">The Pinnacle</option>
+                            <option value="premium">Premium</option>
                         </select>
+                        <input type="file" id="car-image-file" accept="image/*" required>
                     </div>
-                    
-                    <input type="text" id="car-image" placeholder="Image URL (e.g., images/skyline.jpg)" required>
-                    <button type="submit">INJECT TO DATABASE</button>
+                    <button type="submit">CONFIRM INJECTION</button>
                 </form>
 
-                <div class="inventory-list">
-                    <div id="live-inventory"></div>
-                </div>
+                <div id="live-inventory" style="margin-top: 30px;">
+                    </div>
             </div>
 
             <div id="orders" class="tab-content">
-                <div id="live-orders"></div>
+                <div id="live-orders">
+                    <p style="text-align: center; color: #555;">No recent data transmissions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="edit-modal">
+            <div class="modal-content">
+                <button onclick="closeEditModal()" style="width: auto; padding: 5px 15px; margin-bottom: 20px; background: var(--danger); color: #fff;">X CLOSE</button>
+                <h3 style="color: var(--info);">UPDATE PARAMETERS</h3>
+                <form id="edit-car-form">
+                    <input type="hidden" id="edit-car-id">
+                    <input type="text" id="edit-car-name" required>
+                    <input type="text" id="edit-car-subtitle" required>
+                    <div class="form-row">
+                        <input type="number" id="edit-car-price" required>
+                        <input type="number" id="edit-car-stock" required>
+                    </div>
+                    <select id="edit-car-tier">
+                        <option value="budget">Budget Sleeper</option>
+                        <option value="collectors">Collectors Cut</option>
+                        <option value="pinnacle">The Pinnacle</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                    <label style="font-size: 0.8rem; color: #888;">REPLACE IMAGE (OPTIONAL)</label>
+                    <input type="file" id="edit-car-image-file" accept="image/*">
+                    <button type="submit" style="background: var(--info); color: #fff;">SAVE OVERRIDE</button>
+                </form>
             </div>
         </div>
     </div>
 
     <script>
         let secretKey = "";
+        let globalCars = [];
+
+        // Escape user-controlled text before inserting into innerHTML
+        function esc(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        // --- AUTHENTICATION ---
+        async function checkAccess() {
+            const passInput = document.getElementById('admin-pass').value;
+            
+            // We verify by trying to hit a protected route (Orders)
+            const response = await fetch('/api/admin/orders', {
+                headers: { 'x-admin-pass': passInput }
+            });
+
+            if (response.ok) {
+                secretKey = passInput;
+                document.getElementById('login-screen').style.display = "none";
+                document.getElementById('dashboard').style.display = "block";
+                loadInventory();
+                loadOrders();
+            } else {
+                alert("CRITICAL ERROR: ACCESS DENIED. PASSCODE INVALID.");
+            }
+        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -120,88 +164,82 @@
             document.getElementById('btn-' + tabId).classList.add('active');
         }
 
-        function checkAccess() {
-            const pass = document.getElementById('admin-pass').value;
-            if (pass === "FURQAN_ADMIN_2026") {
-                secretKey = pass;
-                document.getElementById('login-screen').style.display = "none";
-                document.getElementById('dashboard').style.display = "block";
-                loadInventory();
-                loadOrders(); 
-            } else {
-                alert("ACCESS DENIED: Incorrect Passcode.");
-            }
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // --- INVENTORY LOGIC ---
+        async function loadInventory() {
+            const res = await fetch('/api/inventory');
+            globalCars = await res.json();
+            const container = document.getElementById('live-inventory');
+
+            container.innerHTML = globalCars.map(car => `
+                <div class="inventory-item">
+                    <div class="car-info-wrapper">
+                        <img src="${esc(car.image)}" class="image-preview" onerror="this.src='https://placehold.co/60x40/222/555?text=MISSING'">
+                        <div>
+                            <strong>${esc(car.name)}</strong><br>
+                            <small style="color: var(--bronze);">RS ${Number(car.price).toLocaleString()} | ${esc(car.tier)}</small>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div class="stock-controls">
+                            <button class="btn-stock" onclick="updateStock('${esc(car._id)}', -1)">-</button>
+                            <span class="stock-number">${Number(car.stock)}</span>
+                            <button class="btn-stock" onclick="updateStock('${esc(car._id)}', 1)">+</button>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-edit" onclick="openEditModal('${esc(car._id)}')"><i class="fas fa-pen"></i></button>
+                            <button class="btn-danger" onclick="deleteCar('${esc(car._id)}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
         document.getElementById('add-car-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const newCar = {
+            const file = document.getElementById('car-image-file').files[0];
+            const base64 = await fileToBase64(file);
+
+            const carData = {
                 name: document.getElementById('car-name').value,
                 subtitle: document.getElementById('car-subtitle').value,
                 price: parseFloat(document.getElementById('car-price').value),
                 stock: parseInt(document.getElementById('car-stock').value),
-                category: document.getElementById('car-category').value,
                 tier: document.getElementById('car-tier').value,
-                image: document.getElementById('car-image').value
+                image: base64
             };
 
-            try {
-                const res = await fetch('/api/admin/inventory', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'x-admin-pass': secretKey },
-                    body: JSON.stringify(newCar)
-                });
-                if (res.ok) {
-                    document.getElementById('add-car-form').reset();
-                    loadInventory(); 
-                } else { alert("Error adding car."); }
-            } catch (err) { console.error(err); }
+            const res = await fetch('/api/admin/inventory', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-pass': secretKey },
+                body: JSON.stringify(carData)
+            });
+
+            if (res.ok) {
+                document.getElementById('add-car-form').reset();
+                loadInventory();
+            }
         });
 
-        async function loadInventory() {
-            const res = await fetch('/api/inventory');
-            const cars = await res.json();
-            const container = document.getElementById('live-inventory');
-            container.innerHTML = "";
-
-            cars.forEach(car => {
-                const currentStock = car.stock !== undefined ? car.stock : 0; 
-                const safePrice = car.price ? Number(car.price).toLocaleString() : '0';
-                const safeTier = car.tier ? car.tier.toUpperCase() : 'NO TIER'; 
-
-                container.innerHTML += `
-                    <div class="inventory-item">
-                        <div>
-                            <strong style="font-size: 1.1rem;">${car.name}</strong> <br>
-                            <span style="color: #888;">${car.subtitle || ''}</span> <br>
-                            <span style="color: var(--bronze);">RS ${safePrice} | ${safeTier}</span>
-                        </div>
-                        <div style="display: flex; align-items: center;">
-                            <div class="stock-controls">
-                                <button class="btn-stock" onclick="updateStock('${car._id}', -1)">-</button>
-                                <span class="stock-number">${currentStock}</span>
-                                <button class="btn-stock" onclick="updateStock('${car._id}', 1)">+</button>
-                            </div>
-                            <button class="btn-danger" onclick="deleteCar('${car._id}')"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
+        async function updateStock(id, change) {
+            await fetch(`/api/admin/inventory/${id}/stock`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-admin-pass': secretKey },
+                body: JSON.stringify({ change })
             });
-        }
-
-        async function updateStock(id, changeAmount) {
-            try {
-                await fetch(`/api/admin/inventory/${id}/stock`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'x-admin-pass': secretKey },
-                    body: JSON.stringify({ change: changeAmount })
-                });
-                loadInventory(); 
-            } catch(err) { console.error(err); }
+            loadInventory();
         }
 
         async function deleteCar(id) {
-            if(!confirm("CRUSH UNIT?")) return;
+            if (!confirm("Confirm Unit Destruction?")) return;
             await fetch(`/api/admin/inventory/${id}`, {
                 method: 'DELETE',
                 headers: { 'x-admin-pass': secretKey }
@@ -209,47 +247,74 @@
             loadInventory();
         }
 
+        // --- EDIT LOGIC ---
+        function openEditModal(id) {
+            const car = globalCars.find(c => c._id === id);
+            document.getElementById('edit-car-id').value = car._id;
+            document.getElementById('edit-car-name').value = car.name;
+            document.getElementById('edit-car-subtitle').value = car.subtitle;
+            document.getElementById('edit-car-price').value = car.price;
+            document.getElementById('edit-car-stock').value = car.stock;
+            document.getElementById('edit-car-tier').value = car.tier;
+            document.getElementById('edit-modal').style.display = 'block';
+        }
+
+        function closeEditModal() { document.getElementById('edit-modal').style.display = 'none'; }
+
+        document.getElementById('edit-car-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-car-id').value;
+            const updateObj = {
+                name: document.getElementById('edit-car-name').value,
+                subtitle: document.getElementById('edit-car-subtitle').value,
+                price: parseFloat(document.getElementById('edit-car-price').value),
+                stock: parseInt(document.getElementById('edit-car-stock').value),
+                tier: document.getElementById('edit-car-tier').value
+            };
+
+            const fileInput = document.getElementById('edit-car-image-file');
+            if (fileInput.files.length > 0) {
+                updateObj.image = await fileToBase64(fileInput.files[0]);
+            }
+
+            const res = await fetch(`/api/admin/inventory/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-admin-pass': secretKey },
+                body: JSON.stringify(updateObj)
+            });
+
+            if (res.ok) { closeEditModal(); loadInventory(); }
+        });
+
+        // --- ORDER LOGIC ---
         async function loadOrders() {
-            try {
-                const res = await fetch('/api/admin/orders', { headers: { 'x-admin-pass': secretKey } });
-                const orders = await res.json();
-                const container = document.getElementById('live-orders');
-                container.innerHTML = "";
-                
-                if (orders.length === 0) {
-                    container.innerHTML = "<p style='color: #888; text-align: center;'>No orders in database.</p>";
-                    return;
-                }
-                
-                orders.forEach(order => {
-                    let itemsList = order.cart.map(item => `<li>${item.name} <span style="color:var(--bronze)">(x${item.quantity})</span></li>`).join('');
-                    
-                    container.innerHTML += `
-                        <div class="order-card">
-                            <div class="order-header">
-                                <strong style="color: var(--bronze); font-family: 'Chakra Petch';">${order.orderId}</strong>
-                                <span style="color: #666; font-size: 0.85rem;">${order.date}</span>
-                            </div>
-                            <div class="order-grid">
-                                <div class="customer-info">
-                                    <strong style="color: #fff; font-size: 1.1rem; display: block; margin-bottom: 5px;">${order.customer.name.toUpperCase()}</strong>
-                                    <div style="margin-bottom: 3px;"><i class="fas fa-phone"></i> ${order.customer.phone}</div>
-                                    <div style="line-height: 1.4;"><i class="fas fa-map-marker-alt"></i> ${order.customer.address}</div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div style="font-size: 0.8rem; color: #888; text-transform: uppercase;">Total Paid</div>
-                                    <strong style="color: var(--success); font-size: 1.4rem;">RS ${order.total.toLocaleString()}</strong>
-                                    <div style="font-size: 0.75rem; color: #666; margin-top: 5px;">Payment: ${order.payment}</div>
-                                </div>
-                            </div>
-                            <div class="order-items">
-                                <span style="font-weight: bold; font-size: 0.8rem; color: #555; text-transform: uppercase; letter-spacing: 1px;">Items Manifest</span>
-                                <ul>${itemsList}</ul>
-                            </div>
+            const res = await fetch('/api/admin/orders', {
+                headers: { 'x-admin-pass': secretKey }
+            });
+            const orders = await res.json();
+            const container = document.getElementById('live-orders');
+
+            if (!orders.length) {
+                container.innerHTML = '<p style="text-align:center; color:#555;">No transmissions found.</p>';
+                return;
+            }
+
+            container.innerHTML = orders.map(order => {
+                const cust = order.customer || {};
+                const items = (order.cart || []).map(i => `${Number(i.quantity)}x ${esc(i.name)}`).join(', ');
+                return `
+                    <div style="background:#000; padding:15px; border:1px solid #333; margin-bottom:10px;">
+                        <div style="display:flex; justify-content:space-between; color:var(--bronze);">
+                            <strong>ID: ${esc(order.orderId)}</strong>
+                            <span>${esc(order.date)}</span>
                         </div>
-                    `;
-                });
-            } catch (err) { console.error(err); }
+                        <p style="margin:10px 0;"><strong>Customer:</strong> ${esc(cust.name)} (${esc(cust.phone)})</p>
+                        <p style="margin:6px 0; font-size:0.9rem; color:#aaa;"><strong>Address:</strong> ${esc(cust.address)}</p>
+                        <p style="margin:6px 0; font-size:0.85rem; color:#888;"><strong>Payment:</strong> ${esc(order.payment)} &nbsp;|&nbsp; <strong>Total:</strong> RS ${Number(order.total).toLocaleString()}</p>
+                        <div style="font-size:0.9rem; color:#888;">${items}</div>
+                    </div>
+                `;
+            }).join('');
         }
     </script>
 </body>

@@ -241,27 +241,29 @@
 
                 if (result.success) {
                     localStorage.removeItem('jdm_cart');
-                    
-                    // WhatsApp Logic
+
                     const businessPhone = "923052254400";
-                    let waText = `*WHEEL WONDERS - NEW ORDER*%0A`;
-                    waText += `*ID:* ${result.orderId}%0A`;
-                    waText += `----------------------------%0A`;
-                    waText += `*Customer:* ${name}%0A`;
-                    waText += `*Total:* RS ${finalTotal.toLocaleString()}%0A`;
-                    waText += `*Address:* ${address}%0A`;
-                    waText += `*Method:* ${method}%0A%0A`;
-                    waText += `*Units:*%0A`;
-                    cart.forEach(i => waText += `- ${i.name} (x${i.quantity})%0A`);
-                    
-                    if(method === "Bank Transfer") {
-                        waText += `%0A*I have transferred the payment to Meezan Bank. Attaching screenshot below:*`;
-                    } else {
-                        waText += `%0A*Please confirm this COD order.*`;
-                    }
+                    const lines = [
+                        `*WHEEL WONDERS - NEW ORDER*`,
+                        `*ID:* ${result.orderId}`,
+                        `----------------------------`,
+                        `*Customer:* ${name}`,
+                        `*Phone:* ${phone}`,
+                        `*Total:* RS ${finalTotal.toLocaleString()}`,
+                        `*Address:* ${address}`,
+                        `*Method:* ${method}`,
+                        ``,
+                        `*Units:*`,
+                        ...cart.map(i => `- ${i.name} (x${i.quantity})`),
+                        ``,
+                        method === "Bank Transfer"
+                            ? `*I have transferred the payment to Meezan Bank. Attaching screenshot below:*`
+                            : `*Please confirm this COD order.*`
+                    ];
+                    const waText = encodeURIComponent(lines.join('\n'));
 
                     alert(`ORDER PLACED! ID: ${result.orderId}. Opening WhatsApp for confirmation.`);
-                    window.location.href = `https://wa.me/${businessPhone}?text=${waText}`; 
+                    window.location.href = `https://wa.me/${businessPhone}?text=${waText}`;
                 } else {
                     alert("Stock Error: " + result.error);
                     btn.innerText = "CONFIRM ORDER";

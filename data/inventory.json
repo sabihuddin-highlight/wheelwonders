@@ -1,97 +1,97 @@
 [
-    { 
-        "id": "2000GT-R LBWK", 
-        "name": "NISSAN SKYLINE 2000GT-R LBWK", 
+    {
+        "id": "2000GT-R LBWK",
+        "name": "NISSAN SKYLINE 2000GT-R LBWK",
         "subtitle": "2000GT-R / Skyline",
-        "price": 949, 
+        "price": 949,
         "stock": 3,
         "image": "https://cdn.corenexis.com/view/6243871168",
         "tier": "budget"
     },
-    { 
-        "id": "90' NSX", 
-        "name": "Acura NSX ", 
+    {
+        "id": "90' NSX",
+        "name": "Acura NSX ",
         "subtitle": "NSX / Acura",
-        "price": 949, 
+        "price": 949,
         "stock": 3,
         "image": "https://placehold.co/400x300/221/fec?text=CIVIC+EK9",
         "tier": "budget"
     },
-    { 
-        "id": "IMPREZA 22B STi", 
-        "name": "'Subaru Impreza 22B STi 98", 
+    {
+        "id": "IMPREZA 22B STi",
+        "name": "'Subaru Impreza 22B STi 98",
         "subtitle": "impreza / 22B-STi",
-        "price": 899, 
+        "price": 899,
         "stock": 2,
         "image": "https://placehold.co/400x300/321/edc?text=R34+GTR",
         "tier": "collectors"
     },
-    { 
-        "id": "CARRERA", 
-        "name": "'6 Porsche Carrera 96", 
+    {
+        "id": "CARRERA",
+        "name": "'6 Porsche Carrera 96",
         "subtitle": "Carrera / Porsche",
-        "price": 949, 
+        "price": 949,
         "stock": 7,
         "image": "https://placehold.co/400x300/321/edc?text=R34+GTR",
         "tier": "collectors"
     },
-    { 
-        "id": "'96 CARRERA", 
-        "name": "'Porsche Carrera 96", 
+    {
+        "id": "'96 CARRERA",
+        "name": "'Porsche Carrera 96",
         "subtitle": "Carrera / Porsche",
-        "price": 949, 
+        "price": 949,
         "stock": 2,
         "image": "https://placehold.co/400x300/321/edc?text=R34+GTR",
         "tier": "collectors"
     },
-    { 
-        "id": "911 CARRERA", 
-        "name": "Porsche 911 Carrera", 
+    {
+        "id": "911 CARRERA",
+        "name": "Porsche 911 Carrera",
         "subtitle": "Carrera / 911",
-        "price": 949, 
+        "price": 949,
         "stock": 3,
         "image": "https://placehold.co/400x300/321/edc?text=R34+GTR",
         "tier": "collectors"
     },
-    { 
-        "id": "NISSAN 35GT-RR", 
-        "name": "LB-SILHOUETTE WORKS NISSAN GTR35 VER.2", 
+    {
+        "id": "NISSAN 35GT-RR",
+        "name": "LB-SILHOUETTE WORKS NISSAN GTR35 VER.2",
         "subtitle": "35GT-RR / NISSAN",
-        "price": 1599, 
+        "price": 1599,
         "stock": 2,
         "image": "https://placehold.co/400x300/321/edc?text=R34+GTR",
         "tier": "collectors"
     },
-    { 
-        "id": "GR86 CUP", 
-        "name": "TOYOTA GR86 CUP", 
+    {
+        "id": "GR86 CUP",
+        "name": "TOYOTA GR86 CUP",
         "subtitle": "GR86 / CUP",
-        "price": 949, 
+        "price": 949,
         "stock": 3,
-        "image": "https://placehold.co/400x300/321/edc?text=R34+GTR",
+        "image": "/images/gr86-cup.jpeg",
         "tier": "collectors"
     },
-    { 
-        "id": "BOLIDE", 
-        "name": "BUGATTI BOLIDE", 
+    {
+        "id": "BOLIDE",
+        "name": "BUGATTI BOLIDE",
         "subtitle": "BOLIDE / BUGATTI",
-        "price": 1499, 
+        "price": 1499,
         "stock": 3,
         "image": "https://placehold.co/400x300/321/edc?text=R34+GTR",
         "tier": "collectors"
     },
-    { 
-        "id": "IMPREZA 22B STi_DUPE", 
-        "name": "'Subaru Impreza 22B STi 98", 
+    {
+        "id": "IMPREZA 22B STi_DUPE",
+        "name": "'Subaru Impreza 22B STi 98",
         "subtitle": "impreza / 22B-STi",
-        "price": 899, 
+        "price": 899,
         "stock": 2,
         "image": "https://placehold.co/400x300/321/edc?text=R34+GTR",
         "tier": "collectors"
     },
-    { 
-        "id": "M3 WAGON", 
-        "name": "BMW M3 WAGON", 
+    {
+        "id": "M3 WAGON",
+        "name": "BMW M3 WAGON",
         "subtitle": "M3 / BMW",
         "price": 949,
         "stock": 2,
@@ -99,316 +99,316 @@
         "tier": "collectors"
     },
     {
-        "id": "E-tron", 
-        "name": "Audi RS e-tron GT", 
+        "id": "E-tron",
+        "name": "Audi RS e-tron GT",
         "subtitle": "e-tron / Audi",
         "price": 1199,
         "stock": 2,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "SILVA(S13)", 
-        "name": "NISSAN SILVA(S13)", 
+    {
+        "id": "SILVA(S13)",
+        "name": "NISSAN SILVA(S13)",
         "subtitle": "SILVA(S13) / NISSAN",
         "price": 1499,
         "stock": 2,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "MX-5 MIATA", 
-        "name": "'Mazda MX-5 Miata 91", 
+    {
+        "id": "MX-5 MIATA",
+        "name": "'Mazda MX-5 Miata 91",
         "subtitle": "MX-5 / Mazda",
         "price": 949,
         "stock": 2,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "F1", 
-        "name": "Mclaren F1", 
+    {
+        "id": "F1",
+        "name": "Mclaren F1",
         "subtitle": "F1 / McLaren",
-        "price": 1299, 
+        "price": 1299,
         "stock": 2,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "BENZ 500 E", 
-        "name": "MERCEDES BENZ 500 E", 
+    {
+        "id": "BENZ 500 E",
+        "name": "MERCEDES BENZ 500 E",
         "subtitle": "500 E / Mercedes",
-        "price": 1499, 
+        "price": 1499,
         "stock": 2,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Lb-silhouette works GT nissan 35GT-RR ver 2", 
-        "name": "Lb-silhouette works Nissan GTR35 ver 2", 
+    {
+        "id": "Lb-silhouette works GT nissan 35GT-RR ver 2",
+        "name": "Lb-silhouette works Nissan GTR35 ver 2",
         "subtitle": "Lb-silhouette works GT nissan 35GT-RR ver 2 / Nissan",
-        "price": 1599, 
+        "price": 1599,
         "stock": 5,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "HONDA CIVIC EG 92'", 
-        "name": "HONDA CIVIC EG 92'", 
+    {
+        "id": "HONDA CIVIC EG 92'",
+        "name": "HONDA CIVIC EG 92'",
         "subtitle": "EG 92' / Honda",
-        "price": 1199, 
+        "price": 1199,
         "stock": 7,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "mazda rx-7 95'", 
-        "name": "mazda rx-7 95'", 
+    {
+        "id": "mazda rx-7 95'",
+        "name": "mazda rx-7 95'",
         "subtitle": "rx-7 95' / Mazda",
-        "price": 1199, 
+        "price": 1199,
         "stock": 4,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "nissan skyline 2000GT-R", 
-        "name": "Nissan Skyline 2000GT-R ", 
+    {
+        "id": "nissan skyline 2000GT-R",
+        "name": "Nissan Skyline 2000GT-R ",
         "subtitle": "2000GT-R / Nissan",
-        "price": 949, 
+        "price": 949,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Lb- super silhouette nissan silvia s15", 
-        "name": "Lb- super silhouette nissan silvia S15", 
+    {
+        "id": "Lb- super silhouette nissan silvia s15",
+        "name": "Lb- super silhouette nissan silvia S15",
         "subtitle": "Lb- super silhouette nissan silvia s15 / Nissan",
-        "price": 1599, 
+        "price": 1599,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Nissan skyline RS KDR30", 
-        "name": "Nissan Skyline RS KDR30 ", 
+    {
+        "id": "Nissan skyline RS KDR30",
+        "name": "Nissan Skyline RS KDR30 ",
         "subtitle": "RS KDR30 / Nissan",
-        "price": 949, 
+        "price": 949,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Suburu impreza 22B STi '98 version", 
-        "name": "Subaru Impreza 22B STi 98 (white)", 
+    {
+        "id": "Suburu impreza 22B STi '98 version",
+        "name": "Subaru Impreza 22B STi 98 (white)",
         "subtitle": "22B STi / Subaru",
-        "price": 849, 
+        "price": 849,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Tesla Model Y", 
-        "name": "Tesla Model Y", 
+    {
+        "id": "Tesla Model Y",
+        "name": "Tesla Model Y",
         "subtitle": "Model Y / Tesla",
-        "price": 1199, 
+        "price": 1199,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Nissan skyline GT-R33", 
-        "name": "Nissan Skyline GTR 33", 
+    {
+        "id": "Nissan skyline GT-R33",
+        "name": "Nissan Skyline GTR 33",
         "subtitle": "GT-R33 / Nissan",
-        "price": 1899, 
+        "price": 1899,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Honda civic custom(white)", 
-        "name": "Honda civic custom(white)", 
+    {
+        "id": "Honda civic custom(white)",
+        "name": "Honda civic custom(white)",
         "subtitle": "custom(white) / Honda",
-        "price": 999, 
+        "price": 999,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Chevy 57'", 
-        "name": "Chevy 57'", 
+    {
+        "id": "Chevy 57'",
+        "name": "Chevy 57'",
         "subtitle": "57' / Chevy",
-        "price": 1200, 
+        "price": 1200,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Buick regal GNX 87'", 
-        "name": "Buick regal GNX 87'", 
+    {
+        "id": "Buick regal GNX 87'",
+        "name": "Buick regal GNX 87'",
         "subtitle": "GNX 87' / Buick",
-        "price": 899, 
+        "price": 899,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Tesla model s Plaid", 
-        "name": "Tesla Model S Plaid", 
+    {
+        "id": "Tesla model s Plaid",
+        "name": "Tesla Model S Plaid",
         "subtitle": "Plaid / Tesla",
-        "price": 1499, 
+        "price": 1499,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Tesla cybertruck", 
-        "name": "Tesla cybertruck", 
+    {
+        "id": "Tesla cybertruck",
+        "name": "Tesla cybertruck",
         "subtitle": "cybertruck / Tesla",
-        "price": 1699, 
+        "price": 1699,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "nissan GTR R35 17'", 
-        "name": "Lb-silhouette works GT nissan 35GT-RR ver 2", 
+    {
+        "id": "nissan GTR R35 17'",
+        "name": "Lb-silhouette works GT nissan 35GT-RR ver 2",
         "subtitle": "Lb-silhouette works GT nissan 35GT-RR ver 2 / Nissan",
-        "price": 1699, 
+        "price": 1699,
         "stock": 2,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Back to the future time machine- Hover mode", 
-        "name": "Back to the future time machine- Hover mode", 
+    {
+        "id": "Back to the future time machine- Hover mode",
+        "name": "Back to the future time machine- Hover mode",
         "subtitle": "Hover mode / Back to the future",
-        "price": 1599, 
+        "price": 1599,
         "stock": 2,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Aston martin V12 speedster", 
-        "name": "Aston martin V12 speedster", 
+    {
+        "id": "Aston martin V12 speedster",
+        "name": "Aston martin V12 speedster",
         "subtitle": "V12 speedster / Aston martin",
-        "price": 949, 
+        "price": 949,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Mclaren F1", 
-        "name": "Mclaren F1", 
+    {
+        "id": "Mclaren F1",
+        "name": "Mclaren F1",
         "subtitle": "F1 / Mclaren",
-        "price": 1299, 
+        "price": 1299,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Honda civic EF 90'", 
-        "name": "Honda civic EF 90'", 
+    {
+        "id": "Honda civic EF 90'",
+        "name": "Honda civic EF 90'",
         "subtitle": "EF 90' / Honda",
-        "price": 1499, 
+        "price": 1499,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Nissan 180SX Type-X", 
-        "name": "Nissan 180SX Type-X", 
+    {
+        "id": "Nissan 180SX Type-X",
+        "name": "Nissan 180SX Type-X",
         "subtitle": "Type-X / Nissan",
-        "price": 1799, 
+        "price": 1799,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Ford Mustang Dark Horse", 
-        "name": "Ford Mustang Dark Horse", 
+    {
+        "id": "Ford Mustang Dark Horse",
+        "name": "Ford Mustang Dark Horse",
         "subtitle": "Dark Horse / Ford",
-        "price": 1399, 
+        "price": 1399,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Chevy 55'", 
-        "name": "Chevy 55'", 
+    {
+        "id": "Chevy 55'",
+        "name": "Chevy 55'",
         "subtitle": "55' / Chevy",
-        "price": 1199, 
+        "price": 1199,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Toyota Tacoma '20", 
-        "name": "Toyota Tacoma '20", 
+    {
+        "id": "Toyota Tacoma '20",
+        "name": "Toyota Tacoma '20",
         "subtitle": "Tacoma '20 / Toyota",
-        "price": 1199, 
+        "price": 1199,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Toyota Land cruiser", 
-        "name": "Toyota Land cruiser", 
+    {
+        "id": "Toyota Land cruiser",
+        "name": "Toyota Land cruiser",
         "subtitle": "Land cruiser / Toyota",
-        "price": 1399, 
+        "price": 1399,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Ford Shelby GT350R", 
-        "name": "Ford Shelby GT350R", 
+    {
+        "id": "Ford Shelby GT350R",
+        "name": "Ford Shelby GT350R",
         "subtitle": "GT350R / Ford",
-        "price": 1199, 
+        "price": 1199,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
+    {
         "id": "Porsche 911 Rallye",
-        "name": "Porsche 911 Rallye (White/Blue/Red)", 
+        "name": "Porsche 911 Rallye (White/Blue/Red)",
         "subtitle": "911 RallyE / Porsche",
-        "price": 1399, 
+        "price": 1399,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "CAMARO 81'", 
-        "name": "CAMARO 81'", 
+    {
+        "id": "CAMARO 81'",
+        "name": "CAMARO 81'",
         "subtitle": "81' / Camaro",
-        "price": 899, 
+        "price": 899,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Pontiac Firebird '70", 
-        "name": "Pontiac Firebird '70", 
+    {
+        "id": "Pontiac Firebird '70",
+        "name": "Pontiac Firebird '70",
         "subtitle": "Firebird '70 / Pontiac",
-        "price": 899, 
+        "price": 899,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Corvette '56", 
-        "name": " Corvette '56", 
+    {
+        "id": "Corvette '56",
+        "name": " Corvette '56",
         "subtitle": "Corvette '56 / Chevy",
-        "price": 1099, 
+        "price": 1099,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
     },
-    { 
-        "id": "Lamborghini Diablo SV", 
-        "name": "Lamborghini Diablo SV", 
+    {
+        "id": "Lamborghini Diablo SV",
+        "name": "Lamborghini Diablo SV",
         "subtitle": "Diablo SV / Lamborghini",
-        "price": 1899, 
+        "price": 1899,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=NSX-R",
         "tier": "pinnacle"
@@ -419,7 +419,7 @@
         "subtitle": "Z Proto / Nissan",
         "price": 949,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=Z+PROTO",
+        "image": "/images/z-proto-white.jpeg",
         "tier": "collectors"
     },
     {
@@ -428,7 +428,7 @@
         "subtitle": "2023 Z / Nissan",
         "price": 1599,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=NISSAN+Z",
+        "image": "/images/2023-nissan-z-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -437,7 +437,7 @@
         "subtitle": "2023 Z / Nissan",
         "price": 949,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=NISSAN+Z",
+        "image": "/images/2023-nissan-z-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -446,7 +446,7 @@
         "subtitle": "GT-R / Nissan",
         "price": 2299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=GUACZILLA",
+        "image": "/images/r35-guaczilla.jpeg",
         "tier": "collectors"
     },
     {
@@ -455,7 +455,7 @@
         "subtitle": "35GT-RR / Nissan",
         "price": 1899,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=LBWK+R35",
+        "image": "/images/35gtrr-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -464,7 +464,7 @@
         "subtitle": "RX-7 / Mazda",
         "price": 1199,
         "stock": 2,
-        "image": "https://placehold.co/400x300/321/edc?text=RX7+FD",
+        "image": "/images/rx7-projectj-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -473,7 +473,7 @@
         "subtitle": "Civic EG / Honda",
         "price": 1199,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=EG+CIVIC",
+        "image": "/images/civic-eg-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -482,7 +482,7 @@
         "subtitle": "Civic Custom / Honda",
         "price": 1099,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=CIVIC+CUSTOM",
+        "image": "/images/civic-custom-asada-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -491,7 +491,7 @@
         "subtitle": "Civic Custom / Honda",
         "price": 949,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=73+CIVIC",
+        "image": "/images/civic-custom-73-green.jpeg",
         "tier": "collectors"
     },
     {
@@ -500,7 +500,7 @@
         "subtitle": "CR-X / Honda",
         "price": 949,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=CR-X",
+        "image": "/images/honda-crx-88.jpeg",
         "tier": "collectors"
     },
     {
@@ -509,7 +509,7 @@
         "subtitle": "Type R / Honda",
         "price": 2299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=TYPE+R",
+        "image": "/images/civic-typer-hks-black.jpeg",
         "tier": "collectors"
     },
     {
@@ -518,7 +518,7 @@
         "subtitle": "Civic Custom / Honda",
         "price": 1099,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=CIVIC+CUSTOM",
+        "image": "/images/civic-custom-asada-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -563,7 +563,7 @@
         "subtitle": "S2000 / Honda",
         "price": 1599,
         "stock": 4,
-        "image": "https://placehold.co/400x300/321/edc?text=S2000",
+        "image": "/images/honda-s2000-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -572,7 +572,7 @@
         "subtitle": "35GT-RR / Nissan",
         "price": 1899,
         "stock": 4,
-        "image": "https://placehold.co/400x300/321/edc?text=LBWK+R35",
+        "image": "/images/35gtrr-white.jpeg",
         "tier": "collectors"
     },
     {
@@ -581,7 +581,7 @@
         "subtitle": "RX-7 FB / Mazda",
         "price": 1299,
         "stock": 4,
-        "image": "https://placehold.co/400x300/321/edc?text=RX7+FB",
+        "image": "/images/rx7-fb-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -590,7 +590,7 @@
         "subtitle": "RX-7 / Mazda",
         "price": 1199,
         "stock": 4,
-        "image": "https://placehold.co/400x300/321/edc?text=RX7+FD",
+        "image": "/images/rx7-projectj-white.jpeg",
         "tier": "collectors"
     },
     {
@@ -743,7 +743,7 @@
         "subtitle": "RX-7 / Mazda",
         "price": 1199,
         "stock": 9,
-        "image": "https://placehold.co/400x300/321/edc?text=RX7+FALKEN",
+        "image": "/images/rx7-falken-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -761,7 +761,7 @@
         "subtitle": "Maxima / Nissan",
         "price": 4299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=MAXIMA",
+        "image": "/images/maxima-motul-white.jpeg",
         "tier": "collectors"
     },
     {
@@ -770,7 +770,7 @@
         "subtitle": "Maxima / Nissan",
         "price": 3499,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=MAXIMA",
+        "image": "/images/maxima-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -779,7 +779,7 @@
         "subtitle": "510 Wagon / Datsun",
         "price": 2499,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=510+WAGON",
+        "image": "/images/datsun-wagon-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -788,7 +788,7 @@
         "subtitle": "510 Wagon / Datsun",
         "price": 1799,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=510+WAGON",
+        "image": "/images/datsun-wagon-momo-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -797,7 +797,7 @@
         "subtitle": "510 / Datsun",
         "price": 1499,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=DATSUN+510",
+        "image": "/images/datsun-510-green.jpeg",
         "tier": "collectors"
     },
     {
@@ -806,7 +806,7 @@
         "subtitle": "Maverick / Ford",
         "price": 1099,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=MAVERICK",
+        "image": "/images/maverick-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -815,7 +815,7 @@
         "subtitle": "Maverick / Ford",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=MAVERICK",
+        "image": "/images/maverick-grey.jpeg",
         "tier": "collectors"
     },
     {
@@ -824,7 +824,7 @@
         "subtitle": "22B-STi / Subaru",
         "price": 999,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=22B+STI",
+        "image": "/images/impreza-22b-black.jpeg",
         "tier": "collectors"
     },
     {
@@ -833,7 +833,7 @@
         "subtitle": "Civic Custom / Honda",
         "price": 949,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=73+CIVIC",
+        "image": "/images/civic-73-momo-yellow.jpeg",
         "tier": "collectors"
     },
     {
@@ -842,7 +842,7 @@
         "subtitle": "N600 / Honda",
         "price": 999,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=N600",
+        "image": "/images/n600-teal.jpeg",
         "tier": "collectors"
     },
     {
@@ -851,7 +851,7 @@
         "subtitle": "Golf GTI / VW",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=GOLF+GTI",
+        "image": "/images/golf-gti-yellow.jpeg",
         "tier": "collectors"
     },
     {
@@ -923,7 +923,7 @@
         "subtitle": "Tacoma / Toyota",
         "price": 1199,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=TACOMA",
+        "image": "/images/tacoma-rigid.jpeg",
         "tier": "collectors"
     },
     {
@@ -932,7 +932,7 @@
         "subtitle": "Tacoma / Toyota",
         "price": 1199,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=TACOMA",
+        "image": "/images/tacoma-blue-clean.jpeg",
         "tier": "collectors"
     },
     {
@@ -941,7 +941,7 @@
         "subtitle": "Ram 1500 / RAM",
         "price": 999,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=RAM+1500",
+        "image": "/images/ram-1500-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -950,7 +950,7 @@
         "subtitle": "Ram Rebel / RAM",
         "price": 999,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=RAM+REBEL",
+        "image": "/images/ram-rebel-white.jpeg",
         "tier": "collectors"
     },
     {
@@ -959,7 +959,7 @@
         "subtitle": "FJ40 / Toyota",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=FJ40",
+        "image": "/images/fj40-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -968,7 +968,7 @@
         "subtitle": "Series II / Land Rover",
         "price": 999,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=LR+PICKUP",
+        "image": "/images/lr-pickup-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -977,7 +977,7 @@
         "subtitle": "Ranger / Ford",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=RANGER+RAPTOR",
+        "image": "/images/ranger-raptor-black.jpeg",
         "tier": "collectors"
     },
     {
@@ -986,7 +986,7 @@
         "subtitle": "F-150 / Ford",
         "price": 1099,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=F150+LIGHTNING",
+        "image": "/images/f150-lightning-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -995,7 +995,7 @@
         "subtitle": "Pajero Evo / Mitsubishi",
         "price": 1399,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=PAJERO",
+        "image": "/images/pajero-orange.jpeg",
         "tier": "collectors"
     },
     {
@@ -1004,7 +1004,7 @@
         "subtitle": "Pajero Evo / Mitsubishi",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=PAJERO",
+        "image": "/images/pajero-white.jpeg",
         "tier": "collectors"
     },
     {
@@ -1013,7 +1013,7 @@
         "subtitle": "Range Rover / Land Rover",
         "price": 1199,
         "stock": 2,
-        "image": "https://placehold.co/400x300/321/edc?text=RANGE+ROVER",
+        "image": "/images/range-rover-yellow.jpeg",
         "tier": "collectors"
     },
     {
@@ -1022,7 +1022,7 @@
         "subtitle": "Syclone / GMC",
         "price": 1399,
         "stock": 2,
-        "image": "https://placehold.co/400x300/321/edc?text=SYCLONE",
+        "image": "/images/syclone-white.jpeg",
         "tier": "collectors"
     },
     {
@@ -1031,7 +1031,7 @@
         "subtitle": "Series II / Land Rover",
         "price": 1199,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=SERIES+II",
+        "image": "/images/lr-series-ii-ht-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1040,7 +1040,7 @@
         "subtitle": "Defender / Land Rover",
         "price": 1499,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=DEFENDER",
+        "image": "/images/defender-orange.jpeg",
         "tier": "collectors"
     },
     {
@@ -1049,7 +1049,7 @@
         "subtitle": "Patrol / Nissan",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=PATROL",
+        "image": "/images/patrol-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1058,7 +1058,7 @@
         "subtitle": "Cherokee / Jeep",
         "price": 999,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=CHEROKEE",
+        "image": "/images/cherokee-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -1067,7 +1067,7 @@
         "subtitle": "Silverado / Chevy",
         "price": 1099,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=SILVERADO",
+        "image": "/images/silverado-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1092,7 +1092,7 @@
         "id": "AGERA_R_PURPLE",
         "name": "Koenigsegg Agera R (Purple)",
         "subtitle": "Timeless Icons / Koenigsegg",
-        "price": 4899.00,
+        "price": 4899,
         "stock": 1,
         "image": "https://placehold.co/400x300/431/ffd?text=AGERA+R",
         "tier": "premium"
@@ -1121,7 +1121,7 @@
         "subtitle": "Ford GT / Ford",
         "price": 999,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=17+FORD+GT",
+        "image": "/images/ford-gt-17-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1130,7 +1130,7 @@
         "subtitle": "GTP Hypercar / Cadillac",
         "price": 999,
         "stock": 2,
-        "image": "https://placehold.co/400x300/321/edc?text=CADILLAC+GTP",
+        "image": "/images/cadillac-gtp-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1139,7 +1139,7 @@
         "subtitle": "R8 Spyder / Audi",
         "price": 1399,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=R8+SPYDER",
+        "image": "/images/r8-spyder-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1148,7 +1148,7 @@
         "subtitle": "Zonda R / Pagani",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=ZONDA+R",
+        "image": "/images/zonda-r-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1157,7 +1157,7 @@
         "subtitle": "C7 Z06 / Chevy",
         "price": 1199,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=C7+Z06",
+        "image": "/images/corvette-z06-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1166,7 +1166,7 @@
         "subtitle": "P1 / McLaren",
         "price": 1399,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=MCLAREN+P1",
+        "image": "/images/mclaren-p1-ltblue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1175,7 +1175,7 @@
         "subtitle": "EB110 SS / Bugatti",
         "price": 1399,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=EB110",
+        "image": "/images/eb110-blue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1184,7 +1184,7 @@
         "subtitle": "XJ220 / Jaguar",
         "price": 1399,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=XJ220",
+        "image": "/images/jaguar-xj220-green.jpeg",
         "tier": "collectors"
     },
     {
@@ -1193,7 +1193,7 @@
         "subtitle": "F1 / McLaren",
         "price": 1399,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=MCLAREN+F1",
+        "image": "/images/mclaren-f1-ltblue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1211,7 +1211,7 @@
         "subtitle": "Chiron / Bugatti",
         "price": 1899,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=CHIRON",
+        "image": "/images/chiron-dkblue.jpeg",
         "tier": "collectors"
     },
     {
@@ -1544,7 +1544,7 @@
         "subtitle": "Gemera / Koenigsegg",
         "price": 1599,
         "stock": 2,
-        "image": "https://placehold.co/400x300/321/edc?text=GEMERA+ORANGE",
+        "image": "/images/gemera-orange.jpeg",
         "tier": "collectors"
     },
     {
@@ -1553,7 +1553,7 @@
         "subtitle": "ZR1 / Chevy",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=ZR1+ORANGE",
+        "image": "/images/zr1-19-orange.jpeg",
         "tier": "collectors"
     },
     {
@@ -1562,7 +1562,7 @@
         "subtitle": "Aventador / Lamborghini",
         "price": 1599,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=AVENTADOR+J",
+        "image": "/images/aventador-j-orange.jpeg",
         "tier": "collectors"
     },
     {
@@ -1571,7 +1571,7 @@
         "subtitle": "F1 GTR / McLaren",
         "price": 1499,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=F1+GTR",
+        "image": "/images/f1-gtr-silver.jpeg",
         "tier": "collectors"
     },
     {
@@ -1580,7 +1580,7 @@
         "subtitle": "Utopia / Pagani",
         "price": 1499,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=UTOPIA",
+        "image": "/images/utopia-silver.jpeg",
         "tier": "collectors"
     },
     {
@@ -1589,7 +1589,7 @@
         "subtitle": "Huracán LB / Lamborghini",
         "price": 1599,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=HURACAN+GREY",
+        "image": "/images/huracan-lb-grey.jpeg",
         "tier": "collectors"
     },
     {
@@ -1598,7 +1598,7 @@
         "subtitle": "Speedtail / McLaren",
         "price": 1199,
         "stock": 2,
-        "image": "https://placehold.co/400x300/321/edc?text=SPEEDTAIL",
+        "image": "/images/speedtail-silver.jpeg",
         "tier": "collectors"
     },
     {
@@ -1607,7 +1607,7 @@
         "subtitle": "GT40 / Ford",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=GT40+MKIV",
+        "image": "/images/gt40-mkiv-67-black.jpeg",
         "tier": "collectors"
     },
     {
@@ -1616,7 +1616,7 @@
         "subtitle": "Huayra / Pagani",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=HUAYRA+GREEN",
+        "image": "/images/huayra-roadster-17-green.jpeg",
         "tier": "collectors"
     },
     {
@@ -1625,7 +1625,7 @@
         "subtitle": "Sián / Lamborghini",
         "price": 1599,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=SIAN",
+        "image": "/images/sian-fkp37-gold.jpeg",
         "tier": "collectors"
     },
     {
@@ -1634,7 +1634,7 @@
         "subtitle": "GT Race / Ford",
         "price": 1199,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=GT+RACE+GREEN",
+        "image": "/images/gt-race-16-green.jpeg",
         "tier": "collectors"
     },
     {
@@ -1643,7 +1643,7 @@
         "subtitle": "GT Race / Ford",
         "price": 1199,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=GT+RACE+WHITE",
+        "image": "/images/gt-race-16-white.jpeg",
         "tier": "collectors"
     },
     {
@@ -1679,7 +1679,7 @@
         "subtitle": "Zonda R / Pagani",
         "price": 1399,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=ZONDA+YELLOW",
+        "image": "/images/zonda-r-yellow.jpeg",
         "tier": "collectors"
     },
     {
@@ -1688,7 +1688,7 @@
         "subtitle": "R8 Spyder / Audi",
         "price": 1499,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=R8+RED",
+        "image": "/images/r8-spyder-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -1697,7 +1697,7 @@
         "subtitle": "904 Carrera / Porsche",
         "price": 1499,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=904+CARRERA",
+        "image": "/images/904-carrera-red.jpeg",
         "tier": "collectors"
     },
     {
@@ -1706,7 +1706,7 @@
         "subtitle": "F-Type / Jaguar",
         "price": 999,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=F-TYPE",
+        "image": "/images/f-type-15-burgundy.jpeg",
         "tier": "collectors"
     },
     {
@@ -1715,7 +1715,7 @@
         "subtitle": "C8.R / Chevy",
         "price": 1299,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=C8R+GREY",
+        "image": "/images/corvette-c8r-grey.jpeg",
         "tier": "collectors"
     },
     {
@@ -1724,7 +1724,7 @@
         "subtitle": "720S / McLaren",
         "price": 1499,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=720S",
+        "image": "/images/720s-purple.jpeg",
         "tier": "collectors"
     },
     {
@@ -1733,7 +1733,7 @@
         "subtitle": "Alpha5 / DeLorean",
         "price": 1899,
         "stock": 1,
-        "image": "https://placehold.co/400x300/321/edc?text=ALPHA5",
+        "image": "/images/alpha5-bronze.jpeg",
         "tier": "collectors"
     },
     {
@@ -1742,7 +1742,7 @@
         "subtitle": "Civic EF / Honda",
         "price": 1499,
         "stock": 5,
-        "image": "https://placehold.co/400x300/321/edc?text=CIVIC+EF+BLUE",
+        "image": "/images/civic-ef-90-blue.jpeg",
         "tier": "collectors"
     },
     {

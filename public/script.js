@@ -7,6 +7,11 @@ let allCars = [];
 let cart = JSON.parse(localStorage.getItem('jdm_cart')) || [];
 let displayLimit = 12; // Controls the "Load More" pagination
 
+function debounce(fn, ms) {
+    let t;
+    return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
 // --- 1. DATA INITIALIZATION ---
 async function loadInventory() {
     try {
@@ -101,19 +106,15 @@ function renderGrids(carsToDisplay) {
     };
 
     const dividers = document.querySelectorAll('.section-divider');
-    const counts = { budget: 0, collectors: 0, pinnacle: 0, premium: 0 };
+    const buckets = { budget: [], collectors: [], pinnacle: [], premium: [] };
 
-    // Reset grids and hide everything
-    Object.values(grids).forEach(g => { if(g) g.innerHTML = ''; });
     Object.values(sections).forEach(s => { if(s) s.style.display = 'none'; });
     dividers.forEach(d => d.style.display = 'none');
 
     carsToDisplay.forEach(car => {
         const isOut = car.stock <= 0;
-        const safeName = car.name.replace(/'/g, "\\'"); 
+        const safeName = car.name.replace(/'/g, "\\'");
         const displayPrice = `RS ${car.price.toLocaleString()}`;
-        
-        // Detect High-End Tiers for extra glare
         const isHighEnd = (car.tier === 'gold' || car.tier === 'pinnacle' || car.tier === 'premium');
         const tiltEffect = isHighEnd ? 'data-tilt-glare="true" data-tilt-max-glare="0.5"' : '';
 
@@ -121,7 +122,7 @@ function renderGrids(carsToDisplay) {
             <div class="card" data-tilt ${tiltEffect} onclick="openQuickView('${safeName}')">
                 <div class="card-inner">
                     <div class="card-img-container" style="background: ${isOut ? '#111' : '#000'}">
-                        <img src="${car.image}" class="card-img" style="${isOut ? 'opacity: 0.3;' : ''}">
+                        <img src="${car.image}" class="card-img" loading="lazy" style="${isOut ? 'opacity: 0.3;' : ''}">
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <h3>${car.name}</h3>
@@ -134,17 +135,18 @@ function renderGrids(carsToDisplay) {
                 </div>
             </div>`;
 
-        // Routing Logic
-        if ((car.tier === 'sakura' || car.tier === 'budget') && grids.budget) {
-            grids.budget.innerHTML += cardHTML; counts.budget++;
-        } else if ((car.tier === 'gold' || car.tier === 'pinnacle') && grids.pinnacle) {
-            grids.pinnacle.innerHTML += cardHTML; counts.pinnacle++;
-        } else if (car.tier === 'premium' && grids.premium) {
-            grids.premium.innerHTML += cardHTML; counts.premium++;
-        } else if (grids.collectors) {
-            grids.collectors.innerHTML += cardHTML; counts.collectors++;
-        }
+        if (car.tier === 'sakura' || car.tier === 'budget') buckets.budget.push(cardHTML);
+        else if (car.tier === 'gold' || car.tier === 'pinnacle') buckets.pinnacle.push(cardHTML);
+        else if (car.tier === 'premium') buckets.premium.push(cardHTML);
+        else buckets.collectors.push(cardHTML);
     });
+
+    // One innerHTML write per grid (vs append in loop)
+    const counts = {};
+    for (const key of ['budget', 'collectors', 'pinnacle', 'premium']) {
+        if (grids[key]) grids[key].innerHTML = buckets[key].join('');
+        counts[key] = buckets[key].length;
+    }
 
     // Visibility Logic: Only show sections and dividers if they have cars
     if (counts.budget > 0) sections.budget.style.display = 'block';
@@ -167,12 +169,12 @@ function renderGrids(carsToDisplay) {
 const searchBar = document.getElementById('search-bar');
 const suggestionsBox = document.getElementById('suggestions-box');
 
-searchBar.addEventListener('input', () => {
+const handleSearchInput = debounce(() => {
     const val = searchBar.value.toLowerCase();
     if (val.length < 2) { suggestionsBox.style.display = 'none'; return; }
 
     const matches = allCars.filter(c => c.name.toLowerCase().includes(val)).slice(0, 6);
-    
+
     if (matches.length > 0) {
         suggestionsBox.innerHTML = matches.map(m => `
             <div class="suggestion-item" onclick="applySuggestion('${m.name.replace(/'/g, "\\'")}')">
@@ -183,7 +185,9 @@ searchBar.addEventListener('input', () => {
     } else {
         suggestionsBox.style.display = 'none';
     }
-});
+}, 150);
+
+searchBar.addEventListener('input', handleSearchInput);
 
 function applySuggestion(name) {
     searchBar.value = name;
@@ -241,13 +245,12 @@ function updateCartUI() {
     if (!count || !list) return;
 
     count.innerText = cart.reduce((sum, i) => sum + i.quantity, 0);
-    list.innerHTML = '';
     let total = 0;
 
-    cart.forEach(item => {
+    list.innerHTML = cart.map(item => {
         total += (item.price * item.quantity);
         const safeName = item.name.replace(/'/g, "\\'");
-        list.innerHTML += `
+        return `
             <li style="margin-bottom:12px; border-bottom:1px solid #222; padding-bottom:8px; display:flex; justify-content:space-between;">
                 <div>${item.name}<br><small style="color:#888">Qty: ${item.quantity}</small></div>
                 <div style="text-align:right">
@@ -255,7 +258,7 @@ function updateCartUI() {
                     <i class="fas fa-trash" onclick="removeFromCart('${safeName}')" style="color:red; cursor:pointer; font-size:0.8rem;"></i>
                 </div>
             </li>`;
-    });
+    }).join('');
     totalSpan.innerText = total.toLocaleString();
 }
 
