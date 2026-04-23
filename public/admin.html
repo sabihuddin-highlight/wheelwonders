@@ -6,6 +6,7 @@
     <title>ADMIN VAULT // WHEEL WONDERS</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root { --bronze: #c7a87b; --dark: #0f0f0f; --panel: #161616; --danger: #ff4444; --success: #00C851; --info: #33b5e5; }
         body { background: var(--dark); color: #fff; font-family: 'Rajdhani', sans-serif; padding: 40px; margin: 0; }
@@ -47,6 +48,29 @@
         #edit-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 100; padding: 30px; box-sizing: border-box; overflow-y: auto; }
         .modal-content { background: var(--panel); padding: 30px; border: 1px solid var(--bronze); position: relative; }
 
+        /* Analytics */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: #0a0a0a; border: 1px solid #222; border-left: 3px solid var(--bronze); padding: 18px 20px; }
+        .stat-card .label { color: #888; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; font-family: 'Chakra Petch', sans-serif; margin-bottom: 6px; }
+        .stat-card .value { color: #fff; font-size: 1.8rem; font-weight: 700; font-family: 'Chakra Petch', sans-serif; }
+        .stat-card .sub { color: var(--bronze); font-size: 0.75rem; margin-top: 2px; }
+        .analytics-block { background: #0a0a0a; border: 1px solid #222; padding: 20px; margin-bottom: 20px; }
+        .analytics-block h4 { margin: 0 0 15px; color: var(--bronze); font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
+        .analytics-block table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .analytics-block th, .analytics-block td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #1a1a1a; }
+        .analytics-block th { color: #666; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; }
+        .analytics-block td { color: #ccc; }
+        .analytics-block td.num { text-align: right; color: var(--bronze); font-weight: 700; }
+        .analytics-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chart-wrap { position: relative; height: 260px; }
+        .device-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #1a1a1a; }
+        .device-row:last-child { border-bottom: none; }
+        .device-bar { flex: 1; height: 6px; background: #1a1a1a; margin: 0 12px; position: relative; overflow: hidden; }
+        .device-bar div { position: absolute; top: 0; left: 0; bottom: 0; background: var(--bronze); transition: width 0.5s ease; }
+        @media (max-width: 700px) {
+            .analytics-two-col { grid-template-columns: 1fr; }
+        }
+
         @media (max-width: 700px) {
             body { padding: 20px 12px; }
             .container { padding: 20px 16px; }
@@ -73,6 +97,7 @@
             <div class="tab-nav">
                 <button class="tab-btn active" id="btn-inventory" onclick="switchTab('inventory')"><i class="fas fa-car"></i> GARAGE</button>
                 <button class="tab-btn" id="btn-orders" onclick="switchTab('orders')"><i class="fas fa-list"></i> ORDERS</button>
+                <button class="tab-btn" id="btn-analytics" onclick="switchTab('analytics')"><i class="fas fa-chart-line"></i> ANALYTICS</button>
             </div>
 
             <div id="inventory" class="tab-content active">
@@ -106,6 +131,12 @@
             <div id="orders" class="tab-content">
                 <div id="live-orders">
                     <p style="text-align: center; color: #555;">No recent data transmissions.</p>
+                </div>
+            </div>
+
+            <div id="analytics" class="tab-content">
+                <div id="analytics-body">
+                    <p style="text-align: center; color: #555;">Loading traffic data...</p>
                 </div>
             </div>
         </div>
@@ -172,6 +203,7 @@
             document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             document.getElementById('btn-' + tabId).classList.add('active');
+            if (tabId === 'analytics') loadAnalytics();
         }
 
         function fileToBase64(file) {
@@ -325,6 +357,128 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        // --- ANALYTICS LOGIC ---
+        let trafficChart = null;
+
+        async function loadAnalytics() {
+            const body = document.getElementById('analytics-body');
+            body.innerHTML = '<p style="text-align:center; color:#555;">Loading traffic data...</p>';
+            try {
+                const res = await fetch('/api/admin/analytics', { headers: { 'x-admin-pass': secretKey } });
+                if (!res.ok) throw new Error('Analytics fetch failed');
+                const data = await res.json();
+                renderAnalytics(data);
+            } catch (e) {
+                body.innerHTML = '<p style="text-align:center; color:var(--danger);">Failed to load analytics.</p>';
+            }
+        }
+
+        function renderAnalytics(d) {
+            const body = document.getElementById('analytics-body');
+            const dailyLabels = d.daily.map(x => x._id.slice(5));
+            const dailyCounts = d.daily.map(x => x.count);
+            const deviceTotal = d.devices.reduce((s, x) => s + x.count, 0) || 1;
+
+            body.innerHTML = `
+                <div class="stat-grid">
+                    <div class="stat-card"><div class="label">Total Visits</div><div class="value">${d.total.toLocaleString()}</div></div>
+                    <div class="stat-card"><div class="label">Today</div><div class="value">${d.today.toLocaleString()}</div></div>
+                    <div class="stat-card"><div class="label">Last 7 Days</div><div class="value">${d.last7.toLocaleString()}</div></div>
+                    <div class="stat-card"><div class="label">Last 30 Days</div><div class="value">${d.last30.toLocaleString()}</div></div>
+                    <div class="stat-card"><div class="label">Unique (30d)</div><div class="value">${d.uniqueMonth.toLocaleString()}</div><div class="sub">${d.uniqueAllTime.toLocaleString()} all-time</div></div>
+                    <div class="stat-card"><div class="label">Orders</div><div class="value">${d.totalOrders.toLocaleString()}</div><div class="sub">${d.conversionRate}% conversion</div></div>
+                </div>
+
+                <div class="analytics-block">
+                    <h4>Traffic — Last 30 Days</h4>
+                    <div class="chart-wrap"><canvas id="traffic-chart"></canvas></div>
+                </div>
+
+                <div class="analytics-two-col">
+                    <div class="analytics-block">
+                        <h4>Top Pages</h4>
+                        <table>
+                            <thead><tr><th>Path</th><th style="text-align:right">Visits</th></tr></thead>
+                            <tbody>
+                                ${d.topPages.map(p => `<tr><td>${esc(p._id || '/')}</td><td class="num">${p.count}</td></tr>`).join('') || '<tr><td colspan="2" style="color:#555;">No data yet.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="analytics-block">
+                        <h4>Top Referrers</h4>
+                        <table>
+                            <thead><tr><th>Source</th><th style="text-align:right">Visits</th></tr></thead>
+                            <tbody>
+                                ${d.topRefs.map(r => `<tr><td style="word-break:break-all">${esc(r._id)}</td><td class="num">${r.count}</td></tr>`).join('') || '<tr><td colspan="2" style="color:#555;">Direct traffic only.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="analytics-block">
+                    <h4>Device Breakdown (30d)</h4>
+                    ${d.devices.length ? d.devices.map(dv => {
+                        const pct = ((dv.count / deviceTotal) * 100).toFixed(1);
+                        const icon = dv._id === 'mobile' ? 'mobile-screen' : dv._id === 'tablet' ? 'tablet-screen-button' : 'desktop';
+                        return `
+                            <div class="device-row">
+                                <span style="min-width:90px; text-transform:uppercase; font-size:0.8rem; letter-spacing:1px;"><i class="fas fa-${icon}" style="color:var(--bronze); margin-right:8px;"></i>${dv._id}</span>
+                                <div class="device-bar"><div style="width:${pct}%"></div></div>
+                                <span style="min-width:70px; text-align:right; color:var(--bronze); font-weight:700;">${dv.count} (${pct}%)</span>
+                            </div>
+                        `;
+                    }).join('') : '<p style="color:#555;">No data yet.</p>'}
+                </div>
+
+                <div class="analytics-block">
+                    <h4>Recent Visits</h4>
+                    <table>
+                        <thead><tr><th>Time</th><th>Path</th><th>Source</th></tr></thead>
+                        <tbody>
+                            ${d.recent.map(r => `
+                                <tr>
+                                    <td style="color:#888; font-size:0.8rem;">${new Date(r.ts).toLocaleString()}</td>
+                                    <td>${esc(r.path)}</td>
+                                    <td style="font-size:0.8rem; color:#aaa; word-break:break-all;">${esc(r.referrer) || '<span style="color:#555">direct</span>'}</td>
+                                </tr>
+                            `).join('') || '<tr><td colspan="3" style="color:#555;">No visits yet.</td></tr>'}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            // Traffic chart
+            const ctx = document.getElementById('traffic-chart');
+            if (ctx && typeof Chart !== 'undefined') {
+                if (trafficChart) trafficChart.destroy();
+                trafficChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dailyLabels,
+                        datasets: [{
+                            label: 'Visits',
+                            data: dailyCounts,
+                            borderColor: '#c7a87b',
+                            backgroundColor: 'rgba(199,168,123,0.15)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 3,
+                            pointBackgroundColor: '#c7a87b'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { ticks: { color: '#666' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+                            y: { ticks: { color: '#666', precision: 0 }, grid: { color: 'rgba(255,255,255,0.04)' }, beginAtZero: true }
+                        }
+                    }
+                });
+            }
         }
     </script>
 </body>

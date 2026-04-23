@@ -1,6 +1,7 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression');
+const crypto = require('crypto');
 require('dotenv').config();
 const { MongoClient, ObjectId } = require('mongodb');
 
@@ -13,6 +14,35 @@ app.set('trust proxy', 1);
 app.use(compression());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// --- ANALYTICS: LOG PAGE VISITS (must run BEFORE static so the tracker sees the request) ---
+const TRACKED_PATHS = new Set(['/', '/index.html', '/billing.html']);
+const BOT_UA = /cron-job|uptimerobot|googlebot|bingbot|bot\/|spider|crawler|curl|wget|python-requests/i;
+const ANALYTICS_SALT = process.env.ANALYTICS_SALT || 'ww_default_salt_change_me';
+
+function hashIp(ip) {
+    return crypto.createHash('sha256').update(ip + ANALYTICS_SALT).digest('hex').slice(0, 16);
+}
+
+function logVisit(req) {
+    if (!visitsCollection) return;
+    const ua = req.headers['user-agent'] || '';
+    if (BOT_UA.test(ua)) return;
+    const ip = (req.ip || '').replace(/^::ffff:/, '');
+    visitsCollection.insertOne({
+        path: req.path,
+        ts: new Date(),
+        ipHash: hashIp(ip),
+        ua: ua.slice(0, 250),
+        referrer: (req.headers.referer || req.headers.referrer || '').slice(0, 250),
+    }).catch(() => {});
+}
+
+app.use((req, res, next) => {
+    if (req.method === 'GET' && TRACKED_PATHS.has(req.path)) logVisit(req);
+    next();
+});
+
 // Product images: long cache + immutable (filenames are unique per car).
 app.use('/images', express.static('public/images', { maxAge: '30d', immutable: true }));
 // HTML/CSS/JS: shorter cache so content updates propagate within an hour.
@@ -32,7 +62,7 @@ app.use('/api/', apiLimiter);
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
 
-let db, inventoryCollection, ordersCollection;
+let db, inventoryCollection, ordersCollection, visitsCollection;
 
 async function connectDB() {
     try {
@@ -41,6 +71,9 @@ async function connectDB() {
         db = client.db('WheelWonders');
         inventoryCollection = db.collection('inventory');
         ordersCollection = db.collection('orders');
+        visitsCollection = db.collection('visits');
+        // Index ts for fast time-range queries (no-op if already exists)
+        visitsCollection.createIndex({ ts: -1 }).catch(() => {});
         warmInventoryCache();
     } catch (error) {
         console.error("🔴 [ERR] Database connection failed:", error);
@@ -257,6 +290,75 @@ app.put('/api/admin/inventory/:id', verifyAdmin, async (req, res) => {
     } catch (error) {
         console.error("Error updating unit:", error);
         res.status(500).json({ error: "Failed to update unit." });
+    }
+});
+
+// --- ANALYTICS DASHBOARD ENDPOINT ---
+app.get('/api/admin/analytics', verifyAdmin, async (req, res) => {
+    try {
+        if (!visitsCollection) return res.status(503).json({ error: "Analytics warming up." });
+
+        const now = new Date();
+        const dayAgo = new Date(now - 24 * 3600 * 1000);
+        const weekAgo = new Date(now - 7 * 24 * 3600 * 1000);
+        const monthAgo = new Date(now - 30 * 24 * 3600 * 1000);
+
+        const [total, today, last7, last30, uniqueMonth, uniqueAllTime, topPages, topRefs, daily, deviceAgg, recent, totalOrders] = await Promise.all([
+            visitsCollection.countDocuments(),
+            visitsCollection.countDocuments({ ts: { $gte: dayAgo } }),
+            visitsCollection.countDocuments({ ts: { $gte: weekAgo } }),
+            visitsCollection.countDocuments({ ts: { $gte: monthAgo } }),
+            visitsCollection.distinct('ipHash', { ts: { $gte: monthAgo } }).then(a => a.length),
+            visitsCollection.distinct('ipHash').then(a => a.length),
+            visitsCollection.aggregate([
+                { $group: { _id: '$path', count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+                { $limit: 10 }
+            ]).toArray(),
+            visitsCollection.aggregate([
+                { $match: { referrer: { $nin: ['', null] } } },
+                { $group: { _id: '$referrer', count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+                { $limit: 5 }
+            ]).toArray(),
+            visitsCollection.aggregate([
+                { $match: { ts: { $gte: monthAgo } } },
+                { $group: {
+                    _id: { $dateToString: { format: '%Y-%m-%d', date: '$ts' } },
+                    count: { $sum: 1 }
+                }},
+                { $sort: { _id: 1 } }
+            ]).toArray(),
+            visitsCollection.aggregate([
+                { $match: { ts: { $gte: monthAgo } } },
+                { $project: {
+                    device: {
+                        $switch: {
+                            branches: [
+                                { case: { $regexMatch: { input: '$ua', regex: 'iPad|Tablet' } }, then: 'tablet' },
+                                { case: { $regexMatch: { input: '$ua', regex: 'Mobile|Android|iPhone' } }, then: 'mobile' }
+                            ],
+                            default: 'desktop'
+                        }
+                    }
+                }},
+                { $group: { _id: '$device', count: { $sum: 1 } } }
+            ]).toArray(),
+            visitsCollection.find({}, { projection: { path: 1, ts: 1, ua: 1, referrer: 1 } })
+                .sort({ ts: -1 }).limit(15).toArray(),
+            ordersCollection.countDocuments().catch(() => 0)
+        ]);
+
+        res.json({
+            total, today, last7, last30,
+            uniqueMonth, uniqueAllTime,
+            totalOrders,
+            conversionRate: uniqueMonth > 0 ? +(totalOrders / uniqueMonth * 100).toFixed(2) : 0,
+            topPages, topRefs, daily, devices: deviceAgg, recent
+        });
+    } catch (error) {
+        console.error("Error building analytics:", error);
+        res.status(500).json({ error: "Failed to load analytics." });
     }
 });
 
