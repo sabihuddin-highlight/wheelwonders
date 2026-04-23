@@ -432,10 +432,13 @@
 
         .modal-content {
             background: var(--panel);
-            margin: 5% auto;
+            margin: 5vh auto;
             padding: 40px;
             width: 85%;
             max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-sizing: border-box;
             border: 1px solid var(--bronze);
             position: relative;
             display: flex;
@@ -449,11 +452,12 @@
             font-size: 2.2rem;
             cursor: pointer;
             color: var(--bronze);
+            z-index: 2;
         }
 
         .modal-left { flex: 1.2; }
         .modal-right { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .modal-img { width: 100%; border: 1px solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .modal-img { width: 100%; max-height: 45vh; object-fit: contain; border: 1px solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
 
         /* --- LOAD MORE --- */
         .load-more-wrap { text-align: center; padding: 40px 0 100px; }
@@ -485,9 +489,72 @@
         .section-divider { text-align: center; color: #fff; font-family: 'Chakra Petch', sans-serif; letter-spacing: 8px; font-size: 2rem; margin-bottom: 60px; opacity: 0.8; }
 
         @media (max-width: 850px) {
-            .modal-content { flex-direction: column; margin: 2% auto; padding: 25px; width: 90%; }
-            .hero h1 { font-size: 3.5rem; }
+            .modal-content {
+                flex-direction: column;
+                margin: 4vh auto;
+                padding: 22px;
+                width: 92%;
+                gap: 20px;
+                max-height: 92vh;
+            }
+            .modal-img { max-height: 38vh; }
+            #modal-name { font-size: 1.9rem !important; }
+            #modal-price { font-size: 1.7rem !important; }
+            .close-modal { right: 15px; top: 10px; font-size: 2rem; }
+
+            .hero { padding: 0 6%; }
+            .hero h1 { font-size: 3.5rem; letter-spacing: -1px; }
+            nav { padding: 18px 20px; }
+            .nav-logo img { height: 38px; }
+
+            #cart-panel { top: 70px; right: 12px !important; left: 12px; min-width: 0 !important; padding: 20px !important; }
+
+            .catalog { padding: 40px 5%; }
+            .controls-panel { padding: 22px; clip-path: none; }
+            .search-wrap, .sort-wrap, .brand-wrap, .price-range-wrap { min-width: 100% !important; flex: 1 1 100% !important; }
+            .toggle-wrap { min-width: 100% !important; justify-content: flex-start; }
+            #search-bar, #sort-price, #brand-filter { width: 100% !important; box-sizing: border-box; }
+
+            .section-title { font-size: 1.8rem !important; }
+            .tier-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+
+            .about-section { padding: 60px 6% 70px; }
+            .about-title { letter-spacing: 2px; }
+            .about-grid { gap: 20px; }
+            .about-card { padding: 28px 22px; }
+
+            .cart-floater { font-size: 1.1rem; }
         }
+
+        @media (max-width: 500px) {
+            nav { padding: 14px 14px; }
+            .nav-logo img { height: 30px; }
+            .hero { padding: 0 5%; }
+            .hero h1 { font-size: 2.6rem; }
+            .subtitle { font-size: 0.9rem; letter-spacing: 2px; }
+
+            .catalog { padding: 30px 4%; }
+            .controls-panel { padding: 18px; }
+            .filter-btn { padding: 8px 14px; font-size: 0.75rem; }
+            .tier-grid { grid-template-columns: 1fr; }
+
+            .modal-content { padding: 18px; margin: 2vh auto; width: 94%; }
+            .modal-img { max-height: 32vh; }
+            #modal-name { font-size: 1.55rem !important; }
+            #modal-price { font-size: 1.4rem !important; }
+            #modal-buy-btn { padding: 14px !important; font-size: 1rem !important; }
+            .close-modal { font-size: 1.7rem; top: 6px; right: 12px; }
+
+            .about-section { padding: 50px 5% 60px; }
+            .about-title { font-size: 1.8rem; letter-spacing: 1px; }
+            .about-sub { font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 35px; }
+            .about-copy { font-size: 0.95rem; line-height: 1.65; }
+
+            .section-header { margin-bottom: 30px; }
+            .section-divider { font-size: 1.3rem; letter-spacing: 4px; margin-bottom: 35px; }
+        }
+
+        /* On touch devices, tilt is skipped in JS; keep card flat */
 
         /* === ANIMATION ENHANCEMENTS === */
 
@@ -752,29 +819,29 @@
         <div class="about-grid">
             <div class="about-card reveal-on-scroll">
                 <i class="fas fa-bolt"></i>
-                <h3>Curated Collection</h3>
-                <p>Placeholder: Every unit in the vault is hand-picked from JDM imports, collector releases, and limited-run mainlines. No filler, just heat.</p>
+                <h3>Curated Catalog</h3>
+                <p>Every unit in the vault is hand-picked — from '90s JDM icons and Japanese mainlines to modern hypercars and limited premiums. No shelf-warmers, just the cars collectors actually chase.</p>
             </div>
             <div class="about-card reveal-on-scroll">
                 <i class="fas fa-shield-halved"></i>
                 <h3>Authentic &amp; Sealed</h3>
-                <p>Placeholder: 100% genuine factory-sealed stock. Condition verified before it ever enters the garage. What you see is what ships.</p>
+                <p>Every car is factory-sealed and condition-checked before it goes live on the site. What you see in the photo is exactly what ships — no swaps, no reboxes, no surprises.</p>
             </div>
             <div class="about-card reveal-on-scroll">
                 <i class="fas fa-truck-fast"></i>
                 <h3>Nationwide Delivery</h3>
-                <p>Placeholder: Secure packaging, tracked dispatch across Pakistan. Ships same-day on confirmed orders, with protective foam for every unit.</p>
+                <p>Tracked dispatch across Pakistan with protective foam packaging on every order. Confirmed orders ship the same or next working day so your cards arrive corners-intact.</p>
             </div>
             <div class="about-card reveal-on-scroll">
                 <i class="fas fa-comments"></i>
-                <h3>Built for Collectors</h3>
-                <p>Placeholder: Direct line to the team via WhatsApp. Pre-orders, restock alerts, and trade inquiries welcome — this garage is run by enthusiasts.</p>
+                <h3>Talk to a Collector</h3>
+                <p>Direct line to the shop on WhatsApp — no bots, no forms. Drop a message for pre-orders, restock alerts, trade inquiries, or just to geek out about the newest drop.</p>
             </div>
         </div>
 
         <div class="about-copy reveal-on-scroll">
-            <p>Placeholder paragraph: Wheel Wonders started as a garage obsession and grew into a full catalog of scale-model heat — from '90s JDM legends to modern hypercar icons. Every piece in the vault has a story, and we're here to help you build yours.</p>
-            <p>Placeholder paragraph: Follow the signal, trust the build, and keep the rubber down. Welcome to the collection.</p>
+            <p>Wheel Wonders started as a personal collection that outgrew the shelf. What began as one collector hunting down Japan-market mainlines and hard-to-find premium releases grew into a curated shop for every Pakistani diecast enthusiast who wants more than what the local store happens to stock.</p>
+            <p>Whether you're chasing a specific Super Treasure Hunt, building out a Kaido House diorama, or finally picking up the R34 your teenage self couldn't find — this garage is here to help you track it down.</p>
         </div>
     </section>
 

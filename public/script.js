@@ -210,8 +210,9 @@ function renderGrids(carsToDisplay) {
     if (counts.budget > 0 || counts.collectors > 0 || counts.pinnacle > 0) dividers[0].style.display = 'block';
     if (counts.premium > 0) dividers[1].style.display = 'block';
 
-    // Refresh Tilt Effects
-    if (typeof VanillaTilt !== 'undefined') {
+    // Refresh Tilt Effects (skip on touch devices — jittery and unhelpful)
+    const hasHover = window.matchMedia('(hover: hover)').matches;
+    if (typeof VanillaTilt !== 'undefined' && hasHover) {
         VanillaTilt.init(document.querySelectorAll(".card"), {
             max: 5, speed: 1000, glare: true, "max-glare": 0.1, scale: 1.02
         });

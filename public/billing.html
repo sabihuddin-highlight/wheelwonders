@@ -133,10 +133,20 @@
         .checkout-container {
             opacity: 0;
             animation: billing-entrance 0.7s cubic-bezier(0.2, 0.8, 0.3, 1) 0.1s forwards;
+            box-sizing: border-box;
         }
         @keyframes billing-entrance {
             from { opacity: 0; transform: translateY(18px); }
             to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 20px 12px; }
+            .checkout-container { padding: 25px 18px; }
+            h1 { font-size: 1.8rem; letter-spacing: 1px; padding-bottom: 15px; }
+            .vault-row { flex-wrap: wrap; gap: 4px; }
+            .vault-value { word-break: break-all; font-size: 0.9rem; }
+            .confirm-btn { padding: 16px; font-size: 1rem; }
         }
     </style>
 </head>
