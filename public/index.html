@@ -222,13 +222,29 @@
 
         #search-bar { padding-left: 45px; }
 
-        .search-wrap i {
+        .search-wrap .fa-search {
             position: absolute;
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--bronze);
             z-index: 5;
+        }
+
+        #search-clear {
+            position: absolute;
+            right: calc(10% + 15px);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--bronze);
+            cursor: pointer;
+            z-index: 5;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+
+        #search-clear:hover {
+            color: var(--sakura);
         }
 
         /* Custom Bronze Arrows */
@@ -758,6 +774,7 @@
             .search-wrap, .sort-wrap, .brand-wrap, .price-range-wrap { min-width: 100% !important; flex: 1 1 100% !important; }
             .toggle-wrap { min-width: 100% !important; justify-content: flex-start; }
             #search-bar, #sort-price, #brand-filter { width: 100% !important; box-sizing: border-box; }
+            #search-clear { right: 15px !important; }
 
             .section-title { font-size: 1.8rem !important; }
             .tier-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
@@ -1032,7 +1049,7 @@
                 <div class="search-wrap">
                     <i class="fas fa-search"></i>
                     <input type="text" id="search-bar" placeholder="SEARCH JDM DATABASE..." autocomplete="off">
-                    <i class="fas fa-times" id="search-clear" style="display: none; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--bronze); cursor: pointer; z-index: 5; font-size: 1.1rem; transition: color 0.2s;" onmouseover="this.style.color='var(--sakura)'" onmouseout="this.style.color='var(--bronze)'"></i>
+                    <i class="fas fa-times" id="search-clear" style="display: none;"></i>
                     <div id="suggestions-box"></div>
                 </div>
                 <div class="sort-wrap">
@@ -1234,6 +1251,6 @@
         setInterval(spawnPetal, 500);
     </script>
 
-    <script src="script.js?v=3.6"></script>
+    <script src="script.js?v=3.7"></script>
 </body>
 </html>
