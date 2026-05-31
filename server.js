@@ -46,7 +46,7 @@ app.use((req, res, next) => {
 // Product images: long cache + immutable (filenames are unique per car).
 app.use('/images', express.static('public/images', { maxAge: '30d', immutable: true }));
 // HTML/CSS/JS: shorter cache so content updates propagate within an hour.
-app.use(express.static('public', { maxAge: '1h' }));
+app.use(express.static('public', { maxAge: 0 }));
 
 // 100 requests per hour per IP, API routes only (static files unaffected).
 const apiLimiter = rateLimit({

@@ -91,15 +91,49 @@ function processAndRender() {
     });
 
     // Sort Logic
-    if (sortMode === 'low') filtered.sort((a, b) => a.price - b.price);
-    else if (sortMode === 'high') filtered.sort((a, b) => b.price - a.price);
+    if (sortMode === 'low') {
+        filtered.sort((a, b) => a.price - b.price);
+    } else if (sortMode === 'high') {
+        filtered.sort((a, b) => b.price - a.price);
+    } else {
+        // Default sort: Group by tier order to match vertical section layout (01 -> 02 -> 03 -> 04)
+        const tierOrder = {
+            'budget': 1,
+            'sakura': 1,
+            'collectors': 2,
+            'pinnacle': 3,
+            'gold': 3,
+            'premium': 4
+        };
+        filtered.sort((a, b) => {
+            const orderA = tierOrder[a.tier] || 99;
+            const orderB = tierOrder[b.tier] || 99;
+            return orderA - orderB;
+        });
+    }
 
     // FEATURE 5: PAGINATION (Load More)
-    const paginatedCars = filtered.slice(0, displayLimit);
+    // Partition filtered into tiers to ensure smaller categories (budget and premium) show every car,
+    // while paginating the larger categories (collectors and pinnacle) for performance.
+    const budgetCars = filtered.filter(car => car.tier === 'budget' || car.tier === 'sakura');
+    const premiumCars = filtered.filter(car => car.tier === 'premium');
+    const collectorsCars = filtered.filter(car => car.tier !== 'budget' && car.tier !== 'sakura' && car.tier !== 'premium' && car.tier !== 'pinnacle' && car.tier !== 'gold');
+    const pinnacleCars = filtered.filter(car => car.tier === 'pinnacle' || car.tier === 'gold');
 
-    // Toggle "Load More" button visibility
+    const paginatedCollectors = collectorsCars.slice(0, displayLimit);
+    const paginatedPinnacle = pinnacleCars.slice(0, displayLimit);
+
+    const paginatedCars = [
+        ...budgetCars,
+        ...premiumCars,
+        ...paginatedCollectors,
+        ...paginatedPinnacle
+    ];
+
+    // Toggle "Load More" button visibility if there are remaining collectors or pinnacle items
+    const hasMore = (collectorsCars.length > displayLimit) || (pinnacleCars.length > displayLimit);
     const loadMoreBtn = document.getElementById('load-more-btn');
-    loadMoreBtn.style.display = (filtered.length > displayLimit) ? 'inline-block' : 'none';
+    loadMoreBtn.style.display = hasMore ? 'inline-block' : 'none';
 
     const showroom = document.getElementById('showroom');
     if (!hasInitialRendered) {
