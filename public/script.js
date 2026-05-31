@@ -50,7 +50,12 @@ function populateBrands() {
     // Extracts unique brand names from the subtitle (e.g., "NSX / Acura" -> "Acura")
     const brands = [...new Set(allCars.map(car => {
         const parts = car.subtitle.split(' / ');
-        return parts[1] ? parts[1].trim() : 'Other';
+        const rawBrand = parts[1] ? parts[1].trim() : 'Other';
+        // Normalize casing to avoid duplicates (e.g. "nissan" / "Nissan" / "NISSAN")
+        return rawBrand.split(/\s+/).map(word => {
+            if (word.toUpperCase() === 'BMW') return 'BMW';
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        }).join(' ');
     }))].sort();
 
     brands.forEach(brand => {
@@ -76,7 +81,7 @@ function processAndRender() {
         const nameMatch = car.name.toLowerCase().includes(searchTerm) || 
                           car.subtitle.toLowerCase().includes(searchTerm);
         const priceMatch = car.price <= maxPrice;
-        const brandMatch = (brandFilter === 'all') || car.subtitle.includes(brandFilter);
+        const brandMatch = (brandFilter === 'all') || car.subtitle.toLowerCase().includes(brandFilter.toLowerCase());
         const stockMatch = inStockOnly ? car.stock > 0 : true;
 
         let tierMatch = true;
