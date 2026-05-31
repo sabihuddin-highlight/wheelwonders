@@ -298,16 +298,20 @@ function getSimilarCars(currentCar, limit = 3) {
 function renderSimilarCars(car) {
     const container = document.getElementById('similar-cars-list');
     if (!container) return;
-
     const similar = getSimilarCars(car, 3);
     container.innerHTML = similar.map(c => {
         const safeName = c.name.replace(/'/g, "\\'");
+        const category = c.subtitle.split(' / ')[0]?.trim() || '';
         return `
-            <div class="similar-car-item" onclick="openQuickView('${safeName}')" style="display: flex; gap: 10px; background: #0a0a0a; border: 1px solid #222; padding: 10px; cursor: pointer; align-items: center;">
-                <img src="${c.image}" style="width: 60px; height: 45px; object-fit: cover; border: 1px solid #333;" onerror="this.src='https://placehold.co/60x40/222/555?text=MISSING'">
-                <div style="flex-grow: 1; min-width: 0;">
+            <div class="similar-car-item" onclick="openQuickView('${safeName}')">
+                <div style="width: 48px; height: 64px; background: #000; position: relative; overflow: hidden; flex-shrink: 0; border: 1px solid #222;">
+                    <img src="${c.image}" class="card-img-blur" loading="lazy" onerror="this.style.display='none'">
+                    <img src="${c.image}" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" onerror="this.src='https://placehold.co/60x40/222/555?text=MISSING'">
+                </div>
+                <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+                    ${category ? `<span style="color: #666; font-size: 0.65rem; text-transform: uppercase; font-family: 'Chakra Petch'; letter-spacing: 1px;">${category}</span>` : ''}
                     <h4 style="margin: 0; color: #fff; font-size: 0.9rem; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Chakra Petch';">${c.name}</h4>
-                    <p style="margin: 2px 0 0 0; color: var(--bronze); font-size: 0.8rem; font-weight: bold;">RS ${c.price.toLocaleString()}</p>
+                    <p style="margin: 0; color: var(--sakura); font-size: 0.85rem; font-weight: bold; font-family: 'Chakra Petch';">RS ${c.price.toLocaleString()}</p>
                 </div>
             </div>`;
     }).join('');

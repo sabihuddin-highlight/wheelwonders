@@ -485,14 +485,22 @@
         }
 
         .similar-car-item {
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            border-left: 3px solid transparent !important;
+            display: flex;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.02) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+            padding: 12px;
+            cursor: pointer;
+            align-items: center;
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            clip-path: polygon(0 0, 100% 0, 100% 88%, 94% 100%, 0 100%);
+            box-sizing: border-box;
         }
 
         .similar-car-item:hover {
-            background: #111 !important;
+            background: rgba(199, 168, 123, 0.08) !important;
             border-color: var(--bronze) !important;
-            border-left-color: var(--bronze) !important;
+            transform: translateX(4px);
         }
 
         .close-modal {
@@ -1199,6 +1207,6 @@
         setInterval(spawnPetal, 500);
     </script>
 
-    <script src="script.js?v=3.2"></script>
+    <script src="script.js?v=3.3"></script>
 </body>
 </html>
