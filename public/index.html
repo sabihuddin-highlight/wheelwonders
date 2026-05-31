@@ -957,6 +957,20 @@
         /* Scroll-reveal utility (used by JS for About, etc.) */
         .reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.3, 1); }
         .reveal-on-scroll.revealed { opacity: 1; transform: translateY(0); }
+
+        /* Branded WhatsApp button */
+        .whatsapp-btn {
+            width: 100%; padding: 16px;
+            background: #25d366 !important; border: 1px solid #25d366 !important;
+            color: #fff !important; font-family: 'Chakra Petch', sans-serif;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase;
+            display: flex; justify-content: center; align-items: center; gap: 10px; font-weight: 700;
+        }
+        .whatsapp-btn:hover {
+            background: #1ebd56 !important;
+            border-color: #1ebd56 !important;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -1018,6 +1032,7 @@
                 <div class="search-wrap">
                     <i class="fas fa-search"></i>
                     <input type="text" id="search-bar" placeholder="SEARCH JDM DATABASE..." autocomplete="off">
+                    <i class="fas fa-times" id="search-clear" style="display: none; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--bronze); cursor: pointer; z-index: 5; font-size: 1.1rem; transition: color 0.2s;" onmouseover="this.style.color='var(--sakura)'" onmouseout="this.style.color='var(--bronze)'"></i>
                     <div id="suggestions-box"></div>
                 </div>
                 <div class="sort-wrap">
@@ -1079,6 +1094,14 @@
             </div>
         </div>
 
+        <!-- empty state container -->
+        <div id="no-results" style="display: none; text-align: center; padding: 60px 20px; background: var(--panel); border: 1px solid rgba(199, 168, 123, 0.15); clip-path: polygon(0 0, 95% 0, 100% 15%, 100% 100%, 5% 100%, 0 85%); max-width: 600px; margin: 40px auto; box-shadow: 0 0 30px rgba(0,0,0,0.5);">
+            <i class="fas fa-triangle-exclamation" style="font-size: 3rem; color: var(--bronze); margin-bottom: 20px; display: block; text-shadow: 0 0 15px rgba(199, 168, 123, 0.35);"></i>
+            <h3 style="font-family: 'Chakra Petch'; text-transform: uppercase; letter-spacing: 2px; color: #fff; margin: 0 0 10px 0;">No Units Found</h3>
+            <p style="color: #888; font-size: 0.95rem; line-height: 1.6; margin: 0 0 25px 0;">No cars match your current database filter or search query. Try widening your criteria.</p>
+            <button id="reset-filters-btn" class="load-more-btn" style="padding: 12px 30px; font-size: 0.85rem;">RESET FILTERS</button>
+        </div>
+
         <div class="load-more-wrap"><button id="load-more-btn" class="load-more-btn">LOAD MORE UNITS</button></div>
     </div>
 
@@ -1132,6 +1155,10 @@
                 <h3 id="modal-price" style="font-size:2.2rem; color:var(--sakura); margin: 0 0 10px 0;"></h3>
                 <p id="modal-stock" style="font-family: 'Chakra Petch'; font-size: 0.9rem; margin-bottom: 30px;"></p>
                 <button id="modal-buy-btn" class="buy-btn" style="background: var(--bronze); color: #000; border: none; padding: 18px; font-size: 1.2rem;">ADD TO GARAGE</button>
+                <button id="modal-whatsapp-btn" class="whatsapp-btn" style="margin-top: 15px;">
+                    <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i>
+                    <span>INQUIRE ON WHATSAPP</span>
+                </button>
             </div>
             <!-- Similar Cars suggestions column -->
             <div class="modal-suggestions">
@@ -1207,6 +1234,6 @@
         setInterval(spawnPetal, 500);
     </script>
 
-    <script src="script.js?v=3.5"></script>
+    <script src="script.js?v=3.6"></script>
 </body>
 </html>

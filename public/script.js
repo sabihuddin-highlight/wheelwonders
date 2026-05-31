@@ -251,6 +251,13 @@ function renderGrids(carsToDisplay) {
     if (counts.budget > 0 || counts.collectors > 0 || counts.pinnacle > 0) dividers[0].style.display = 'block';
     if (counts.premium > 0) dividers[1].style.display = 'block';
 
+    // Show/hide empty state box based on results count
+    const noResults = document.getElementById('no-results');
+    const hasAnyCars = Object.values(counts).reduce((sum, count) => sum + count, 0) > 0;
+    if (noResults) {
+        noResults.style.display = hasAnyCars ? 'none' : 'block';
+    }
+
     // Refresh Tilt Effects (skip on touch devices — jittery and unhelpful)
     const hasHover = window.matchMedia('(hover: hover)').matches;
     if (typeof VanillaTilt !== 'undefined' && hasHover) {
@@ -284,9 +291,28 @@ const handleSearchInput = debounce(() => {
 
 searchBar.addEventListener('input', handleSearchInput);
 
+// Toggle search clear icon instantly
+searchBar.addEventListener('input', () => {
+    const clearBtn = document.getElementById('search-clear');
+    if (clearBtn) clearBtn.style.display = searchBar.value.length > 0 ? 'block' : 'none';
+});
+
+// Clear button functionality
+const searchClearBtn = document.getElementById('search-clear');
+if (searchClearBtn) {
+    searchClearBtn.addEventListener('click', () => {
+        searchBar.value = '';
+        searchClearBtn.style.display = 'none';
+        suggestionsBox.style.display = 'none';
+        processAndRender();
+    });
+}
+
 function applySuggestion(name) {
     searchBar.value = name;
     suggestionsBox.style.display = 'none';
+    const clearBtn = document.getElementById('search-clear');
+    if (clearBtn) clearBtn.style.display = 'block';
     processAndRender();
 }
 
@@ -369,6 +395,16 @@ function openQuickView(name) {
 
     // Load similar cars suggestions
     renderSimilarCars(car);
+
+    // Setup WhatsApp inquiry
+    const whatsappBtn = document.getElementById('modal-whatsapp-btn');
+    if (whatsappBtn) {
+        const waNumber = "923052254400";
+        const message = `Hi Wheel Wonders! I'm interested in the "${car.name}" (${car.subtitle}) priced at RS ${car.price.toLocaleString()}. Is this item still in stock?`;
+        whatsappBtn.onclick = () => {
+            window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        };
+    }
 
     const modal = document.getElementById('quick-view');
     modal.style.display = 'block';
@@ -476,6 +512,32 @@ document.getElementById('cart-btn').onclick = () => {
     const panel = document.getElementById('cart-panel');
     panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
 };
+
+// Reset all catalog filters to default
+function resetAllFilters() {
+    document.getElementById('search-bar').value = '';
+    const clearBtn = document.getElementById('search-clear');
+    if (clearBtn) clearBtn.style.display = 'none';
+    document.getElementById('suggestions-box').style.display = 'none';
+    document.getElementById('sort-price').value = 'default';
+    document.getElementById('price-slider').value = 15000;
+    document.getElementById('price-val').innerText = '15,000';
+    document.getElementById('brand-filter').value = 'all';
+    document.getElementById('stock-toggle').checked = false;
+    
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.filter === 'all') btn.classList.add('active');
+    });
+    
+    displayLimit = 12;
+    processAndRender();
+}
+
+const resetBtn = document.getElementById('reset-filters-btn');
+if (resetBtn) {
+    resetBtn.addEventListener('click', resetAllFilters);
+}
 
 // Startup Sequence
 document.addEventListener('DOMContentLoaded', () => {
