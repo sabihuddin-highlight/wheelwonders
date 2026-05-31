@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHEEL WONDERS // JDM LEGACY</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* --- CORE AESTHETIC --- */
+        :root {
+            --bronze: #c7a87b;
+            --sakura: #ffb7c5;
+            --sakura-dim: #ff8ea6;
+            --dark: #0f0f0f;
+            --panel: #161616;
+            --neon-glitch: #0ff;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--dark);
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            cursor: default;
+        }
+
+        /* --- MOUSE SPOTLIGHT --- */
+        .spotlight {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: radial-gradient(800px circle at var(--x) var(--y), rgba(255,255,255,0.04), transparent 40%);
+            mix-blend-mode: overlay;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+            opacity: 0.6;
+        }
+
+        #sakura-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .sakura-petal {
+            position: absolute;
+            background: linear-gradient(to bottom right, var(--sakura), var(--sakura-dim));
+            border-radius: 100% 0 100% 0;
+            opacity: 0.8;
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+        }
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+        @keyframes sway { from { margin-left: -20px; } to { margin-left: 20px; } }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            position: fixed;
+            top: 0; width: 100%; z-index: 100;
+            box-sizing: border-box;
+            transition: padding 0.3s ease, background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+        nav.scrolled {
+            padding: 14px 50px;
+            background: rgba(10, 10, 10, 0.82);
+            backdrop-filter: blur(14px);
+            border-bottom-color: rgba(199, 168, 123, 0.18);
+        }
+
+        .nav-logo img {
+            height: 45px;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+            transition: height 0.3s ease;
+        }
+        nav.scrolled .nav-logo img { height: 34px; }
+
+        .menu-btn, #cart-btn {
+            font-size: 1.2rem;
+            color: var(--bronze);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .menu-btn:hover, #cart-btn:hover { color: var(--sakura); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            position: relative;
+            background: radial-gradient(circle at 80% 50%, rgba(30,30,30,0.6) 0%, rgba(10,10,10,1) 90%);
+            overflow: hidden;
+            border-bottom: 2px solid var(--bronze);
+        }
+
+        .hero h1 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(4rem, 10vw, 9rem);
+            line-height: 0.9;
+            font-weight: 700;
+            margin: 0;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            position: relative;
+        }
+
+        .hero h1::before, .hero h1::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark);
+        }
+
+        .hero h1::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        .hero h1::after {
+            left: -2px;
+            text-shadow: -2px 0 #00fff9;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(14px, 9999px, 121px, 0); }
+            100% { clip: rect(56px, 9999px, 49px, 0); }
+        }
+        
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(65px, 9999px, 109px, 0); }
+            100% { clip: rect(100px, 9999px, 89px, 0); }
+        }
+
+        .hero h1 .highlight {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--bronze);
+        }
+
+        .subtitle {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.2rem;
+            color: #888;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        /* --- CONTROL PANEL FIX --- */
+        .catalog {
+            padding: 50px 5%;
+            background: #0a0a0a;
+            position: relative;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 50px;
+            background: var(--panel);
+            padding: 35px;
+            border: 1px solid rgba(199, 168, 123, 0.15);
+            clip-path: polygon(0 0, 98% 0, 100% 15%, 100% 100%, 2% 100%, 0 85%);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .inputs-row {
+            display: flex;
+            gap: 30px; /* Increased gap for breathing room */
+            width: 100%;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        /* Dash Inputs Styling */
+        .search-wrap { flex: 2; min-width: 300px; position: relative; }
+        .sort-wrap { flex: 1; min-width: 200px; position: relative; }
+        .brand-wrap { flex: 1.2; min-width: 220px; position: relative; }
+
+        #search-bar, #sort-price, #brand-filter {
+            width: 90%;
+            background: #0a0a0a !important;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px 15px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            outline: none;
+            transition: 0.3s ease;
+            appearance: none;
+        }
+
+        #search-bar { padding-left: 45px; }
+
+        .search-wrap i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--bronze);
+            z-index: 5;
+        }
+
+        /* Custom Bronze Arrows */
+        .sort-wrap::after, .brand-wrap::after {
+            content: '\f107'; 
+            font-family: 'Font Awesome 6 Free'; 
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--bronze);
+            pointer-events: none;
+        }
+
+        #search-bar:focus, #sort-price:focus, #brand-filter:focus {
+            border-color: var(--bronze);
+            box-shadow: 0 0 15px rgba(199, 168, 123, 0.1);
+        }
+
+        /* Suggestion Box */
+        #suggestions-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #0f0f0f;
+            border: 1px solid var(--bronze);
+            border-top: none;
+            z-index: 500;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #1a1a1a;
+            color: #aaa;
+            transition: 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(199, 168, 123, 0.1);
+            color: #fff;
+        }
+
+        /* Slider Fix: Increased min-width and added container padding */
+        .price-range-wrap {
+            flex: 2;
+            min-width: 300px; /* Wider min-width prevents it from being squashed */
+            padding-right: 15px; /* Creates a safe-zone for the slider thumb */
+            box-sizing: border-box;
+        }
+
+        .price-range-wrap label {
+            display: block;
+            color: var(--bronze);
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #price-slider {
+            width: 100%;
+            height: 4px;
+            background: #222;
+            appearance: none;
+            outline: none;
+            border-radius: 2px;
+        }
+
+        #price-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--bronze);
+            border: 3px solid #000;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(199, 168, 123, 0.5);
+            transition: 0.2s;
+        }
+
+        #price-slider::-webkit-slider-thumb:hover { transform: scale(1.2); background: #fff; }
+
+        /* Toggle Switch */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 0.8;
+            min-width: 160px;
+        }
+
+        .toggle-label {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider-toggle {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider-toggle:before {
+            position: absolute;
+            content: "";
+            height: 16px; width: 16px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider-toggle { background-color: var(--bronze); }
+        input:checked + .slider-toggle:before { transform: translateX(22px); }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-top: 1px solid #222;
+            padding-top: 25px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+            padding: 10px 20px;
+            font-family: 'Chakra Petch', sans-serif;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--bronze);
+            color: #000;
+            border-color: var(--bronze);
+        }
+
+        /* --- GRID & CARDS --- */
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: var(--panel);
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            border-left: 2px solid rgba(255,255,255,0.05);
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+            cursor: pointer;
+        }
+
+        .card-inner { padding: 20px; transform: translateZ(20px); }
+
+        .card-img-container {
+            width: 100%;
+            height: 200px;
+            background: #000;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img {
+            position: relative;
+            z-index: 2;
+            width: 100%; height: 100%;
+            object-fit: contain;
+            transition: 0.5s;
+        }
+        .card:hover .card-img { transform: scale(1.08); }
+        
+        .card-img-blur {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: blur(12px) opacity(0.45);
+            transform: scale(1.15);
+            pointer-events: none;
+            z-index: 1;
+            transition: 0.5s;
+        }
+        .card:hover .card-img-blur { transform: scale(1.22); }
+
+        /* --- QUICK VIEW MODAL --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: var(--panel);
+            margin: 5vh auto;
+            padding: 40px;
+            width: 85%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            border: 1px solid var(--bronze);
+            position: relative;
+            display: flex;
+            gap: 40px;
+            clip-path: polygon(0 0, 95% 0, 100% 10%, 100% 100%, 5% 100%, 0 90%);
+        }
+
+        /* Similar Cars styling */
+        .modal-suggestions {
+            flex: 0.9;
+            border-left: 1px solid #333;
+            padding-left: 30px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .similar-car-item {
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            border-left: 3px solid transparent !important;
+        }
+
+        .similar-car-item:hover {
+            background: #111 !important;
+            border-color: var(--bronze) !important;
+            border-left-color: var(--bronze) !important;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 25px; top: 15px;
+            font-size: 2.2rem;
+            cursor: pointer;
+            color: var(--bronze);
+            z-index: 2;
+        }
+
+        .modal-left { flex: 1.2; }
+        .modal-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
+        .modal-img { width: 100%; max-height: 45vh; object-fit: contain; border: 1px solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+
+        /* --- LOAD MORE --- */
+        .load-more-wrap { text-align: center; padding: 40px 0 100px; }
+        .load-more-btn {
+            background: transparent;
+            border: 1px solid var(--bronze);
+            color: var(--bronze);
+            padding: 15px 45px;
+            font-family: 'Chakra Petch', sans-serif;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .load-more-btn:hover { background: var(--bronze); color: #000; }
+
+        .buy-btn {
+            width: 100%; padding: 12px;
+            background: transparent; border: 1px solid #333;
+            color: #fff; font-family: 'Chakra Petch', sans-serif;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase;
+            display: flex; justify-content: space-between; font-weight: 700;
+        }
+
+        .buy-btn:hover { background: #fff; color: #000; border-color: #fff; }
+
+        .section-header { display: flex; align-items: center; margin-bottom: 60px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .section-title { font-family: 'Chakra Petch', sans-serif; font-size: 2.5rem; margin-right: 20px; text-transform: uppercase; font-weight: 700; }
+        .section-divider { text-align: center; color: #fff; font-family: 'Chakra Petch', sans-serif; letter-spacing: 8px; font-size: 2rem; margin-bottom: 60px; opacity: 0.8; }
+
+        /* === HERO CTA BUTTON === */
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 34px;
+            padding: 16px 30px;
+            background: transparent;
+            color: var(--bronze);
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid var(--bronze);
+            clip-path: polygon(0 0, 94% 0, 100% 50%, 94% 100%, 0 100%);
+            transition: background 0.3s ease, color 0.3s ease, padding-right 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            opacity: 0;
+            animation: hero-entrance 0.8s cubic-bezier(0.2, 0.8, 0.3, 1) 0.85s forwards;
+            align-self: flex-start;
+        }
+        .hero-cta:hover {
+            background: var(--bronze);
+            color: #000;
+            padding-right: 42px;
+            box-shadow: 0 0 30px rgba(199, 168, 123, 0.35);
+        }
+        .hero-cta i { transition: transform 0.3s; }
+        .hero-cta:hover i { transform: translateX(6px); }
+
+        /* === TRUST / STATS STRIP === */
+        .trust-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 55px;
+            padding: 28px 5%;
+            background: linear-gradient(90deg, #0a0a0a 0%, #121212 50%, #0a0a0a 100%);
+            border-top: 1px solid rgba(199, 168, 123, 0.15);
+            border-bottom: 1px solid rgba(199, 168, 123, 0.15);
+            flex-wrap: wrap;
+        }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #a0a0a0;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .trust-item i {
+            color: var(--bronze);
+            font-size: 1.15rem;
+            filter: drop-shadow(0 0 6px rgba(199, 168, 123, 0.35));
+        }
+        .trust-item strong { color: #fff; font-weight: 700; }
+
+        /* === CARD TIER BADGE === */
+        .tier-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 5;
+            padding: 4px 12px;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(4px);
+            border: 1px solid currentColor;
+            pointer-events: none;
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 90% 100%, 0 100%);
+        }
+        .tier-budget     { color: #9fb0c4; }
+        .tier-collectors { color: var(--bronze); }
+        .tier-pinnacle   { color: var(--sakura); }
+        .tier-premium    { color: var(--neon-glitch); }
+        .tier-badge.tier-premium { text-shadow: 0 0 10px rgba(0, 255, 255, 0.6); }
+
+        /* === FOOTER === */
+        .site-footer {
+            background: #080808;
+            border-top: 1px solid rgba(199, 168, 123, 0.18);
+            padding: 70px 8% 30px;
+            position: relative;
+        }
+        .site-footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 180px; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--bronze), transparent);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto 50px;
+        }
+        .footer-col h4 {
+            font-family: 'Chakra Petch', sans-serif;
+            color: var(--bronze);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin: 0 0 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(199, 168, 123, 0.15);
+        }
+        .footer-col p {
+            color: #888;
+            line-height: 1.65;
+            font-size: 0.95rem;
+            margin: 0 0 14px;
+        }
+        .footer-brand-tag {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            margin-bottom: 14px;
+        }
+        .footer-brand-tag span { color: var(--sakura); }
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-col li {
+            margin-bottom: 10px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .footer-col li i { width: 20px; color: var(--bronze); margin-right: 8px; }
+        .footer-col a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.25s ease, padding-left 0.25s ease;
+            display: inline-block;
+        }
+        .footer-col a:hover {
+            color: var(--sakura);
+            padding-left: 4px;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .footer-bottom p {
+            color: #555;
+            font-size: 0.8rem;
+            font-family: 'Chakra Petch', sans-serif;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* Improve filter active state */
+        .filter-btn.active {
+            box-shadow: 0 0 18px rgba(199, 168, 123, 0.35);
+        }
+
+        @media (max-width: 850px) {
+            .modal-content {
+                flex-direction: column;
+                margin: 4vh auto;
+                padding: 22px;
+                width: 92%;
+                gap: 20px;
+                max-height: 92vh;
+            }
+            .modal-suggestions {
+                border-left: none;
+                border-top: 1px solid #333;
+                padding-left: 0;
+                padding-top: 20px;
+                margin-top: 10px;
+            }
+            .modal-img { max-height: 38vh; }
+            #modal-name { font-size: 1.9rem !important; }
+            #modal-price { font-size: 1.7rem !important; }
+            .close-modal { right: 15px; top: 10px; font-size: 2rem; }
+
+            .hero { padding: 0 6%; }
+            .hero h1 { font-size: 3.5rem; letter-spacing: -1px; }
+            nav { padding: 18px 20px; }
+            .nav-logo img { height: 38px; }
+
+            #cart-panel { top: 70px; right: 12px !important; left: 12px; min-width: 0 !important; padding: 20px !important; }
+
+            .catalog { padding: 40px 5%; }
+            .controls-panel { padding: 22px; clip-path: none; }
+            .search-wrap, .sort-wrap, .brand-wrap, .price-range-wrap { min-width: 100% !important; flex: 1 1 100% !important; }
+            .toggle-wrap { min-width: 100% !important; justify-content: flex-start; }
+            #search-bar, #sort-price, #brand-filter { width: 100% !important; box-sizing: border-box; }
+
+            .section-title { font-size: 1.8rem !important; }
+            .tier-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+
+            .about-section { padding: 60px 6% 70px; }
+            .about-title { letter-spacing: 2px; }
+            .about-grid { gap: 20px; }
+            .about-card { padding: 28px 22px; }
+
+            .cart-floater { font-size: 1.1rem; }
+
+            nav.scrolled { padding: 12px 20px; }
+            .trust-bar { gap: 22px; padding: 22px 5%; }
+            .trust-item { font-size: 0.75rem; letter-spacing: 1.5px; }
+            .hero-cta { font-size: 0.85rem; padding: 14px 26px; }
+
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 35px; }
+            .site-footer { padding: 55px 6% 25px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+
+            .tier-badge { top: 10px; right: 10px; font-size: 0.55rem; padding: 3px 9px; }
+        }
+
+        @media (max-width: 500px) {
+            nav { padding: 14px 14px; }
+            .nav-logo img { height: 30px; }
+            .hero { padding: 0 5%; }
+            .hero h1 { font-size: 2.6rem; }
+            .subtitle { font-size: 0.9rem; letter-spacing: 2px; }
+
+            .catalog { padding: 30px 4%; }
+            .controls-panel { padding: 18px; }
+            .filter-btn { padding: 8px 14px; font-size: 0.75rem; }
+            .tier-grid { grid-template-columns: 1fr; }
+
+            .modal-content { padding: 18px; margin: 2vh auto; width: 94%; }
+            .modal-img { max-height: 32vh; }
+            #modal-name { font-size: 1.55rem !important; }
+            #modal-price { font-size: 1.4rem !important; }
+            #modal-buy-btn { padding: 14px !important; font-size: 1rem !important; }
+            .close-modal { font-size: 1.7rem; top: 6px; right: 12px; }
+
+            .about-section { padding: 50px 5% 60px; }
+            .about-title { font-size: 1.8rem; letter-spacing: 1px; }
+            .about-sub { font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 35px; }
+            .about-copy { font-size: 0.95rem; line-height: 1.65; }
+
+            .section-header { margin-bottom: 30px; }
+            .section-divider { font-size: 1.3rem; letter-spacing: 4px; margin-bottom: 35px; }
+
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+            .trust-bar { gap: 16px; }
+            .trust-item { font-size: 0.7rem; flex: 1 1 45%; justify-content: center; }
+            .hero-cta { margin-top: 24px; padding: 13px 22px; font-size: 0.8rem; letter-spacing: 2px; }
+        }
+
+        /* On touch devices, tilt is skipped in JS; keep card flat */
+
+        /* === ANIMATION ENHANCEMENTS === */
+
+        /* Hero entrance */
+        .hero-content, .hero-badges {
+            opacity: 0;
+            animation: hero-entrance 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) 0.1s forwards;
+        }
+        .hero-badges { animation-delay: 0.55s; animation-duration: 0.7s; }
+        @keyframes hero-entrance {
+            from { opacity: 0; transform: translateY(22px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card scroll-reveal (stagger applied via JS transitionDelay) */
+        .card-inner {
+            transition: opacity 0.32s ease, transform 0.32s ease;
+        }
+        .card:not(.revealed) .card-inner {
+            opacity: 0;
+            transform: translateZ(20px) translateY(18px);
+        }
+
+        /* Image fade-in on load */
+        .card-img { opacity: 0; transition: opacity 0.4s ease, transform 0.5s ease; }
+        .card-img.loaded { opacity: 1; }
+        .card-img.loaded.sold-out { opacity: 0.3; }
+        .card:hover .card-img.loaded { transform: scale(1.1); }
+        .card:hover .card-img.loaded.sold-out { opacity: 0.4; }
+
+        /* Showroom fade-swap on filter change */
+        #showroom { transition: opacity 0.12s ease; }
+
+        /* Modal entrance/exit */
+        .modal { opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+        .modal.active { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            transform: scale(0.94) translateY(14px);
+            opacity: 0;
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.15), opacity 0.3s ease;
+        }
+        .modal.active .modal-content { transform: scale(1) translateY(0); opacity: 1; }
+
+        /* Cart count pulse */
+        @keyframes cart-pulse {
+            0%, 100% { transform: scale(1); }
+            45%      { transform: scale(1.55); color: #fff; text-shadow: 0 0 12px var(--sakura); }
+        }
+        #cart-count { display: inline-block; transition: color 0.3s; }
+        #cart-count.pulse { animation: cart-pulse 0.5s ease; }
+
+        /* Floating +1 on add-to-cart */
+        .cart-floater {
+            position: fixed;
+            pointer-events: none;
+            color: var(--sakura);
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            z-index: 9999;
+            text-shadow: 0 0 12px rgba(255, 183, 197, 0.7);
+            animation: cart-floater-anim 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+        }
+        @keyframes cart-floater-anim {
+            0%   { opacity: 1; transform: translate(-50%, 0) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -55px) scale(1.3); }
+        }
+
+        /* About Us section */
+        .about-section {
+            padding: 100px 8% 120px;
+            background: linear-gradient(180deg, #0a0a0a 0%, #111 100%);
+            border-top: 1px solid rgba(199, 168, 123, 0.15);
+            position: relative;
+        }
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 120px; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--bronze), transparent);
+        }
+        .about-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #fff;
+            text-align: center;
+            margin: 0 0 20px;
+        }
+        .about-title span { color: var(--bronze); }
+        .about-sub {
+            text-align: center;
+            color: #888;
+            letter-spacing: 3px;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 60px;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto 60px;
+        }
+        .about-card {
+            background: var(--panel);
+            padding: 35px 28px;
+            border-top: 2px solid var(--bronze);
+            clip-path: polygon(0 0, 100% 0, 100% 92%, 92% 100%, 0 100%);
+            transition: transform 0.35s ease, border-color 0.35s ease;
+        }
+        .about-card:hover { transform: translateY(-6px); border-top-color: var(--sakura); }
+        .about-card i {
+            font-size: 1.8rem; color: var(--bronze); margin-bottom: 18px;
+            display: block;
+        }
+        .about-card h3 {
+            font-family: 'Chakra Petch', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 12px;
+            color: #fff;
+            font-size: 1.05rem;
+        }
+        .about-card p {
+            color: #9a9a9a; line-height: 1.65; font-size: 0.95rem; margin: 0;
+        }
+        .about-copy {
+            max-width: 820px; margin: 0 auto; text-align: center;
+            color: #c5c5c5; line-height: 1.8; font-size: 1.05rem;
+        }
+        .about-copy p + p { margin-top: 18px; }
+
+        /* Scroll-reveal utility (used by JS for About, etc.) */
+        .reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.3, 1); }
+        .reveal-on-scroll.revealed { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-overlay"></div>
+    <div class="spotlight"></div>
+    <div id="sakura-container"></div>
+
+    <nav>
+        <div class="nav-logo">
+            <img src="images/logo.png" alt="Wheel Wonders" onerror="this.onerror=null; this.src='images/logo.jpg';">
+        </div>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <div id="cart-btn" style="cursor:pointer; font-family: 'Chakra Petch', sans-serif; font-weight: bold; letter-spacing: 1px;">
+                GARAGE (<span id="cart-count" style="color: var(--sakura);">0</span>)
+            </div>
+            <div class="menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <div id="cart-panel" style="position: fixed; top: 80px; right: 50px; background: var(--panel); border: 1px solid var(--bronze); padding: 25px; z-index: 200; display: none; min-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+        <h3 style="margin-top:0; color: #fff; font-family: 'Chakra Petch'; border-bottom: 1px solid #333; padding-bottom: 10px;">YOUR GARAGE</h3>
+        <ul id="cart-items" style="list-style: none; padding: 0; font-size: 0.9rem;"></ul>
+        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-top: 20px;">
+            <span>TOTAL:</span>
+            <span style="color: var(--sakura);">RS <span id="cart-total">0</span></span>
+        </div>
+        <button id="checkout-btn" onclick="window.location.href='billing.html'" class="buy-btn" style="margin-top: 20px; background: var(--bronze); color: #000; border: none;">PROCEED TO BILLING</button>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 data-text="WHEEL WONDERS">
+                <span class="highlight">WHEEL</span><br>
+                WONDERS
+            </h1>
+            <div class="hero-badges">
+                <div class="subtitle">// EST. 2024 // JDM COLLECTION</div>
+            </div>
+            <a href="#showroom" class="hero-cta">
+                <span>ENTER THE GARAGE</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <section class="trust-bar">
+        <div class="trust-item"><i class="fas fa-warehouse"></i> <span><strong>200+</strong> Units in Vault</span></div>
+        <div class="trust-item"><i class="fas fa-box"></i> <span>Factory Sealed</span></div>
+        <div class="trust-item"><i class="fas fa-truck-fast"></i> <span>Nationwide Delivery</span></div>
+        <div class="trust-item"><i class="fas fa-shield-halved"></i> <span>Verified Authentic</span></div>
+    </section>
+
+    <div class="catalog">
+
+        <div class="controls-panel">
+            <!-- ROW 1 -->
+            <div class="inputs-row">
+                <div class="search-wrap">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-bar" placeholder="SEARCH JDM DATABASE..." autocomplete="off">
+                    <div id="suggestions-box"></div>
+                </div>
+                <div class="sort-wrap">
+                    <select id="sort-price">
+                        <option value="default">SORT: DEFAULT</option>
+                        <option value="low">PRICE: LOW TO HIGH</option>
+                        <option value="high">PRICE: HIGH TO LOW</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ROW 2 -->
+            <div class="inputs-row">
+                <div class="price-range-wrap">
+                    <label>MAX PRICE: RS <span id="price-val">15,000</span></label>
+                    <input type="range" id="price-slider" min="0" max="15000" step="100" value="15000">
+                </div>
+                <div class="brand-wrap">
+                    <select id="brand-filter">
+                        <option value="all">ALL BRANDS</option>
+                    </select>
+                </div>
+                <div class="toggle-wrap">
+                    <span class="toggle-label">IN STOCK ONLY</span>
+                    <label class="switch">
+                        <input type="checkbox" id="stock-toggle">
+                        <span class="slider-toggle"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-filter="all">ALL UNITS</button>
+                <button class="filter-btn" data-filter="budget">BUDGET</button>
+                <button class="filter-btn" data-filter="collectors">COLLECTORS</button>
+                <button class="filter-btn" data-filter="pinnacle">PINNACLE</button>
+                <button class="filter-btn" data-filter="premium">PREMIUM</button>
+            </div>
+        </div>
+
+        <div id="showroom">
+            <div class="section-divider">// HOTWHEELS MAINLINES //</div>
+            <div class="budget-tier">
+                <div class="section-header"><h2 class="section-title">01 // BUDGET SLEEPER</h2><div style="flex-grow:1; height:1px; background: #333;"></div></div>
+                <div class="tier-grid" id="grid-budget"></div>
+            </div>
+            <div class="collectors-tier">
+                <div class="section-header"><h2 class="section-title">02 // THE COLLECTORS CUT</h2><div style="flex-grow:1; height:1px; background: #333;"></div></div>
+                <div class="tier-grid" id="grid-collectors"></div>
+            </div>
+            <div class="pinnacle-tier">
+                <div class="section-header"><h2 class="section-title">03 // THE PINNACLE</h2><div style="flex-grow:1; height:1px; background: #333;"></div></div>
+                <div class="tier-grid" id="grid-pinnacle"></div>
+            </div>
+            <div class="section-divider" style="color: var(--neon-glitch); text-shadow: 0 0 10px rgba(0,255,255,0.4); margin-top: 40px;">// EXCLUSIVES //</div>
+            <div class="premium-tier">
+                <div class="section-header"><h2 class="section-title">04 // HOT WHEELS PREMIUM</h2><div style="flex-grow:1; height:1px; background: #333;"></div></div>
+                <div class="tier-grid" id="grid-premium"></div>
+            </div>
+        </div>
+
+        <div class="load-more-wrap"><button id="load-more-btn" class="load-more-btn">LOAD MORE UNITS</button></div>
+    </div>
+
+    <!-- ABOUT US -->
+    <section class="about-section" id="about">
+        <h2 class="about-title reveal-on-scroll">// <span>ABOUT</span> THE GARAGE</h2>
+        <p class="about-sub reveal-on-scroll">// WHO WE ARE // WHAT WE DRIVE //</p>
+
+        <div class="about-grid">
+            <div class="about-card reveal-on-scroll">
+                <i class="fas fa-bolt"></i>
+                <h3>Curated Catalog</h3>
+                <p>Every unit in the vault is hand-picked — from '90s JDM icons and Japanese mainlines to modern hypercars and limited premiums. No shelf-warmers, just the cars collectors actually chase.</p>
+            </div>
+            <div class="about-card reveal-on-scroll">
+                <i class="fas fa-shield-halved"></i>
+                <h3>Authentic &amp; Sealed</h3>
+                <p>Every car is factory-sealed and condition-checked before it goes live on the site. What you see in the photo is exactly what ships — no swaps, no reboxes, no surprises.</p>
+            </div>
+            <div class="about-card reveal-on-scroll">
+                <i class="fas fa-truck-fast"></i>
+                <h3>Nationwide Delivery</h3>
+                <p>Tracked dispatch across Pakistan with protective foam packaging on every order. Confirmed orders ship the same or next working day so your cards arrive corners-intact.</p>
+            </div>
+            <div class="about-card reveal-on-scroll">
+                <i class="fas fa-comments"></i>
+                <h3>Talk to a Collector</h3>
+                <p>Direct line to the shop on WhatsApp — no bots, no forms. Drop a message for pre-orders, restock alerts, trade inquiries, or just to geek out about the newest drop.</p>
+            </div>
+        </div>
+
+        <div class="about-copy reveal-on-scroll">
+            <p>Wheel Wonders started as a personal collection that outgrew the shelf. What began as one collector hunting down Japan-market mainlines and hard-to-find premium releases grew into a curated shop for every Pakistani diecast enthusiast who wants more than what the local store happens to stock.</p>
+            <p>Whether you're chasing a specific Super Treasure Hunt, building out a Kaido House diorama, or finally picking up the R34 your teenage self couldn't find — this garage is here to help you track it down.</p>
+        </div>
+    </section>
+
+    <!-- QUICK VIEW MODAL -->
+    <div id="quick-view" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-left">
+                <img id="modal-img" class="modal-img" src="">
+            </div>
+            <div class="modal-right">
+                <h2 id="modal-name" style="color:#fff; font-size:2.2rem; margin:0 0 10px 0; text-transform: uppercase; font-family: 'Chakra Petch';"></h2>
+                <p id="modal-subtitle" style="color:var(--bronze); letter-spacing:3px; font-weight: bold; margin-bottom: 20px;"></p>
+                <div style="border-top: 1px solid #333; padding-top: 20px; margin-bottom: 25px;">
+                    <p style="color: #aaa; line-height: 1.6;">Authentic JDM scale model. Detailed interior, precision paint job, and premium wheels. A must-have for every serious collector's vault.</p>
+                </div>
+                <h3 id="modal-price" style="font-size:2.2rem; color:var(--sakura); margin: 0 0 10px 0;"></h3>
+                <p id="modal-stock" style="font-family: 'Chakra Petch'; font-size: 0.9rem; margin-bottom: 30px;"></p>
+                <button id="modal-buy-btn" class="buy-btn" style="background: var(--bronze); color: #000; border: none; padding: 18px; font-size: 1.2rem;">ADD TO GARAGE</button>
+            </div>
+            <!-- Similar Cars suggestions column -->
+            <div class="modal-suggestions">
+                <h3 style="color: var(--bronze); font-family: 'Chakra Petch'; margin: 0 0 15px 0; border-bottom: 1px solid #333; padding-bottom: 10px; font-size: 1.1rem; letter-spacing: 1.5px; text-transform: uppercase;">Similar Models</h3>
+                <div id="similar-cars-list" style="display: flex; flex-direction: column; gap: 15px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand-tag">WHEEL <span>WONDERS</span></div>
+                <p>Curated diecast collection for Pakistani enthusiasts. Every unit in the vault is hand-picked — from Japan-market mainlines to limited premium releases.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="#showroom">Catalog</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="billing.html">Checkout</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="https://wa.me/923052254400" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i>WhatsApp</a></li>
+                    <li><a href="mailto:muhammad808alvi@gmail.com"><i class="fas fa-envelope"></i>Email Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Payment</h4>
+                <ul>
+                    <li><i class="fas fa-building-columns"></i>Bank Transfer</li>
+                    <li><i class="fas fa-money-bill-wave"></i>Cash on Delivery</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Wheel Wonders · All rights reserved</p>
+            <p>Crafted in Pakistan · Built for collectors</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    <script>
+        const spotlight = document.querySelector('.spotlight');
+        document.addEventListener('mousemove', (e) => {
+            spotlight.style.setProperty('--x', e.clientX + 'px');
+            spotlight.style.setProperty('--y', e.clientY + 'px');
+        });
+
+        // Sticky nav: shrink + blurred background after scrolling past hero
+        const navEl = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) navEl.classList.add('scrolled');
+            else navEl.classList.remove('scrolled');
+        }, { passive: true });
+
+        const container = document.getElementById('sakura-container');
+        function spawnPetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('sakura-petal');
+            const size = Math.random() * 10 + 5 + 'px';
+            petal.style.width = size; petal.style.height = size;
+            petal.style.left = Math.random() * 100 + 'vw';
+            const fallTime = Math.random() * 10 + 10 + 's';
+            petal.style.animationDuration = `${fallTime}, 4s`;
+            container.appendChild(petal);
+            setTimeout(() => petal.remove(), parseFloat(fallTime) * 1000);
+        }
+        setInterval(spawnPetal, 500);
+    </script>
+
+    <script src="script.js?v=3.2"></script>
+</body>
+</html>

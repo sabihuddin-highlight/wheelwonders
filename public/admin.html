@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN VAULT // WHEEL WONDERS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root { --bronze: #c7a87b; --dark: #0f0f0f; --panel: #161616; --danger: #ff4444; --success: #00C851; --info: #33b5e5; }
+        body { background: var(--dark); color: #fff; font-family: 'Rajdhani', sans-serif; padding: 40px; margin: 0; }
+        .container { max-width: 900px; margin: auto; background: var(--panel); padding: 30px; border-top: 3px solid var(--bronze); box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative; min-height: 500px; }
+        h1 { font-family: 'Chakra Petch'; text-align: center; color: var(--bronze); letter-spacing: 2px; }
+        
+        /* Login UI */
+        #login-screen { text-align: center; margin-top: 50px; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: #fff; box-sizing: border-box; font-family: 'Rajdhani'; font-size: 1rem; }
+        input[type="file"] { background: #222; cursor: pointer; padding: 9px; }
+        input:focus, select:focus { outline: none; border-color: var(--bronze); }
+        
+        button { width: 100%; padding: 15px; background: var(--bronze); color: #000; font-weight: bold; border: none; cursor: pointer; text-transform: uppercase; font-family: 'Chakra Petch'; transition: 0.3s;}
+        button:hover { background: #fff; }
+        
+        /* Dashboard UI */
+        #dashboard { display: none; }
+        .tab-nav { display: flex; margin-bottom: 30px; border-bottom: 1px solid #333; }
+        .tab-btn { background: transparent; color: #888; border: none; padding: 15px; font-size: 1.1rem; flex: 1; border-bottom: 3px solid transparent; cursor: pointer; }
+        .tab-btn.active { color: var(--bronze); border-bottom: 3px solid var(--bronze); background: rgba(199, 168, 123, 0.05); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .inventory-item { display: flex; justify-content: space-between; background: #0a0a0a; padding: 15px; margin-bottom: 10px; border: 1px solid #222; align-items: center;}
+        
+        .action-btns { display: flex; gap: 5px; }
+        .btn-danger { background: var(--danger); color: #fff; padding: 10px; width: 40px; }
+        .btn-edit { background: var(--info); color: #fff; padding: 10px; width: 40px; }
+
+        .stock-controls { display: flex; align-items: center; gap: 10px; background: #161616; padding: 5px 10px; border: 1px solid #333; margin-right: 15px; }
+        .btn-stock { background: transparent; color: var(--bronze); border: 1px solid var(--bronze); width: 30px; height: 30px; padding: 0; display: flex; justify-content: center; align-items: center; }
+        .stock-number { font-weight: bold; font-size: 1.2rem; min-width: 30px; text-align: center; }
+
+        .image-preview { width: 60px; height: 40px; object-fit: cover; border: 1px solid #444; margin-right: 15px; }
+        .car-info-wrapper { display: flex; align-items: center; }
+
+        /* Modal */
+        #edit-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 100; padding: 30px; box-sizing: border-box; overflow-y: auto; }
+        .modal-content { background: var(--panel); padding: 30px; border: 1px solid var(--bronze); position: relative; }
+
+        /* Analytics */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: #0a0a0a; border: 1px solid #222; border-left: 3px solid var(--bronze); padding: 18px 20px; }
+        .stat-card .label { color: #888; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; font-family: 'Chakra Petch', sans-serif; margin-bottom: 6px; }
+        .stat-card .value { color: #fff; font-size: 1.8rem; font-weight: 700; font-family: 'Chakra Petch', sans-serif; }
+        .stat-card .sub { color: var(--bronze); font-size: 0.75rem; margin-top: 2px; }
+        .analytics-block { background: #0a0a0a; border: 1px solid #222; padding: 20px; margin-bottom: 20px; }
+        .analytics-block h4 { margin: 0 0 15px; color: var(--bronze); font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
+        .analytics-block table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .analytics-block th, .analytics-block td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #1a1a1a; }
+        .analytics-block th { color: #666; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; }
+        .analytics-block td { color: #ccc; }
+        .analytics-block td.num { text-align: right; color: var(--bronze); font-weight: 700; }
+        .analytics-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chart-wrap { position: relative; height: 260px; }
+        .device-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #1a1a1a; }
+        .device-row:last-child { border-bottom: none; }
+        .device-bar { flex: 1; height: 6px; background: #1a1a1a; margin: 0 12px; position: relative; overflow: hidden; }
+        .device-bar div { position: absolute; top: 0; left: 0; bottom: 0; background: var(--bronze); transition: width 0.5s ease; }
+        @media (max-width: 700px) {
+            .analytics-two-col { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 20px 12px; }
+            .container { padding: 20px 16px; }
+            .form-row { grid-template-columns: 1fr; }
+            .inventory-item { flex-direction: column; align-items: stretch; gap: 12px; }
+            .car-info-wrapper { align-items: flex-start; }
+            #edit-modal { padding: 15px; }
+            .modal-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>// SYSTEM OVERRIDE //</h1>
+        
+        <div id="login-screen">
+            <p style="color: #888; text-transform: uppercase; letter-spacing: 1px;">Biometric or Passcode Required</p>
+            <input type="password" id="admin-pass" placeholder="ENTER MASTER PASSCODE...">
+            <button onclick="checkAccess()">AUTH & UNLOCK</button>
+        </div>
+
+        <div id="dashboard">
+            <div class="tab-nav">
+                <button class="tab-btn active" id="btn-inventory" onclick="switchTab('inventory')"><i class="fas fa-car"></i> GARAGE</button>
+                <button class="tab-btn" id="btn-orders" onclick="switchTab('orders')"><i class="fas fa-list"></i> ORDERS</button>
+                <button class="tab-btn" id="btn-analytics" onclick="switchTab('analytics')"><i class="fas fa-chart-line"></i> ANALYTICS</button>
+            </div>
+
+            <div id="inventory" class="tab-content active">
+                <h3 style="color: var(--bronze); margin: 0 0 15px 0;">INJECT NEW UNIT</h3>
+                <form id="add-car-form">
+                    <div class="form-row">
+                        <input type="text" id="car-name" placeholder="Name (e.g. R34 Skyline)" required>
+                        <input type="text" id="car-subtitle" placeholder="Subtitle (e.g. Nismo Z-Tune)" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="number" id="car-price" placeholder="Price (RS)" required>
+                        <input type="number" id="car-stock" placeholder="Stock Qty" required min="1">
+                    </div>
+                    <div class="form-row">
+                        <select id="car-tier" required>
+                            <option value="" disabled selected>Select Tier</option>
+                            <option value="budget">Budget Sleeper</option>
+                            <option value="collectors">Collectors Cut</option>
+                            <option value="pinnacle">The Pinnacle</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                        <input type="file" id="car-image-file" accept="image/*" required>
+                    </div>
+                    <button type="submit">CONFIRM INJECTION</button>
+                </form>
+
+                <div id="live-inventory" style="margin-top: 30px;">
+                    </div>
+            </div>
+
+            <div id="orders" class="tab-content">
+                <div id="live-orders">
+                    <p style="text-align: center; color: #555;">No recent data transmissions.</p>
+                </div>
+            </div>
+
+            <div id="analytics" class="tab-content">
+                <div id="analytics-body">
+                    <p style="text-align: center; color: #555;">Loading traffic data...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="edit-modal">
+            <div class="modal-content">
+                <button onclick="closeEditModal()" style="width: auto; padding: 5px 15px; margin-bottom: 20px; background: var(--danger); color: #fff;">X CLOSE</button>
+                <h3 style="color: var(--info);">UPDATE PARAMETERS</h3>
+                <form id="edit-car-form">
+                    <input type="hidden" id="edit-car-id">
+                    <input type="text" id="edit-car-name" required>
+                    <input type="text" id="edit-car-subtitle" required>
+                    <div class="form-row">
+                        <input type="number" id="edit-car-price" required>
+                        <input type="number" id="edit-car-stock" required>
+                    </div>
+                    <select id="edit-car-tier">
+                        <option value="budget">Budget Sleeper</option>
+                        <option value="collectors">Collectors Cut</option>
+                        <option value="pinnacle">The Pinnacle</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                    <label style="font-size: 0.8rem; color: #888;">REPLACE IMAGE (OPTIONAL)</label>
+                    <input type="file" id="edit-car-image-file" accept="image/*">
+                    <button type="submit" style="background: var(--info); color: #fff;">SAVE OVERRIDE</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let secretKey = "";
+        let globalCars = [];
+
+        // Escape user-controlled text before inserting into innerHTML
+        function esc(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        // --- AUTHENTICATION ---
+        async function checkAccess() {
+            const passInput = document.getElementById('admin-pass').value;
+            
+            // We verify by trying to hit a protected route (Orders)
+            const response = await fetch('/api/admin/orders', {
+                headers: { 'x-admin-pass': passInput }
+            });
+
+            if (response.ok) {
+                secretKey = passInput;
+                document.getElementById('login-screen').style.display = "none";
+                document.getElementById('dashboard').style.display = "block";
+                loadInventory();
+                loadOrders();
+            } else {
+                alert("CRITICAL ERROR: ACCESS DENIED. PASSCODE INVALID.");
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+            if (tabId === 'analytics') loadAnalytics();
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // --- INVENTORY LOGIC ---
+        async function loadInventory() {
+            const res = await fetch('/api/inventory');
+            globalCars = await res.json();
+            const container = document.getElementById('live-inventory');
+
+            container.innerHTML = globalCars.map(car => `
+                <div class="inventory-item">
+                    <div class="car-info-wrapper">
+                        <img src="${esc(car.image)}" class="image-preview" onerror="this.src='https://placehold.co/60x40/222/555?text=MISSING'">
+                        <div>
+                            <strong>${esc(car.name)}</strong><br>
+                            <small style="color: var(--bronze);">RS ${Number(car.price).toLocaleString()} | ${esc(car.tier)}</small>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div class="stock-controls">
+                            <button class="btn-stock" onclick="updateStock('${esc(car._id)}', -1)">-</button>
+                            <span class="stock-number">${Number(car.stock)}</span>
+                            <button class="btn-stock" onclick="updateStock('${esc(car._id)}', 1)">+</button>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-edit" onclick="openEditModal('${esc(car._id)}')"><i class="fas fa-pen"></i></button>
+                            <button class="btn-danger" onclick="deleteCar('${esc(car._id)}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('add-car-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = document.getElementById('car-image-file').files[0];
+            const base64 = await fileToBase64(file);
+
+            const carData = {
+                name: document.getElementById('car-name').value,
+                subtitle: document.getElementById('car-subtitle').value,
+                price: parseFloat(document.getElementById('car-price').value),
+                stock: parseInt(document.getElementById('car-stock').value),
+                tier: document.getElementById('car-tier').value,
+                image: base64
+            };
+
+            const res = await fetch('/api/admin/inventory', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-pass': secretKey },
+                body: JSON.stringify(carData)
+            });
+
+            if (res.ok) {
+                document.getElementById('add-car-form').reset();
+                loadInventory();
+            }
+        });
+
+        async function updateStock(id, change) {
+            await fetch(`/api/admin/inventory/${id}/stock`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-admin-pass': secretKey },
+                body: JSON.stringify({ change })
+            });
+            loadInventory();
+        }
+
+        async function deleteCar(id) {
+            if (!confirm("Confirm Unit Destruction?")) return;
+            await fetch(`/api/admin/inventory/${id}`, {
+                method: 'DELETE',
+                headers: { 'x-admin-pass': secretKey }
+            });
+            loadInventory();
+        }
+
+        // --- EDIT LOGIC ---
+        function openEditModal(id) {
+            const car = globalCars.find(c => c._id === id);
+            document.getElementById('edit-car-id').value = car._id;
+            document.getElementById('edit-car-name').value = car.name;
+            document.getElementById('edit-car-subtitle').value = car.subtitle;
+            document.getElementById('edit-car-price').value = car.price;
+            document.getElementById('edit-car-stock').value = car.stock;
+            document.getElementById('edit-car-tier').value = car.tier;
+            document.getElementById('edit-modal').style.display = 'block';
+        }
+
+        function closeEditModal() { document.getElementById('edit-modal').style.display = 'none'; }
+
+        document.getElementById('edit-car-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-car-id').value;
+            const updateObj = {
+                name: document.getElementById('edit-car-name').value,
+                subtitle: document.getElementById('edit-car-subtitle').value,
+                price: parseFloat(document.getElementById('edit-car-price').value),
+                stock: parseInt(document.getElementById('edit-car-stock').value),
+                tier: document.getElementById('edit-car-tier').value
+            };
+
+            const fileInput = document.getElementById('edit-car-image-file');
+            if (fileInput.files.length > 0) {
+                updateObj.image = await fileToBase64(fileInput.files[0]);
+            }
+
+            const res = await fetch(`/api/admin/inventory/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-admin-pass': secretKey },
+                body: JSON.stringify(updateObj)
+            });
+
+            if (res.ok) { closeEditModal(); loadInventory(); }
+        });
+
+        // --- ORDER LOGIC ---
+        async function loadOrders() {
+            const res = await fetch('/api/admin/orders', {
+                headers: { 'x-admin-pass': secretKey }
+            });
+            const orders = await res.json();
+            const container = document.getElementById('live-orders');
+
+            if (!orders.length) {
+                container.innerHTML = '<p style="text-align:center; color:#555;">No transmissions found.</p>';
+                return;
+            }
+
+            container.innerHTML = orders.map(order => {
+                const cust = order.customer || {};
+                const items = (order.cart || []).map(i => `${Number(i.quantity)}x ${esc(i.name)}`).join(', ');
+                return `
+                    <div style="background:#000; padding:15px; border:1px solid #333; margin-bottom:10px;">
+                        <div style="display:flex; justify-content:space-between; color:var(--bronze);">
+                            <strong>ID: ${esc(order.orderId)}</strong>
+                            <span>${esc(order.date)}</span>
+                        </div>
+                        <p style="margin:10px 0;"><strong>Customer:</strong> ${esc(cust.name)} (${esc(cust.phone)})</p>
+                        <p style="margin:6px 0; font-size:0.9rem; color:#aaa;"><strong>Address:</strong> ${esc(cust.address)}</p>
+                        <p style="margin:6px 0; font-size:0.85rem; color:#888;"><strong>Payment:</strong> ${esc(order.payment)} &nbsp;|&nbsp; <strong>Total:</strong> RS ${Number(order.total).toLocaleString()}</p>
+                        <div style="font-size:0.9rem; color:#888;">${items}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- ANALYTICS LOGIC ---
+        let trafficChart = null;
+
+        async function loadAnalytics() {
+            const body = document.getElementById('analytics-body');
+            body.innerHTML = '<p style="text-align:center; color:#555;">Loading traffic data...</p>';
+            try {
+                const res = await fetch('/api/admin/analytics', { headers: { 'x-admin-pass': secretKey } });
+                if (!res.ok) throw new Error('Analytics fetch failed');
+                const data = await res.json();
+                renderAnalytics(data);
+            } catch (e) {
+                body.innerHTML = '<p style="text-align:center; color:var(--danger);">Failed to load analytics.</p>';
+            }
+        }
+
+        function renderAnalytics(d) {
+            const body = document.getElementById('analytics-body');
+            const dailyLabels = d.daily.map(x => x._id.slice(5));
+            const dailyCounts = d.daily.map(x => x.count);
+            const deviceTotal = d.devices.reduce((s, x) => s + x.count, 0) || 1;
+
+            body.innerHTML = `
+                <div class="stat-grid">
+                    <div class="stat-card"><div class="label">Total Visits</div><div class="value">${d.total.toLocaleString()}</div></div>
+                    <div class="stat-card"><div class="label">Today</div><div class="value">${d.today.toLocaleString()}</div></div>
+                    <div class="stat-card"><div class="label">Last 7 Days</div><div class="value">${d.last7.toLocaleString()}</div></div>
+                    <div class="stat-card"><div class="label">Last 30 Days</div><div class="value">${d.last30.toLocaleString()}</div></div>
+                    <div class="stat-card"><div class="label">Unique (30d)</div><div class="value">${d.uniqueMonth.toLocaleString()}</div><div class="sub">${d.uniqueAllTime.toLocaleString()} all-time</div></div>
+                    <div class="stat-card"><div class="label">Orders</div><div class="value">${d.totalOrders.toLocaleString()}</div><div class="sub">${d.conversionRate}% conversion</div></div>
+                </div>
+
+                <div class="analytics-block">
+                    <h4>Traffic — Last 30 Days</h4>
+                    <div class="chart-wrap"><canvas id="traffic-chart"></canvas></div>
+                </div>
+
+                <div class="analytics-two-col">
+                    <div class="analytics-block">
+                        <h4>Top Pages</h4>
+                        <table>
+                            <thead><tr><th>Path</th><th style="text-align:right">Visits</th></tr></thead>
+                            <tbody>
+                                ${d.topPages.map(p => `<tr><td>${esc(p._id || '/')}</td><td class="num">${p.count}</td></tr>`).join('') || '<tr><td colspan="2" style="color:#555;">No data yet.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="analytics-block">
+                        <h4>Top Referrers</h4>
+                        <table>
+                            <thead><tr><th>Source</th><th style="text-align:right">Visits</th></tr></thead>
+                            <tbody>
+                                ${d.topRefs.map(r => `<tr><td style="word-break:break-all">${esc(r._id)}</td><td class="num">${r.count}</td></tr>`).join('') || '<tr><td colspan="2" style="color:#555;">Direct traffic only.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="analytics-block">
+                    <h4>Device Breakdown (30d)</h4>
+                    ${d.devices.length ? d.devices.map(dv => {
+                        const pct = ((dv.count / deviceTotal) * 100).toFixed(1);
+                        const icon = dv._id === 'mobile' ? 'mobile-screen' : dv._id === 'tablet' ? 'tablet-screen-button' : 'desktop';
+                        return `
+                            <div class="device-row">
+                                <span style="min-width:90px; text-transform:uppercase; font-size:0.8rem; letter-spacing:1px;"><i class="fas fa-${icon}" style="color:var(--bronze); margin-right:8px;"></i>${dv._id}</span>
+                                <div class="device-bar"><div style="width:${pct}%"></div></div>
+                                <span style="min-width:70px; text-align:right; color:var(--bronze); font-weight:700;">${dv.count} (${pct}%)</span>
+                            </div>
+                        `;
+                    }).join('') : '<p style="color:#555;">No data yet.</p>'}
+                </div>
+
+                <div class="analytics-block">
+                    <h4>Recent Visits</h4>
+                    <table>
+                        <thead><tr><th>Time</th><th>Path</th><th>Source</th></tr></thead>
+                        <tbody>
+                            ${d.recent.map(r => `
+                                <tr>
+                                    <td style="color:#888; font-size:0.8rem;">${new Date(r.ts).toLocaleString()}</td>
+                                    <td>${esc(r.path)}</td>
+                                    <td style="font-size:0.8rem; color:#aaa; word-break:break-all;">${esc(r.referrer) || '<span style="color:#555">direct</span>'}</td>
+                                </tr>
+                            `).join('') || '<tr><td colspan="3" style="color:#555;">No visits yet.</td></tr>'}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            // Traffic chart
+            const ctx = document.getElementById('traffic-chart');
+            if (ctx && typeof Chart !== 'undefined') {
+                if (trafficChart) trafficChart.destroy();
+                trafficChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dailyLabels,
+                        datasets: [{
+                            label: 'Visits',
+                            data: dailyCounts,
+                            borderColor: '#c7a87b',
+                            backgroundColor: 'rgba(199,168,123,0.15)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 3,
+                            pointBackgroundColor: '#c7a87b'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { ticks: { color: '#666' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+                            y: { ticks: { color: '#666', precision: 0 }, grid: { color: 'rgba(255,255,255,0.04)' }, beginAtZero: true }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
